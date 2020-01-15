@@ -1,7 +1,7 @@
 import React from 'react';
 import SignInTemplate from './views/sign-up.js';
 import LogInTemplate from './views/log-in.js';
-import ShowMealTemplate from './views/show-meal.js';
+import CreateMealTemplate from './views/create-meal.js';
 import HomeTemplate from './views/home.js';
 import logo from './logo.svg';
 import './App.css';
@@ -23,7 +23,7 @@ function App() {
             </Route>
 
             <Route exact path="/show-meal">  {/* might have to modify the path, because each meal will have a different URL. Set up atm as work in progress*/}
-              < ShowMealTemplate />
+              < CreateMealTemplate />
             </Route>
 
             <Route exact path="/">
