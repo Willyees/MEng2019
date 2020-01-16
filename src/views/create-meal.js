@@ -81,7 +81,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             data: {"data" : this.state},
             success: function(output) {
                 if(output == "DONE"){
-                    window.location.href = "/"; //change to map page
+                    window.location.href = "/map"; //change to map page
                 }
                 else{
                     alert("Sorry, an unknown error occured.");
