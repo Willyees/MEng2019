@@ -63,6 +63,7 @@ class HomeTemplate extends Component {
 		<TextField
 		fullWidth
 			id="txt-password"
+			type="password"
 			label="Password"
 		/>                     
 		<Button
