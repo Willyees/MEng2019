@@ -47,9 +47,8 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
 
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
         console.log("on change");
-        console.log(this.state.date([event.target.name]));
         console.log(event.target.value);
-        //this.setState({[event.target.name] : event.target.value});
+        this.setState({[event.target.name] : event.target.value});
     }
 
     onSubmit(event) {
@@ -124,7 +123,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 <div>
 
                 </div>
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit">
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit" disabled>
                     Create
                 </Button>
             </form>
