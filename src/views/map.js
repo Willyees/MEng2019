@@ -15,12 +15,16 @@ class MapTemplate extends Component {
 	
 render() {
     return (
+	<body style={{height:"100%", margin: "0px", padding:"0px"}}>
+	<div id="mapM">
         <Map
           google={this.props.google}
           zoom={8}
           style={mapStyles}
           initialCenter={{ lat: 47.444, lng: -122.176}}
         />
+	    </div>
+	    </body>
     );
   }
 }
