@@ -22,7 +22,7 @@ function App() {
               < LogInTemplate />
             </Route>
 
-            <Route exact path="/show-meal">  {/* might have to modify the path, because each meal will have a different URL. Set up atm as work in progress*/}
+            <Route exact path="/create-meal">  {/* might have to modify the path, because each meal will have a different URL. Set up atm as work in progress*/}
               < CreateMealTemplate />
             </Route>
 
