@@ -37,6 +37,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         this.onSubmit = this.onSubmit.bind(this);
         this.handleDate = this.handleDate.bind(this);
         this.debugFillFields = this.debugFillFields.bind(this);
+
     }
     
     handleDate(date_){ //date is handled differently (not like an event)
@@ -69,6 +70,14 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
     }
 
     render() {
+        var submitDisabled = false;
+        var values = Object.values(this.state);
+        for(var v of values){
+            if(v.length == 0){
+                submitDisabled = true;
+            }
+        }
+        console.log();
         return(
             <div>
                 <Button variant="contained" color="secondary" onClick={this.debugFillFields}>
@@ -123,7 +132,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 <div>
 
                 </div>
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit" disabled>
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit" disabled={submitDisabled}>
                     Create
                 </Button>
             </form>
