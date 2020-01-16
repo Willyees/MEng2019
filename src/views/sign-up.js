@@ -87,10 +87,10 @@ class SignUpTemplate extends Component {
                         <TextField name="username" id="username-tb" onChange={this.onChange} value={this.username} type="text" label="Username" />
                     </div>
                     <div>
-                        <TextField name="password" type="password" id="password-tb" onChange={this.onChange} value={this.password} type="text" label="Password" />
+                        <TextField name="password" type="password" id="password-tb" onChange={this.onChange} value={this.password} label="Password" />
                     </div>
                     <div>
-                        <TextField name="password_c" type= "password" id="password_c-tb" onChange={this.onChange} value={this.password_c} type="text" label="Confirm Password" />
+                        <TextField name="password_c" type= "password" id="password_c-tb" onChange={this.onChange} value={this.password_c} label="Confirm Password" />
                     </div>
                     <div>
                         <TextField name="address_1" id="address_1-tb" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" />

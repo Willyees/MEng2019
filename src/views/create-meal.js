@@ -9,10 +9,24 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
-
+import $ from 'jquery'
 import { makeStyles } from '@material-ui/core/styles';
 
-
+function getCookie(cookieName) {
+    var name = cookieName + "=";
+    var decC = decodeURIComponent(document.cookie);
+    var tmp = decC.split(';');
+    for(var i = 0; i <tmp.length; i++) {
+        var c = tmp[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 
 class CreateMealTemplate extends Component { //this is more create meal. have to change class names
@@ -32,7 +46,11 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             age_range : "", //have to discuss how to implement the range. 2 different fields? single slider that can set min and max?
             suggested_theme : "",
         }
-
+	var un = getCookie("Username");
+	console.log(un);
+        if(typeof(un) === "undefined" || un === null || un.length < 3){
+		window.location.href = "/";
+        }
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.handleDate = this.handleDate.bind(this);
