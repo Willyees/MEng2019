@@ -76,6 +76,19 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         const {title, description, city} = this.state;
         console.log(this.state);
         event.preventDefault();
+	 $.ajax({ url: 'PHPF/createmeal.php',
+            type: 'post',
+            data: {"data" : this.state},
+            success: function(output) {
+                if(output == "DONE"){
+                    window.location.href = "/"; //change to map page
+                }
+                else{
+                    alert("Sorry, an unknown error occured.");
+                }
+            }
+        });
+
     }
 
     //DEBUG ONLY
