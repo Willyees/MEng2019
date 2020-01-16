@@ -9,6 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
+import $ from 'jquery';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -45,7 +46,7 @@ class SignUpTemplate extends Component {
 
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
         console.log(event.target.value);
-        this.setState({[event.target.fName] : event.target.value});
+        this.setState({[event.target.name] : event.target.value});
     }
 
     onSubmit(event) {
@@ -53,6 +54,14 @@ class SignUpTemplate extends Component {
         const {fName, bio, city} = this.state;
         console.log(this.state);
         event.preventDefault();
+         
+	$.ajax({ url: 'signup.php',
+	    type: 'post',
+	    data: {"data" : this.state},
+	    success: function(output) {
+		alert(output);
+	    }
+	});	
     }
     render() {
         return(
