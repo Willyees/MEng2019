@@ -1,4 +1,19 @@
 import React, {Component} from 'react';
+import {useState} from 'react';
+import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/core/Icon';
+import AddIcon from '@material-ui/icons/Add';
+import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns'
+import 'date-fns'
+
+import { makeStyles } from '@material-ui/core/styles';
+
+
+
 
 class CreateMealTemplate extends Component { //this is more create meal. have to change class names
 
@@ -9,7 +24,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             description: "",
             city : "",
             dietary : "",
-            date : new Date().toLocaleDateString(), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
+            date : new Date().toDateString(), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
             time : new Date().toLocaleTimeString(),
             proposed_meal : "",
             expected_contribution : 0.0,
@@ -18,16 +33,23 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             suggested_theme : "",
         }
 
-        this.onChange = this.onChange.bind(this)
+        this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleDate = this.handleDate.bind(this);
     }
     
-    
+    handleDate(date_){ //date is handled differently (not like an event)
+        this.setState({date : date_});
+        console.log(this.state.date + "state");
+    }
+
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
+        console.log(event.target.value);
         this.setState({[event.target.name] : event.target.value});
     }
 
     onSubmit(event) {
+        //add to this fucntion the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
         const {title, description, city} = this.state;
         console.log(this.state);
         event.preventDefault();
@@ -39,49 +61,57 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 Create a Meal Event
             <div>
             <p />
-                {this.state.title}
-                {console.log(this.state.title + "asd")}
             </div>
             <form onSubmit={this.onSubmit}> 
                 <div>
                     {/* id: <name_id>_cm; cm stands for create meal */}
-                    <input name="title" id="title_cm" onChange={this.onChange} value={this.title} type="text" placeholder="Meal Title"/>
+                    <TextField name="title" id="title_cm" onChange={this.onChange} value={this.title} type="text" 
+                    label="Title"/>
                 </div>
                 <p />
                 <div>
-                    <textarea name="description" id="description_cm" onChange={this.onChange} value={this.description} type="text" placeholder="Description meal" />
+                    <TextField multiline name="description" id="description_cm" onChange={this.onChange} value={this.description} type="text"
+                    label="Description" variant="outlined"/>
                 </div>
                 <div>
-                    <input name="city" id="city_cm" onChange={this.onChange} value={this.city} type="text" placeholder="City" />
+                    <TextField name="city" id="city_cm" onChange={this.onChange} value={this.city} type="text" label="City" 
+                    />
                 </div>
                 <div>
-                    <input name="dietary" id="dietary_cm" onChange={this.onChange} value={this.dietary} /> {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
+                    <TextField name="dietary" id="dietary_cm" onChange={this.onChange} value={this.dietary} label="Dietary requirements"/> {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
                 </div>
                 <div>
-                    <input name="date" id="date_cm" onChange={this.onChange} value={this.date} type="date" min={new Date().toLocaleDateString()} /> {/*date type is not supported on safari*/}
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker name="date" id="date_cm" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date picker" format="dd/MM/yyyy"
+                        value={this.state.date} onChange={this.handleDate} />
+                    </MuiPickersUtilsProvider>
                 </div>
                 <div>
-                    <input name="time" id="time_cm" onChange={this.onChange} value={this.time} type="time" />
+                    <TextField name="time" id="time_cm" onChange={this.onChange} value={this.time} type="time" label="Time"/>
                 </div>
                 <div>
-                    <input name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.proposed_meal} type="text" />
+                    <TextField name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.proposed_meal} type="text" label="Proposed meal" />
                 </div>
                 <div>
-                    <input name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.expected_contribution} type="number" placeholder="Expected contribution" />
+                    <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.expected_contribution} type="number" label="Expected contribution" />
                 </div>
                 <div>
-                    <input name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.guest_limit} type="number" placeholder="Guest Limit" min="1"/>
+                    <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.guest_limit} type="number" label="Guest Limit" min="1"/>
                 </div>
                 <div>
-                    <input name="age_range" id="age_range_cm" onChange={this.onChange} value={this.age_range} type="range" placeholder="age_range" min="0" max="99"/>
+                    <TextField name="age_range" id="age_range_cm" onChange={this.onChange} value={this.age_range} type="range" label="Age range" min="0" max="99"/>
                 </div>
                 <div>
-                    <input name="suggested_theme" id="suggested_theme_cm" onChange={this.onChange} value={this.age_range} type="text" placeholder="Suggested Theme" />
+                    <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChange} value={this.age_range} type="text" label="Suggested Theme" />
                 </div>
-                <button type="submit">
+                <div>
+
+                </div>
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit">
                     Create
-                </button>
+                </Button>
             </form>
+
             </div>
         );
     }
