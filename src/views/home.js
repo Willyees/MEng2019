@@ -27,7 +27,7 @@ class HomeTemplate extends Component {
 	}
     }
     logUserIn(){
-	 $.ajax({ url: 'login.php',
+	 $.ajax({ url: 'PHPF/login.php',
             type: 'post',
             data: {
                 "usr" : $("#txt-user-name").val(),
