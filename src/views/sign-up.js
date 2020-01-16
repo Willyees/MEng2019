@@ -59,7 +59,12 @@ class SignUpTemplate extends Component {
 	    type: 'post',
 	    data: {"data" : this.state},
 	    success: function(output) {
-		alert(output);
+		if(output == "DONE"){
+	            window.location.href = "/" 
+		}
+		else if(output == 1){
+		    alert("Username Already Exists");
+		}
 	    }
 	});	
     }
