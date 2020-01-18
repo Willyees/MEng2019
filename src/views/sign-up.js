@@ -54,7 +54,6 @@ class SignUpTemplate extends Component {
         const {fName, bio, city} = this.state;
         console.log(this.state);
         event.preventDefault();
-         
 	$.ajax({ url: 'PHPF/signup.php',
 	    type: 'post',
 	    data: {"data" : this.state},
