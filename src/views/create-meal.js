@@ -11,6 +11,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
 import $ from 'jquery'
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid'
 
 function getCookie(cookieName) {
     var name = cookieName + "=";
@@ -48,7 +49,8 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         }
 	var un = getCookie("Username");
 	console.log(un);
-        if(typeof(un) === "undefined" || un === null || un.length < 3){
+        if(typeof(un) === "undefined" || un === null || un.length < 3 
+        && window.location.host != "localhost:3000"){ //localhost exception
 		window.location.href = "/";
         }
         this.onChange = this.onChange.bind(this);
@@ -151,12 +153,14 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 <div>
                     <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.expected_contribution} type="number" label="Expected contribution" />
                 </div>
-                <div>
-                    <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.guest_limit} type="number" label="Guest Limit" min="1"/>
-                </div>
-                <div>
-                    <TextField name="age_range" id="age_range_cm" onChange={this.onChange} value={this.state.age_range} type="range" label="Age range" min="0" max="99"/>
-                </div>
+                <Grid container>
+                    <Grid item xs>
+                        <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.guest_limit} type="number" label="Guest Limit" min="1"/>
+                    </Grid>
+                    <Grid item xs>
+                        <TextField name="age_range" id="age_range_cm" onChange={this.onChange} value={this.state.age_range} type="range" label="Age range" min="0" max="99"/>
+                    </Grid>
+                </Grid>
                 <div>
                     <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChange} value={this.state.age_range} type="text" label="Suggested Theme" />
                 </div>

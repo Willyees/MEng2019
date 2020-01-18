@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import $ from 'jquery';
+import { element } from 'prop-types';
 
 function getCookie(cookieName) {
     var name = cookieName + "=";
@@ -20,12 +21,29 @@ function getCookie(cookieName) {
     return "";
 }
 class HomeTemplate extends Component {
+    constructor(props){
+        super(props);
+        this.submitBtnRef = null;
+        //set reference using function (callback pattern)
+        this.setSubmitBtnRef = element => {
+            this.submitBtnRef = element;
+        }
+        this.onKeyUp = this.onKeyUp.bind(this);
+    }
     componentDidMount() {
         var un = getCookie("temp");
         if(typeof(un) != "undefined" & un !== null){
              $("#txt-user-name").val(un);
-	}
+        }
     }
+    
+
+    onKeyUp(event){
+        if(event.target.id == "txt-password" && event.keyCode == "13"){ //13 is Enter key pressed
+            this.submitBtnRef.click();
+        }
+    }
+
     logUserIn(){
 	 $.ajax({ url: 'PHPF/login.php',
             type: 'post',
@@ -64,16 +82,18 @@ class HomeTemplate extends Component {
 		fullWidth
 			id="txt-password"
 			type="password"
-			label="Password"
+            label="Password"
+            onChange = {this.onChange}
+            onKeyUp = {this.onKeyUp}
 		/>                     
 		<Button
-			id="btn-sign-in" onClick={this.logUserIn} variant="contained" color="primary" margin="normal" disableElevation >
+			id="btn-sign-in" onClick={this.logUserIn} ref={this.setSubmitBtnRef} variant="contained" color="primary" margin="normal" disableElevation >
 			Sign In
 		</Button>
-
+        
 		<Button
 			id="btn-sign-up" onClick={this.redirectSignUp} variant="contained" color="secondary" margin="normal" disableElevation >
-			Sign Up
+            Sign Up
 		</Button>
 	    </Container>
         </div>

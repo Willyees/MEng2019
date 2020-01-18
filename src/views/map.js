@@ -21,7 +21,7 @@ render() {
           google={this.props.google}
           zoom={8}
           style={mapStyles}
-          initialCenter={{ lat: 47.444, lng: -122.176}}
+          initialCenter={{ lat: 55.9533, lng: -3.1883}}
         />
 	    </div>
 	    </body>
