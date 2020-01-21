@@ -11,6 +11,10 @@ import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
 import $ from 'jquery';
 
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
+
 import { makeStyles } from '@material-ui/core/styles';
 
 const postcodeRegex = RegExp(/^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z])))) [0-9][A-Za-z]{2})$/);
@@ -48,6 +52,9 @@ class SignUpTemplate extends Component {
             bio: null,
             profilePic: null,
             allergens: null,
+            isPasswordVis : true,
+            isPasswordCVis : true,
+
 
             formErrors: {
                 fName : "",
@@ -72,6 +79,15 @@ class SignUpTemplate extends Component {
                     : "";
         this.setState({formErrors, dob : date_}, () => console.log(this.state));
     };
+
+    //using two different functions because the event received has no info related to which icon called it (so can't understand which password state to modify)
+    setVisibilityPass = () =>{
+        this.setState({isPasswordVis : !this.state.isPasswordVis});
+    }
+    setVisibilityPassC = () =>{
+        console.log("called");
+        this.setState({isPasswordCVis : !this.state.isPasswordCVis});
+    }
 
     onChange = event => {//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
         event.preventDefault();
@@ -197,10 +213,20 @@ class SignUpTemplate extends Component {
                         <TextField error= {formErrors.username} helperText= {formErrors.username} name="username" id="username-tb" onChange={this.onChange} value={this.username} type="text" label="Username" />
                     </div>
                     <div>
-                        <TextField error= {formErrors.password} helperText= {formErrors.password} name="password" type="password" id="password-tb" onChange={this.onChange} value={this.password} label="Password" />
+                        <TextField error= {formErrors.password} helperText= {formErrors.password} name="password" type={this.state.isPasswordVis ? "password" : "text"} id="password-tb" onChange={this.onChange} value={this.password} label="Password" 
+                        InputProps={{
+                            endAdornment:<InputAdornment position="end">
+                                <IconButton onClick={this.setVisibilityPass}>{this.state.isPasswordVis ? <VisibilityOff /> : <Visibility />}</IconButton>
+                            </InputAdornment>}}>
+                        </TextField>
                     </div>
                     <div>
-                        <TextField error= {formErrors.password_c} helperText= {formErrors.password_c} name="password_c" type= "password" id="password_c-tb" onChange={this.onChange} value={this.password_c} label="Confirm Password" />
+                        <TextField error= {formErrors.password_c} helperText= {formErrors.password_c} name="password_c" type={this.state.isPasswordCVis ? "password" : "text"} id="password_c-tb" onChange={this.onChange} value={this.password_c} label="Confirm Password"                         
+                        InputProps={{
+                            endAdornment:<InputAdornment position="end">
+                                <IconButton onClick={this.setVisibilityPassC}>{this.state.isPasswordCVis ? <VisibilityOff /> : <Visibility />}</IconButton>
+                            </InputAdornment>}}>
+                        </TextField>
                     </div>
                     <div>
                         <TextField error= {formErrors.address_1} helperText= {formErrors.address_1} name="address_1" id="address_1-tb" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" />
