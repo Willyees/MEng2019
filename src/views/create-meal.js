@@ -102,6 +102,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 }
                 else{
                     alert("Sorry, an unknown error occured.");
+		    alert(output);
                 }
             }
         });
