@@ -12,6 +12,9 @@ import 'date-fns'
 import $ from 'jquery'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import Hidden from '@material-ui/core/Hidden';
+import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@material-ui/core';
 
 function getCookie(cookieName) {
     var name = cookieName + "=";
@@ -46,6 +49,9 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             guest_limit : 0,
             age_range : "", //have to discuss how to implement the range. 2 different fields? single slider that can set min and max?
             suggested_theme : "",
+            //visibility for extra fields
+            suggested_theme_vis : false,
+            dietary_vis : false,
         }
 	var un = getCookie("Username");
 	console.log(un);
@@ -57,6 +63,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         this.onSubmit = this.onSubmit.bind(this);
         this.handleDate = this.handleDate.bind(this);
         this.debugFillFields = this.debugFillFields.bind(this);
+        this.handleVis = this.handleVis.bind(this);
 
     }
     
@@ -70,6 +77,14 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         console.log("on change");
         console.log(event.target.value);
         this.setState({[event.target.name] : event.target.value});
+    }
+
+    handleVis(event){
+        //remove vis part to get the name of the field and clear it
+        var name = event.target.value;
+        var index = name.lastIndexOf("_");
+        var stateName = name.slice(0,index);
+        this.setState({[event.target.value] : event.target.checked, [stateName] : "" }); //only works for string inputs
     }
 
     onSubmit(event) {
@@ -120,39 +135,40 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             <div>
             <p />
             </div>
+            <Grid container>
+            <Grid item>
+            <Paper>
             <form onSubmit={this.onSubmit}> 
-                <div>
+                <Grid item>
                     {/* id: <name_id>_cm; cm stands for create meal */}
                     <TextField name="title" id="title_cm" onChange={this.onChange} value={this.state.title} type="text" 
                     label="Title"/>
-                </div>
+                </Grid>
                 <p />
-                <div>
+                <Grid item>
                     <TextField multiline name="description" id="description_cm" onChange={this.onChange} value={this.state.description} type="text"
                     label="Description" variant="outlined"/>
-                </div>
-                <div>
+                </Grid>
+                <Grid item>
                     <TextField name="city" id="city_cm" onChange={this.onChange} value={this.state.city} type="text" label="City" 
                     />
-                </div>
-                <div>
-                    <TextField name="dietary" id="dietary_cm" onChange={this.onChange} value={this.state.dietary} label="Dietary requirements"/> {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
-                </div>
-                <div>
+                </Grid>
+
+                <Grid item>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker name="date" id="date_cm" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date picker" format="dd/MM/yyyy"
                         value={this.state.date} onChange={this.handleDate} />
                     </MuiPickersUtilsProvider>
-                </div>
-                <div>
+                </Grid>
+                <Grid item>
                     <TextField name="time" id="time_cm" onChange={this.onChange} value={this.state.time} type="time" label="Time"/>
-                </div>
-                <div>
+                </Grid>
+                <Grid item>
                     <TextField name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.proposed_meal} type="text" label="Proposed meal" />
-                </div>
-                <div>
+                </Grid>
+                <Grid item>
                     <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.expected_contribution} type="number" label="Expected contribution" />
-                </div>
+                </Grid>
                 <Grid container>
                     <Grid item xs>
                         <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.guest_limit} type="number" label="Guest Limit" min="1"/>
@@ -161,17 +177,34 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                         <TextField name="age_range" id="age_range_cm" onChange={this.onChange} value={this.state.age_range} type="range" label="Age range" min="0" max="99"/>
                     </Grid>
                 </Grid>
-                <div>
-                    <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChange} value={this.state.age_range} type="text" label="Suggested Theme" />
-                </div>
-                <div>
+                <Grid item>
+                    {this.state.suggested_theme_vis &&
+                    <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChange} value={this.state.suggested_theme} type="text" label="Suggested Theme" />
+                    }
+                </Grid>
+                <Grid item>
+                    {this.state.dietary_vis &&
+                    <TextField name="dietary" id="dietary_cm" onChange={this.onChange} value={this.state.dietary} label="Dietary requirements"/>
+                    } {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
+                </Grid>
 
-                </div>
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit" disabled={submitDisabled}>
                     Create
                 </Button>
             </form>
+            </Paper>
+            </Grid>
 
+            <Grid item >
+                <FormControl>
+                    <FormLabel>Extra fields</FormLabel>
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
+                        <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>
+                    </FormGroup>
+                </FormControl>
+            </Grid>
+            </Grid>
             </div>
         );
     }
