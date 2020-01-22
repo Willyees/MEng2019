@@ -22,50 +22,14 @@ function getCookie(cookieName) {
 class HomeTemplate extends Component {
     constructor(props){
         super(props);
-        this.submitBtnRef = null;
-        //set reference using function (callback pattern)
-        this.setSubmitBtnRef = element => {
-            this.submitBtnRef = element;
-        }
-        this.onKeyUp = this.onKeyUp.bind(this);
     }
+
     componentDidMount() {
         var un = getCookie("temp");
         if(typeof(un) != "undefined" & un !== null){
-             $("#txt-user-name").val(un);
+             //User is logged in, could be of some use
         }
     }
-    
-
-    onKeyUp(event){
-        if(event.target.id == "txt-password" && event.keyCode == "13"){ //13 is Enter key pressed
-            this.submitBtnRef.click();
-        }
-    }
-
-    logUserIn(){
-	 $.ajax({ url: 'PHPF/login.php',
-            type: 'post',
-            data: {
-                "usr" : $("#txt-user-name").val(),
-	    	"pwd" : $("#txt-password").val()
-	    },
-            success: function(output) {
-                if(output == "DONE"){
-		    alert("LOGIN!");
-                }
-		else{
-		    alert("Invalid Credentials");
-		}
-            }
-        });
-
-    }
-
-    redirectSignUp(){
-        window.location.href = "/sign-up";
-    }
-
 
     render() {
         // const classes = useStyles();
