@@ -18,6 +18,7 @@ const stores = [{lat: 47.49855629475769, lng: -122.14184416996333},
 $.ajax({ url: 'PHPF/getmeals.php',
 	type: 'post',
 	dataType : "json",
+	async: false,
 	success: function(output) {
 		console.log(output);
 		var ret = output;
