@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
+import AppBar from '../components/AppBar';
 import $ from 'jquery';
 import { element } from 'prop-types';
 
@@ -20,6 +18,7 @@ function getCookie(cookieName) {
     }
     return "";
 }
+
 class HomeTemplate extends Component {
     constructor(props){
         super(props);
@@ -64,39 +63,15 @@ class HomeTemplate extends Component {
     }
 
     redirectSignUp(){
-	window.location.href = "/sign-up";
+        window.location.href = "/sign-up";
     }
 
-    render() {
-        return(
-            <div className="home">
-            <Container maxWidth="sm">    
-                Home Page
-		<TextField
-		fullWidth
-			id="txt-user-name"
-			label="Username"
-		/>
 
-		<TextField
-		fullWidth
-			id="txt-password"
-			type="password"
-            label="Password"
-            onChange = {this.onChange}
-            onKeyUp = {this.onKeyUp}
-		/>                     
-		<Button
-			id="btn-sign-in" onClick={this.logUserIn} ref={this.setSubmitBtnRef} variant="contained" color="primary" margin="normal" disableElevation >
-			Sign In
-		</Button>
-        
-		<Button
-			id="btn-sign-up" onClick={this.redirectSignUp} variant="contained" color="secondary" margin="normal" disableElevation >
-            Sign Up
-		</Button>
-	    </Container>
-        </div>
+    render() {
+        // const classes = useStyles();
+        return(
+            <AppBar>
+            </AppBar>
         );
     }
 }
