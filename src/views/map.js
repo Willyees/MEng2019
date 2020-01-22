@@ -9,12 +9,7 @@ const mapStyles = {
   width: '100%',
   height: '100%',
 };
-const stores = [{lat: 47.49855629475769, lng: -122.14184416996333},
-              {lat: 47.359423, lng: -122.021071},
-              {lat: 47.2052192687988, lng: -121.988426208496},
-              {lat: 47.6307081, lng: -122.1434325},
-              {lat: 47.3084488, lng: -122.2140121},
-              {lat: 47.5524695, lng: -122.0425407}];
+const stores = [];
 
 $.ajax({ url: 'PHPF/getmeals.php',
 	type: 'post',
@@ -54,7 +49,6 @@ render() {
           style={mapStyles}
           initialCenter={{ lat: 55.9533, lng: -3.1883}}
 	    >
-	    <Marker position={{ lat: 48.00, lng: -122.00}}/> 
 	    {
 		    stores.map(element => <Marker position={element}/>)
 	    }
