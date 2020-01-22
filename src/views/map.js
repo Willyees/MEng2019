@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import $ from 'jquery';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import AppBar from '../components/AppBar';
 const mapStyles = {
   width: '100%',
   height: '100%',
