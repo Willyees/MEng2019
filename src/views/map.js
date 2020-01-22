@@ -8,14 +8,38 @@ const mapStyles = {
   width: '100%',
   height: '100%',
 };
-const state = {
-      stores: [{lat: 47.49855629475769, lng: -122.14184416996333},
+const stores = [{lat: 47.49855629475769, lng: -122.14184416996333},
               {lat: 47.359423, lng: -122.021071},
               {lat: 47.2052192687988, lng: -121.988426208496},
               {lat: 47.6307081, lng: -122.1434325},
               {lat: 47.3084488, lng: -122.2140121},
-              {lat: 47.5524695, lng: -122.0425407}]
-    }
+              {lat: 47.5524695, lng: -122.0425407}];
+
+$.ajax({ url: 'PHPF/getmeals.php',
+	type: 'post',
+	dataType : "json",
+	success: function(output) {
+		console.log(output);
+		var ret = output;
+		console.log(ret[0]);
+		for (var i = 0; i < ret.length; i++) {
+		    var line = ret[i].split(',');
+		    console.log(line);
+		    var tmp = {};
+		    for(var j = 0; j < line.length; j++){
+			if(j == 3){
+			    tmp.lat = JSON.parse(line[j]);
+			}
+			if(j == 4){
+			    tmp.lng = JSON.parse(line[j]);
+			}
+		    }
+		    stores.push(tmp);
+		    console.log(tmp);
+		    console.log(stores);
+		}
+	}
+});
 class MapTemplate extends Component {
 	
 render() {
@@ -30,7 +54,8 @@ render() {
 	    >
 	    <Marker position={{ lat: 48.00, lng: -122.00}}/> 
 	    {
-		    state["stores"].map(element => <Marker position={element}/>)}
+		    stores.map(element => <Marker position={element}/>)
+	    }
         </Map>
 	    </div>
 	    </body>
