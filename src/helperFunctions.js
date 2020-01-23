@@ -5,7 +5,7 @@ export function isUserLoggedIn(){
     console.log("userLoggedIN?");
     var un = getCookie("username");
     if(typeof(un) === "undefined" || un === null || un.length < 3 
-    /*&& window.location.host != "localhost:3000"*/){ //localhost exception
+    && window.location.host != "localhost:3000"){ //localhost exception
         console.log("not loggedin");
         return false;
     }

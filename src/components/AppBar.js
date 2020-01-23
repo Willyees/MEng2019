@@ -5,9 +5,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button';
 import {isUserLoggedIn} from '../helperFunctions';
 import EmojiFoodBeverageSharpIcon from '@material-ui/icons/EmojiFoodBeverageSharp';
+import Link from '@material-ui/core/Link'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -37,7 +40,7 @@ const useStyles = makeStyles(theme => ({
                 MealTime
             </a> 
             </Typography>
-            {isUserLoggedIn() ? <Menu /> : <Logged />}
+            {isUserLoggedIn() ? <MenuBanner /> : <Logged />}
           </Toolbar>
         </AppBar>
       </div>
@@ -53,11 +56,46 @@ const useStyles = makeStyles(theme => ({
     );
   }
 
-  function Menu() {
+  function MenuBanner() {
     const classes = useStyles();
+    const [auth, setAuth] = React.useState(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const redirection = new Map([["/profile","profile-menu"],["/meals", "meals-menu"],["/settings", "settings-menu"]]); //map of URL: menu value, used to redirect
+  
+    const handleChange = event => {
+      setAuth(event.target.checked);
+    };
+  
+    const handleMenu = event => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = event => {
+      setAnchorEl(null);
+      console.log(event.currentTarget.val);
+    };
     return (
-      <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu">
-      <MenuIcon />
-      </IconButton>  
+      <div>
+        <IconButton edge="end" className={classes.menuButton} onClick={handleMenu} color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Menu id="menu-banner" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}
+        // anchorOrigin={{
+        //   vertical: 'top',
+        //   horizontal: 'right',
+        // }}
+        
+        // transformOrigin={{
+        //   vertical: 'top',
+        //   horizontal: 'right',
+        // }}
+      >
+        {/*todo: change href to correct ones using the map*/}
+        <MenuItem val="profile-menu" component={Link} href='#' color="inherit" onClick={handleClose}>Profile</MenuItem>
+        <MenuItem val="meals-menu" component={Link} href='# 'color="inherit" onClick={handleClose}>My Meals</MenuItem>
+        <MenuItem val="settings-menu" component={Link} href='#' color="inherit" onClick={handleClose}>Settings</MenuItem>
+      </Menu>  
+    </div>
     )
   }
