@@ -6,14 +6,14 @@ export function isUserLoggedIn(){
     var un = getCookie("username");
     if(typeof(un) === "undefined" || un === null || un.length < 3 
     /*&& window.location.host != "localhost:3000"*/){ //localhost exception
-        console.log("loggedin");
+        console.log("not loggedin");
         return false;
     }
-    console.log("not logged in");
+    console.log("logged in");
     return true;
 }
 
-function getCookie(cookieName) {
+export function getCookie(cookieName) {
     var name = cookieName + "=";
     var decC = decodeURIComponent(document.cookie);
     var tmp = decC.split(';');

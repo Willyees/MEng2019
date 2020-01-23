@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
             < EmojiFoodBeverageSharpIcon /> {/* I'd like it to not show as a button when hovered changes color background */}
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-            <a href="/" style={{"text-decoration":"inherit", "color": "white"}}>
+            <a id="title-banner" href="/" >
                 MealTime
             </a> 
             </Typography>

@@ -15,27 +15,12 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Hidden from '@material-ui/core/Hidden';
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@material-ui/core';
-
-function getCookie(cookieName) {
-    var name = cookieName + "=";
-    var decC = decodeURIComponent(document.cookie);
-    var tmp = decC.split(';');
-    for(var i = 0; i <tmp.length; i++) {
-        var c = tmp[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
+import { getCookie, isUserLoggedIn} from '../helperFunctions'
 
 class CreateMealTemplate extends Component { //this is more create meal. have to change class names
 
     constructor(props){
+        
         super(props);
         this.state = {
             title : "",
@@ -53,20 +38,15 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             suggested_theme_vis : false,
             dietary_vis : false,
         }
-	var un = getCookie("Username");
-	console.log(un);
-        if(typeof(un) === "undefined" || un === null || un.length < 3 
-        && window.location.host != "localhost:3000"){ //localhost exception
-		window.location.href = "/";
-        }
+
+
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.handleDate = this.handleDate.bind(this);
         this.debugFillFields = this.debugFillFields.bind(this);
         this.handleVis = this.handleVis.bind(this);
-
     }
-    
+   
     handleDate(date_){ //date is handled differently (not like an event)
         console.log("handle data");
         this.setState({date : date_});
@@ -119,6 +99,12 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
     }
 
     render() {
+        var un = getCookie("Username");
+        console.log(un);
+        if(!isUserLoggedIn()) {
+            window.location.href = "/";
+            return null;
+        }
         var submitDisabled = false;
         var values = Object.values(this.state);
         for(var v of values){

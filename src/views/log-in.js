@@ -3,21 +3,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import $ from 'jquery';
-function getCookie(cookieName) {
-    var name = cookieName + "=";
-    var decC = decodeURIComponent(document.cookie);
-    var tmp = decC.split(';');
-    for(var i = 0; i <tmp.length; i++) {
-        var c = tmp[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
+import {isUserLoggedIn, getCookie} from '../helperFunctions'
+
 class LogInTemplate extends Component {
 	constructor(props){
         super(props);
