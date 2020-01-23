@@ -4,6 +4,7 @@ import LogInTemplate from './views/log-in.js';
 import CreateMealTemplate from './views/create-meal.js';
 import HomeTemplate from './views/home.js';
 import MapTemplate from './views/map.js';
+import ProfileTemplate from './views/profile.js';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
@@ -28,6 +29,10 @@ function App() {
 
             <Route exact path="/create-meal">  {/* might have to modify the path, because each meal will have a different URL. Set up atm as work in progress*/}
               < CreateMealTemplate />
+            </Route>
+
+            <Route exact path="/profile">
+                < ProfileTemplate/>
             </Route>
 
             <Route exact path="/">
