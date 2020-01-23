@@ -52,6 +52,7 @@ class SignUpTemplate extends Component {
             bio: null,
             profilePic: null,
             allergens: null,
+            //visibility for passwords
             isPasswordVis : true,
             isPasswordCVis : true,
 
@@ -85,7 +86,6 @@ class SignUpTemplate extends Component {
         this.setState({isPasswordVis : !this.state.isPasswordVis});
     }
     setVisibilityPassC = () =>{
-        console.log("called");
         this.setState({isPasswordCVis : !this.state.isPasswordCVis});
     }
 
