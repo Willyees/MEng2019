@@ -93,7 +93,7 @@ render() {
     let head1, p1, p2, p3;
     var x;
     if(typeof this.state.selectedPlace.name !== "undefined"){
-	var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+	var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 	x = this.state.selectedPlace.name.split(",");
 	var today  = new Date(x[2]);
 	var new1 = today.toLocaleDateString("en-US", options);
