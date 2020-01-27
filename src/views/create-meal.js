@@ -27,7 +27,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             description: "",
             city : "",
             dietary : "",
-            date : new Date().toDateString(), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
+            date : new Date().toLocaleDateString("en-US"), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
             time : new Date().toLocaleTimeString(),
             proposed_meal : "",
             expected_contribution : 0.0,
@@ -48,9 +48,13 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
     }
    
     handleDate(date_){ //date is handled differently (not like an event)
+	var str = date_.toString();
         console.log("handle data");
-        this.setState({date : date_});
         console.log(this.state.date + "state");
+	var test = new Date(str).
+	  toLocaleString('en-us', {year: 'numeric', month: '2-digit', day: '2-digit'}).
+	  replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2');
+        this.setState({date : test});
     }
 
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
