@@ -93,10 +93,13 @@ render() {
     let head1, p1, p2, p3;
     var x;
     if(typeof this.state.selectedPlace.name !== "undefined"){
+	var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 	x = this.state.selectedPlace.name.split(",");
+	var today  = new Date(x[2]);
+	var new1 = today.toLocaleDateString("en-US", options);
 	head1 = <h1>{x[1]}</h1>; //Meal Name
 	p1 = <p>Host: {x[0]}</p>;
-	p2 = <p>Date: {x[2]}</p>;
+	p2 = <p>Date: {new1}</p>;
 	p3 = <p>Time: {x[3]}</p>;
     }
     return (
