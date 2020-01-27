@@ -90,11 +90,8 @@ class MapTemplate extends Component {
 	}
 
 render() {
-    let head1;
-    let p1;
-    let p2;
-    let p3;
-    var x;// this.state.selectedPlace.name.split(",");
+    let head1, p1, p2, p3;
+    var x;
     if(typeof this.state.selectedPlace.name !== "undefined"){
 	x = this.state.selectedPlace.name.split(",");
 	head1 = <h1>{x[1]}</h1>; //Meal Name
@@ -102,10 +99,9 @@ render() {
 	p2 = <p>Date: {x[2]}</p>;
 	p3 = <p>Time: {x[3]}</p>;
     }
-    else{
-	head1 = <h1></h1>;
-    }
     return (
+	<div>
+	<AppBar/>
 	<body style={{height:"100%", margin: "0px", padding:"0px"}}>
 	<div id="mapM">
         <Map
@@ -126,20 +122,18 @@ render() {
 	    		{p1}
 	    		{p2}
 	    		{p3}
-
                 </div>
             </InfoWindow>
         </Map>
 	    </div>
 	    </body>
+	    </div>
     );
   }
 }
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyBY6v3bJwMKv6Ov4t1pVjGX0byoaX1K2gI'
 })(MapTemplate)
-
-
 
 //export default MapTemplate;
 

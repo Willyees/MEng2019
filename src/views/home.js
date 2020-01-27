@@ -19,9 +19,11 @@ class HomeTemplate extends Component {
 
     render() {
         // const classes = useStyles();
+	//Wrapped in div as return must return a single element, div means we can add more childre 
         return(
-            <AppBar>
-            </AppBar>
+	    <div>
+                <AppBar/>
+	    </div>
         );
     }
 }
