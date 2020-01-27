@@ -107,7 +107,7 @@ render() {
         <Map
           google={this.props.google}
 	  onClick={this.onMapClicked}
-          zoom={8}
+          zoom={13}
           style={mapStyles}
           initialCenter={{ lat: 55.9533, lng: -3.1883}}
 	    >
