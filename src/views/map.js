@@ -10,6 +10,7 @@ const mapStyles = {
   height: '100%',
 };
 const stores = [];
+const storeDetails = [];
 
 $.ajax({ url: 'PHPF/getmeals.php',
 	type: 'post',
@@ -23,17 +24,27 @@ $.ajax({ url: 'PHPF/getmeals.php',
 		    var line = ret[i].split(',');
 		    console.log(line);
 		    var tmp = {};
+		    var tmpDetails = {};
 		    for(var j = 0; j < line.length; j++){
+			if(j == 0){
+			    tmpDetails.usr = line[j];
+			}
+			if(j == 1){
+			    tmpDetails.nm = line[j];
+			}
+		        if(j == 2){
+			    tmpDetails.dt = line[j];
+			}
 			if(j == 3){
-			    tmp.lat = JSON.parse(line[j]);
+			    tmp.lat = JSON.parse(line[j]); //Parse to remove quotes
 			}
 			if(j == 4){
 			    tmp.lng = JSON.parse(line[j]);
 			}
 		    }
+		    tmpDetails.pos = tmp;
+		    storeDetails.push(tmpDetails);
 		    stores.push(tmp);
-		    console.log(tmp);
-		    console.log(stores);
 		}
 	}
 });
@@ -67,7 +78,28 @@ class MapTemplate extends Component {
 	      })
 	    }
   	};
+	getName(tempo){
+	    for (var i = 0; i < storeDetails.length; i++) { 
+		if(storeDetails[i].pos == tempo){
+		    return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt;
+		}
+	    }
+	}
+
 render() {
+    let head1;
+    let p1;
+    let p2;
+    var x;// this.state.selectedPlace.name.split(",");
+    if(typeof this.state.selectedPlace.name !== "undefined"){
+	x = this.state.selectedPlace.name.split(",");
+	head1 = <h1>{x[1]}</h1>; //Meal Name
+	p1 = <p>Host: {x[0]}</p>;
+	p2 = <p>Date: {x[2]}</p>;
+    }
+    else{
+	head1 = <h1></h1>;
+    }
     return (
 	<body style={{height:"100%", margin: "0px", padding:"0px"}}>
 	<div id="mapM">
@@ -79,13 +111,16 @@ render() {
           initialCenter={{ lat: 55.9533, lng: -3.1883}}
 	    >
 	    {
-		    stores.map(element => <Marker name={'Testing'} position={element} onClick={this.onMarkerClick}/>)
+		    stores.map(element => <Marker name={this.getName(element)} position={element} onClick={this.onMarkerClick}/>)
 	    }
 	    <InfoWindow
                 marker={this.state.activeMarker}
                 visible={this.state.showingInfoWindow}>
                 <div style={{color:"black"}}>
-                    <h1>{this.state.selectedPlace.name}</h1>
+	    		{head1}
+	    		{p1}
+	    		{p2}
+
                 </div>
             </InfoWindow>
         </Map>
