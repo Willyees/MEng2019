@@ -41,6 +41,9 @@ $.ajax({ url: 'PHPF/getmeals.php',
 			if(j == 4){
 			    tmp.lng = JSON.parse(line[j]);
 			}
+			if(j == 5){
+			    tmpDetails.tm = line[j];
+			}
 		    }
 		    tmpDetails.pos = tmp;
 		    storeDetails.push(tmpDetails);
@@ -81,7 +84,7 @@ class MapTemplate extends Component {
 	getName(tempo){
 	    for (var i = 0; i < storeDetails.length; i++) { 
 		if(storeDetails[i].pos == tempo){
-		    return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt;
+		    return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt + "," + storeDetails[i].tm;
 		}
 	    }
 	}
@@ -90,12 +93,14 @@ render() {
     let head1;
     let p1;
     let p2;
+    let p3;
     var x;// this.state.selectedPlace.name.split(",");
     if(typeof this.state.selectedPlace.name !== "undefined"){
 	x = this.state.selectedPlace.name.split(",");
 	head1 = <h1>{x[1]}</h1>; //Meal Name
 	p1 = <p>Host: {x[0]}</p>;
 	p2 = <p>Date: {x[2]}</p>;
+	p3 = <p>Time: {x[3]}</p>;
     }
     else{
 	head1 = <h1></h1>;
@@ -120,6 +125,7 @@ render() {
 	    		{head1}
 	    		{p1}
 	    		{p2}
+	    		{p3}
 
                 </div>
             </InfoWindow>
