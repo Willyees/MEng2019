@@ -3,8 +3,13 @@ import AppBar from '../components/AppBar';
 import $ from 'jquery';
 import { element } from 'prop-types';
 import {isUserLoggedIn, getCookie} from '../helperFunctions'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import img_map from '../res/map_meal_time.png'
+import { Typography } from '@material-ui/core';
 
 class HomeTemplate extends Component {
+    
     constructor(props){
         super(props);
     }
@@ -18,11 +23,39 @@ class HomeTemplate extends Component {
     }
 
     render() {
-        // const classes = useStyles();
 	//Wrapped in div as return must return a single element, div means we can add more childre 
         return(
 	    <div>
+            <div>
                 <AppBar/>
+            </div>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography variant={'h5'}>
+                        Meal Time is a place where people can organise their meals and share information. <p />
+                        Our goal is to create a platform that would enable people to cook together and to socialize, may be learning new recipes!
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant={'h6'}>
+                        <br/>
+                        To be able to interact, you have to create a profile
+                        </Typography>   
+                    </Grid>
+                    
+                </Grid>
+                <Grid container >
+                    <Grid item xs={12}>
+                        <img src={img_map} alt="Example map meal image" style={{width : '100%'}}/> {/*using inline style for testing. WIll have to use Highorder component API https://stackoverflow.com/questions/56432167/how-to-style-components-using-makestyles-and-still-have-lifecycle-methods-in-mat*/}
+
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography color={'textPrimary'}>
+                            This is part of a MEng project made by Dylan, Oscar and Alessio
+                        </Typography>
+                    </Grid>
+
+                </Grid>
 	    </div>
         );
     }

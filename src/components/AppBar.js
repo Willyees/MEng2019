@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexgrow: 1,
         width: '100%', 
+        appBarSpacer : theme.mixins.toolbar
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -30,9 +31,9 @@ const useStyles = makeStyles(theme => ({
 
     return (
       <div className={classes.root}>
-        <AppBar position="fixed">
+        <AppBar position="static">
           <Toolbar>
-            <IconButton edge="start" color="inherit" >
+            <IconButton  edge="start" color="inherit" >
             < EmojiFoodBeverageSharpIcon /> {/* I'd like it to not show as a button when hovered changes color background */}
             </IconButton>
             <Typography variant="h6" className={classes.title}>
