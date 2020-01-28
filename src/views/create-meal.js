@@ -54,7 +54,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
 	var test = new Date(str).
 	  toLocaleString('en-us', {year: 'numeric', month: '2-digit', day: '2-digit'}).
 	  replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2');
-        this.setState({date : test});
+        this.setState({date : this.state.date});
     }
 
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
