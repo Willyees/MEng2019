@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton  edge="start" color="inherit" >
             < EmojiFoodBeverageSharpIcon /> {/* I'd like it to not show as a button when hovered changes color background */}
