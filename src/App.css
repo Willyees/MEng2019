@@ -14,7 +14,12 @@
 }
 
 .App-header {
-  background-color: #f59e42;/*#282c34;*/
+  /* parallax */
+  background-image: url("./res/food-parallax.jpg");
+  background-attachment: fixed;
+  /* original 
+    background-color: #f59e42;
+  */
   min-height: 100vh;
   display: flex;
   flex-direction: column;

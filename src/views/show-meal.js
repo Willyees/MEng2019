@@ -4,7 +4,6 @@ import AppBar from '../components/AppBar.js';
 import Grid from '../components/ShowMealGrid.js';
 import ShowMealGrid from '../components/ShowMealGrid.js';
 
-
 const styles = makeStyles(theme => ({
     root:{
         display: "flex",
@@ -25,11 +24,9 @@ class ShowMealTemplate extends Component {
         super(props);
     }
 
-    
-
     render() {
         return(
-            <div>
+            <div>     
                 <AppBar>
                 </AppBar>
                 <ShowMealGrid>
