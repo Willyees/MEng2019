@@ -23,44 +23,56 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         
         super(props);
         this.state = {
-            title : "",
-            description: "",
-            city : "",
-            dietary : "",
-            date : new Date().toLocaleDateString("en-US"), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
-            time : new Date().toLocaleTimeString(),
-            proposed_meal : "",
-            expected_contribution : 0.0,
-            guest_limit : 0,
-            age_range : "", //have to discuss how to implement the range. 2 different fields? single slider that can set min and max?
-            suggested_theme : "",
+            values : {
+                title : "",
+                description: "",
+                city : "",
+                date : new Date().toLocaleDateString("en-US"), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
+                time : new Date().toLocaleTimeString(),
+                proposed_meal : "",
+                expected_contribution : 0.0,
+                guest_limit : 0,
+                age_range : "", //have to discuss how to implement the range. 2 different fields? single slider that can set min and max?
+            },
+            optional : {
+                suggested_theme : "",
+                dietary : "",
+            },
             //visibility for extra fields
-            suggested_theme_vis : false,
-            dietary_vis : false,
+            visibility : {
+                suggested_theme_vis : false,
+                dietary_vis : false
+            }
         }
-
-
         this.onChange = this.onChange.bind(this);
+        this.onChangeOptional = this.onChangeOptional.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.handleDate = this.handleDate.bind(this);
         this.debugFillFields = this.debugFillFields.bind(this);
         this.handleVis = this.handleVis.bind(this);
     }
+
+    optional_inputs = ["dietary", "suggested_theme"];
    
     handleDate(date_){ //date is handled differently (not like an event)
 	var str = date_.toString();
         console.log("handle data");
-        console.log(this.state.date + "state");
+        //console.log(this.state.values.date + "state");
 	var test = new Date(str).
 	  toLocaleString('en-us', {year: 'numeric', month: '2-digit', day: '2-digit'}).
 	  replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2');
-        this.setState({date : test});
+      this.setState({...this.state, values : { ...this.state.values, date : test}});
     }
 
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
         console.log("on change");
-        console.log(event.target.value);
-        this.setState({[event.target.name] : event.target.value});
+        this.setState({...this.state, values : { ...this.state.values, [event.target.name] : event.target.value}}); //https://stackoverflow.com/questions/34072009/update-nested-object-with-es6-computed-property-name
+    }
+
+    onChangeOptional(event){
+        console.log("on change optional");
+        console.log(event.target.name + " " + event.target.value);
+        this.setState({...this.state, optional : { ...this.state.optional, [event.target.name] : event.target.value}});
     }
 
     handleVis(event){
@@ -68,18 +80,22 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         var name = event.target.value;
         var index = name.lastIndexOf("_");
         var stateName = name.slice(0,index);
-        this.setState({[event.target.value] : event.target.checked, [stateName] : "" }); //only works for string inputs
+        console.log(event.target.value +  " " + event.target.checked);
+        this.setState({...this.state, visibility : {...this.state.visibility, [event.target.value] : event.target.checked }});
+        //this.setState({...this.state, values : {...this.state.values, [stateName] : ""}}); //TODO: PUT THIS IN THE OTHER SET STATE
+        console.log(this.state.visibility);
     }
 
     onSubmit(event) {
         console.log("on submit");
         //add to this fucntion the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
-        const {title, description, city} = this.state;
+        const {title, description, city} = this.state.values;
+        var objmerged = {...this.state.values, ...this.state.optional}; //have to merge the optional and not optional object together
         console.log(this.state);
         event.preventDefault();
 	 $.ajax({ url: 'PHPF/createmeal.php',
             type: 'post',
-            data: {"data" : this.state},
+            data: {"data" : objmerged},
             success: function(output) {
                 if(output == "DONE"){
                     window.location.href = "/map"; //change to map page
@@ -97,9 +113,11 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
 
     debugFillFields() {
         console.log("debug full fields");
-        this.setState({title: "new Meal", description : "this is an informal meal to get to know new people that would like to be eaten", city : "Edinburgh",
-        dietary : "none", date : new Date().toDateString(), time : new Date().toLocaleTimeString(), proposed_meal : "make your own favorite pizza", expected_contribution : "4.5", guest_limit : "4", 
-        age_range: "none", suggested_theme : "none"});
+        var v = {...this.state.values}; //create dummy object and then replace all the properties. After, replace the state object with the updated one
+        v.title = "new Meal"; v.description = "this is an informal meal to get to know new people that would like to be eaten"; v.city = "Edinburgh";
+        v.dietary = "none"; v.date = new Date().toDateString(); v.proposed_meal = "make your own favorite pizza"; v.expected_contribution = "4.5"; v.guest_limit = "4";
+        v.age_range= "none"; v.suggested_theme = "none";
+        this.setState({values : v});        
     }
 
     render() {
@@ -109,14 +127,15 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             window.location.href = "/";
             return null;
         }
+        //console.log(this.optional);
         var submitDisabled = false;
-        var values = Object.values(this.state);
+        var values = Object.values(this.state.values);
+        console.log(values);
         for(var v of values){
             if(v.length == 0){
                 submitDisabled = true;
             }
         }
-        console.log();
         return(
             <div>
                 <Button variant="contained" color="secondary" onClick={this.debugFillFields}>
@@ -132,50 +151,50 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             <form onSubmit={this.onSubmit}> 
                 <Grid item>
                     {/* id: <name_id>_cm; cm stands for create meal */}
-                    <TextField name="title" id="title_cm" onChange={this.onChange} value={this.state.title} type="text" 
+                    <TextField name="title" id="title_cm" onChange={this.onChange} value={this.state.values.title} type="text" 
                     label="Title"/>
                 </Grid>
                 <p />
                 <Grid item>
-                    <TextField multiline name="description" id="description_cm" onChange={this.onChange} value={this.state.description} type="text"
+                    <TextField multiline name="description" id="description_cm" onChange={this.onChange} value={this.state.values.description} type="text"
                     label="Description" variant="outlined"/>
                 </Grid>
                 <Grid item>
-                    <TextField name="city" id="city_cm" onChange={this.onChange} value={this.state.city} type="text" label="City" 
+                    <TextField name="city" id="city_cm" onChange={this.onChange} value={this.state.values.city} type="text" label="City" 
                     />
                 </Grid>
 
                 <Grid item>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker name="date" id="date_cm" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date picker" format="dd/MM/yyyy"
-                        value={this.state.date} onChange={this.handleDate} />
+                        value={this.state.values.date} onChange={this.handleDate} />
                     </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item>
-                    <TextField name="time" id="time_cm" onChange={this.onChange} value={this.state.time} type="time" label="Time"/>
+                    <TextField name="time" id="time_cm" onChange={this.onChange} value={this.state.values.time} type="time" label="Time"/>
                 </Grid>
                 <Grid item>
-                    <TextField name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.proposed_meal} type="text" label="Proposed meal" />
+                    <TextField name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.values.proposed_meal} type="text" label="Proposed meal" />
                 </Grid>
                 <Grid item>
-                    <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.expected_contribution} type="number" label="Expected contribution" />
+                    <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" />
                 </Grid>
                 <Grid container>
                     <Grid item xs>
-                        <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.guest_limit} type="number" label="Guest Limit" min="1"/>
+                        <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.values.guest_limit} type="number" label="Guest Limit" min="1"/>
                     </Grid>
                     <Grid item xs>
-                        <TextField name="age_range" id="age_range_cm" onChange={this.onChange} value={this.state.age_range} type="range" label="Age range" min="0" max="99"/>
+                        <TextField name="age_range" id="age_range_cm" onChange={this.onChange} value={this.state.values.age_range} type="range" label="Age range" min="0" max="99"/>
                     </Grid>
                 </Grid>
                 <Grid item>
-                    {this.state.suggested_theme_vis &&
-                    <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChange} value={this.state.suggested_theme} type="text" label="Suggested Theme" />
+                    {this.state.visibility.suggested_theme_vis &&
+                    <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChangeOptional} value={this.state.optional.suggested_theme} type="text" label="Suggested Theme" />
                     }
                 </Grid>
                 <Grid item>
-                    {this.state.dietary_vis &&
-                    <TextField name="dietary" id="dietary_cm" onChange={this.onChange} value={this.state.dietary} label="Dietary requirements"/>
+                    {this.state.visibility.dietary_vis &&
+                    <TextField name="dietary" id="dietary_cm" onChange={this.onChangeOptional} value={this.state.optional.dietary} label="Dietary requirements"/>
                     } {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
                 </Grid>
 
@@ -190,8 +209,8 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 <FormControl>
                     <FormLabel>Extra fields</FormLabel>
                     <FormGroup>
-                        <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
-                        <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>
+                        <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.visibility.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
+                        <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.visibility.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>
                     </FormGroup>
                 </FormControl>
             </Grid>
