@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '../components/AppBar.js';
-import Grid from '../components/Grid.js';
-import NestedGrid from '../components/Grid.js';
+import ProfileGrid from '../components/GridProfile.js';
 
 
 const styles = makeStyles(theme => ({
@@ -32,8 +31,8 @@ class ProfileTemplate extends Component {
             <div>
                 <AppBar>
                 </AppBar>
-                <NestedGrid>
-                </NestedGrid>
+                <ProfileGrid>
+                </ProfileGrid>
 
                 
 

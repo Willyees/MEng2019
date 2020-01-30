@@ -23,7 +23,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: "12%",
     marginRight: "12%",
     marginTop: "2%",
-    background: '#336e17',
   },
 }));
 
