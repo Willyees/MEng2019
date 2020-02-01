@@ -17,6 +17,20 @@ import Hidden from '@material-ui/core/Hidden';
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Typography } from '@material-ui/core';
 import { getCookie, isUserLoggedIn} from '../helperFunctions';
 import Slider from '@material-ui/core/Slider';
+import { withStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
+
+
+const styles = ({
+    age_range : {
+        color: 'rgba(0, 0, 0, 0.54)',
+        'font-size': '1rem',
+        'line-height': 1,
+        'letter-spacing': '0.00938em',
+        transform : 'scale(0.75)',
+        'transform-origin' : 'top left',
+    }
+})
 
 class CreateMealTemplate extends Component { //this is more create meal. have to change class names
 
@@ -130,6 +144,8 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
     }
 
     render() {
+        const {classes} = this.props;
+
         var un = getCookie("Username");
         console.log(un);
         if(!isUserLoggedIn()) {
@@ -206,7 +222,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 <Grid item>
                     {this.state.visibility.age_range_vis &&
                     <div style={{"margin" : 10}}>
-                        <Typography>Age range</Typography>
+                        <Typography className={classes.age_range} variant="caption" display="block" align="left" >Age range</Typography>
                         <Slider onChangeCommitted={this.handleSlider} defaultValue={[0,99]} min={0} max={99} valueLabelDisplay="auto" aria-labelledby="range-slider" />
                     </div>
                     }
@@ -236,4 +252,8 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
     }
 }
 
-export default CreateMealTemplate;
+
+CreateMealTemplate.propTypes = {
+    classes : PropTypes.object.isRequired,
+};
+export default withStyles(styles)(CreateMealTemplate);
