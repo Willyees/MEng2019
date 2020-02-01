@@ -14,8 +14,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Hidden from '@material-ui/core/Hidden';
-import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox } from '@material-ui/core';
-import { getCookie, isUserLoggedIn} from '../helperFunctions'
+import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Typography } from '@material-ui/core';
+import { getCookie, isUserLoggedIn} from '../helperFunctions';
+import Slider from '@material-ui/core/Slider';
 
 class CreateMealTemplate extends Component { //this is more create meal. have to change class names
 
@@ -32,16 +33,18 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 proposed_meal : "",
                 expected_contribution : 0.0,
                 guest_limit : 0,
-                age_range : "", //have to discuss how to implement the range. 2 different fields? single slider that can set min and max?
             },
             optional : {
                 suggested_theme : "",
                 dietary : "",
+                age_range : [],//would it be better to split in 2: min and max? when rendered in show meal page, it would be automatically show them in a single range
+                                   //age_range not used to draw the slider component. only stores the value to be passed to the DB
             },
             //visibility for extra fields
             visibility : {
                 suggested_theme_vis : false,
-                dietary_vis : false
+                dietary_vis : false,
+                age_range_vis : false,
             }
         }
         this.onChange = this.onChange.bind(this);
@@ -50,10 +53,15 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         this.handleDate = this.handleDate.bind(this);
         this.debugFillFields = this.debugFillFields.bind(this);
         this.handleVis = this.handleVis.bind(this);
+        this.handleSlider = this.handleSlider.bind(this);
     }
 
     optional_inputs = ["dietary", "suggested_theme"];
    
+    handleSlider(e, value){
+        this.setState({...this.state, optional : { ...this.state.optional, age_range : value}}); //this will update for everytick. It can be laggy. Might consider to not use an handler and just get data after form is set up
+    }
+
     handleDate(date_){ //date is handled differently (not like an event)
 	var str = date_.toString();
         console.log("handle data");
@@ -66,6 +74,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
 
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
         console.log("on change");
+        console.log(event.target.value);
         this.setState({...this.state, values : { ...this.state.values, [event.target.name] : event.target.value}}); //https://stackoverflow.com/questions/34072009/update-nested-object-with-es6-computed-property-name
     }
 
@@ -183,9 +192,6 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                     <Grid item xs>
                         <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.values.guest_limit} type="number" label="Guest Limit" min="1"/>
                     </Grid>
-                    <Grid item xs>
-                        <TextField name="age_range" id="age_range_cm" onChange={this.onChange} value={this.state.values.age_range} type="range" label="Age range" min="0" max="99"/>
-                    </Grid>
                 </Grid>
                 <Grid item>
                     {this.state.visibility.suggested_theme_vis &&
@@ -197,6 +203,15 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                     <TextField name="dietary" id="dietary_cm" onChange={this.onChangeOptional} value={this.state.optional.dietary} label="Dietary requirements"/>
                     } {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
                 </Grid>
+                <Grid item>
+                    {this.state.visibility.age_range_vis &&
+                    <div style={{"margin" : 10}}>
+                        <Typography>Age range</Typography>
+                        <Slider onChangeCommitted={this.handleSlider} defaultValue={[0,99]} min={0} max={99} valueLabelDisplay="auto" aria-labelledby="range-slider" />
+                    </div>
+                    }
+                </Grid>
+
 
                 <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit" disabled={submitDisabled}>
                     Create
@@ -211,6 +226,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                     <FormGroup>
                         <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.visibility.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
                         <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.visibility.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>
+                        <FormControlLabel control={<Checkbox value="age_range_vis" checked={this.state.visibility.age_range_vis} onClick={this.handleVis}></Checkbox>} label="Age range"></FormControlLabel>
                     </FormGroup>
                 </FormControl>
             </Grid>
