@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import GridList from '../components/GridList.js';
 import EditIcon from '@material-ui/icons/Edit';
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
 
 import profile from "../res/profile.png";
 
@@ -35,8 +37,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const labels = {
+    1: 'Useless',
+    2: 'Poor',
+    3: 'Ok',
+    4: 'Good',
+    5: 'Excellent',
+  };
+
 export default function ProfileGrid() {
   const classes = useStyles();
+  const [ value, setValue] = React.useState(2);
+  const [ hover, setHover] = React.useState(-1);
 
   return (
     <div className={classes.root}>
@@ -60,6 +72,22 @@ export default function ProfileGrid() {
                     <Grid item container xs={12} >
                         <Grid item xs={12} style={{justifyContent:"left", display: "flex"}} >
                             <img src={profile} height="400px" width="100%" style={{border: "1px solid #ddd", borderRadius: "15px"}}/>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Rating
+                                name="hover-feedback"
+                                value={value}
+                                precision={1}
+                                onChange={(event, newValue) => {
+                                setValue(newValue);
+                                }}
+                                onChangeActive={(event, newHover) => {
+                                setHover(newHover);
+                                }}
+                            />
+                            {/*this explains the rating if we need that... */}
+                            {/* {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>} */}
                         </Grid>
 
                         <Grid item xs={12}>
