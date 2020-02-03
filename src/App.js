@@ -6,6 +6,7 @@ import HomeTemplate from './views/home.js';
 import MapTemplate from './views/map.js';
 import ProfileTemplate from './views/profile.js';
 import ShowMealTemplate from './views/show-meal.js';
+import MessagesTemplate from './views/messages.js';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
@@ -37,6 +38,9 @@ function App() {
             </Route>
             <Route exact path="/show-meal">
               < ShowMealTemplate />
+            </Route>
+            <Route exact path="/messages">
+              < MessagesTemplate />
             </Route>
 
             <Route exact path="/">

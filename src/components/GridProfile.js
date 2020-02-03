@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
      
   },
-  Profilepaper: {
+  profilePaper: {
     padding: theme.spacing(6),
     marginLeft: "40%",
     marginTop: "10%",
@@ -56,7 +56,7 @@ export default function ProfileGrid() {
             {/* first half of page */}
             <Grid item container xs={6}>
                 {/* profile paper */}
-                <Paper className={classes.Profilepaper}>
+                <Paper className={classes.profilePaper}>
                     <Grid item container xs={12} style={{justifyContent: "center"}}>
                         {/* these textfields should be hidden until edit button clicked */}
                         <TextField label="First Name" style={{fontWeight: "bolder", marginTop: "-8%"}} 
