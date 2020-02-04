@@ -46,10 +46,10 @@ class SearchBar extends Component {
         super(prop);
         
         this.state = {
-            values : {
+            values : {//if using different types than "" and null, have to modify submit fucntion if statememnt
                 title : "",
                 city : "",
-                date : "",
+                date : null,
                 time : "",
                 dietary : "",
             },
@@ -99,10 +99,11 @@ class SearchBar extends Component {
         //ajax call with this.state.values wiht only the non empty ones
         let obj = {}
         for(let v in this.state.values){
-            if(this.state.values[v] != ""){
+            if(this.state.values[v] != "" && this.state.values[v] != null){
                 obj[v] = this.state.values[v];
             }
         }
+        console.log(obj)
     }
 
     handleOnChange(event){
@@ -160,7 +161,7 @@ class SearchBar extends Component {
             <Paper className={classes.paper}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker name="date" margin="normal" clearable autoOk={true} variant="inline" format="dd/MM/yyyy"
-                value={this.state.values.date} onChange={this.handleDate} />
+                value={this.state.values.date} onChange={this.handleDate} emptyLabel="Pick Date" />
             </MuiPickersUtilsProvider>
             </Paper>
             <Paper className={classes.paper}>
