@@ -8,9 +8,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
 }
 
 .App-header {
@@ -21,10 +19,10 @@
     background-color: #f59e42;
   */
   min-height: 100vh;
-  display: flex;
+  /*display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center;*/
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -33,21 +31,17 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.main-body{ /*to be used in divs or containers after the nav bar*/
+  margin-top: 64px;
 }
 
 #mapM{
-  position: absolute;
-  top: 62px;
+  
+  /*top: 62px;
   left: 0;
   bottom: 100px;
-  right: 0;
+  right: 0;*/
+  
 }
 
 input:-webkit-autofill,
@@ -55,9 +49,4 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active  {
     -webkit-box-shadow: 0 0 0 30px #f59e42 inset !important;
-}
-
-#title-banner{
-  text-decoration: inherit; 
-  color: white
 }

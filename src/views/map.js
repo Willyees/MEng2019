@@ -5,10 +5,14 @@ import Container from '@material-ui/core/Container';
 import $ from 'jquery';
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import AppBar from '../components/AppBar';
+import SearchBar from '../components/SearchBar';
+import Grid from '@material-ui/core/Grid';
+
 const mapStyles = {
   width: '100%',
   height: '100%',
 };
+
 const stores = [];
 const storeDetails = [];
 
@@ -103,34 +107,37 @@ render() {
 	p3 = <p>Time: {x[3]}</p>;
     }
     return (
-	<div>
-	<AppBar/>
-	<body style={{height:"100%", margin: "0px", padding:"0px"}}>
-	<div id="mapM">
-        <Map
-          google={this.props.google}
-	  onClick={this.onMapClicked}
-          zoom={13}
-          style={mapStyles}
-          initialCenter={{ lat: 55.9533, lng: -3.1883}}
-	    >
-	    {
-		    stores.map(element => <Marker name={this.getName(element)} position={element} onClick={this.onMarkerClick}/>)
-	    }
-	    <InfoWindow
-                marker={this.state.activeMarker}
-                visible={this.state.showingInfoWindow}>
-                <div style={{color:"black"}}>
-	    		{head1}
-	    		{p1}
-	    		{p2}
-	    		{p3}
-                </div>
-            </InfoWindow>
-        </Map>
-	    </div>
-	    </body>
-	    </div>
+		<Grid class="main-body" container>
+		
+		<Grid container item xs={12} justify="center">
+			<SearchBar />
+		</Grid>
+		<Grid id="mapM" item>
+			<Map
+			google={this.props.google}
+		onClick={this.onMapClicked}
+			zoom={13}
+			style={mapStyles}
+			initialCenter={{ lat: 55.9533, lng: -3.1883}}
+			>
+			{
+				stores.map(element => <Marker name={this.getName(element)} position={element} onClick={this.onMarkerClick}/>)
+			}
+			<InfoWindow
+					marker={this.state.activeMarker}
+					visible={this.state.showingInfoWindow}>
+					<div style={{color:"black"}}>
+					{head1}
+					{p1}
+					{p2}
+					{p3}
+					</div>
+				</InfoWindow>
+			</Map>
+			</Grid>
+</Grid>	
+
+
     );
   }
 }
