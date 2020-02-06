@@ -48,6 +48,9 @@ $.ajax({ url: 'PHPF/getmeals.php',
 			if(j == 5){
 			    tmpDetails.tm = line[j];
 			}
+			if(j == 6){
+			    tmpDetails.id = line[j];
+			}
 		    }
 		    tmpDetails.pos = tmp;
 		    storeDetails.push(tmpDetails);
@@ -88,7 +91,7 @@ class MapTemplate extends Component {
 	getName(tempo){
 	    for (var i = 0; i < storeDetails.length; i++) { 
 		if(storeDetails[i].pos == tempo){
-		    return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt + "," + storeDetails[i].tm;
+		    return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt + "," + storeDetails[i].tm + "," + storeDetails[i].id;
 		}
 	    }
 	}
@@ -101,7 +104,8 @@ render() {
 	x = this.state.selectedPlace.name.split(",");
 	var today  = new Date(x[2]);
 	var new1 = today.toLocaleDateString("en-US", options);
-	head1 = <h1>{x[1]}</h1>; //Meal Name
+	var li = "/show-meal?meal=" + x[4];
+	head1 = <h1><a href={li}>{x[1]}</a></h1>; //Meal Name Make this a link to view meal with ID as param meal
 	p1 = <p>Host: {x[0]}</p>;
 	p2 = <p>Date: {new1}</p>;
 	p3 = <p>Time: {x[3]}</p>;

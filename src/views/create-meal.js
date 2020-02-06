@@ -114,8 +114,11 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         //add to this fucntion the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
         const {title, description, city} = this.state.values;
         var objmerged = {...this.state.values, ...this.state.optional}; //have to merge the optional and not optional object together
+	console.log("state ");
         console.log(this.state);
         event.preventDefault();
+	console.log("state mereg");
+	console.log(objmerged);
 	 $.ajax({ url: 'PHPF/createmeal.php',
             type: 'post',
             data: {"data" : objmerged},
