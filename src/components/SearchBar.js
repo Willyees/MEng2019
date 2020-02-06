@@ -12,7 +12,7 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material
 import DateFnsUtils from '@date-io/date-fns'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-
+import Checkbox from '@material-ui/core/Checkbox'
 
 const styles = ({
     root:{
@@ -37,6 +37,9 @@ const styles = ({
         alignItems:'center',
         color:'blue'
     },
+    innerElem :{
+        margin : 5,
+    }
 
 
 })
@@ -50,7 +53,7 @@ class SearchBar extends Component {
                 title : "",
                 city : "",
                 date : null,
-                time : "",
+                time : [],
                 dietary : "",
             },
             vis : {
@@ -61,6 +64,13 @@ class SearchBar extends Component {
             }
         }
         this.dietary = [];
+        this.time = {
+            "Morning" : ["08:00:00","11:00:00"],
+            "Lunch" : ["12:00:00", "17:00:00"],
+            "Dinner" : ["18:00:00","22:00:00"],
+            "Night" : ["23:00:00", "07:00:00"]
+        };
+
         this.getDietReqDb();
         this.handleClickFilter = this.handleClickFilter.bind(this);
         this.handleDate = this.handleDate.bind(this);
@@ -78,15 +88,26 @@ class SearchBar extends Component {
     getListFieldsSearch(){
         var v = [];
         for( var key of Object.keys(this.state.values)){
-            console.log(this.state.values[key]);
             if(this.state.values[key] != null){
                 var value = this.state.values[key];
-                console.log(key + " " + value);
                 v.push({[key] : value});
             }
-        } 
-        console.log(v);
+        }
         return v;
+    }
+
+    //used to return the values of the this.time that will be passed to the DB
+    //time is passed as multiple array. Each is a time frame=> time :{[t1,t2],[t1,t2]}
+    getTimeArrayRange(strRange){
+        var numRange = [];
+        console.log(this.state.values.time);
+        console.log(strRange);
+        for(var s of strRange){
+            numRange.push(this.time[s]);
+            console.log(s);
+        }
+        console.log(numRange);
+        return numRange;
     }
 
     //at least the city must be specified, otherwise error shown
@@ -98,12 +119,19 @@ class SearchBar extends Component {
 
         //ajax call with this.state.values wiht only the non empty ones
         let obj = {}
+        //console.log(this.time[this.state.values.time]);
         for(let v in this.state.values){
-            if(this.state.values[v] != "" && this.state.values[v] != null){
-                obj[v] = this.state.values[v];
+            if(this.state.values[v] != "" && this.state.values[v] != null && this.state.values[v] != []){
+                if(v=="time"){
+                    obj[v] = this.getTimeArrayRange(this.state.values[v]); 
+                }
+                else{
+                    obj[v] = this.state.values[v];
+                }
             }
         }
         console.log(obj)
+        //oscar give me feedback on how difficult was to understand my code and if comments were useful! We can put it in the final report
     }
 
     handleOnChange(event){
@@ -118,7 +146,6 @@ class SearchBar extends Component {
         else{
             this.setState({...this.state, values : { ...this.state.values, [event.target.name] : event.target.value}});
         }
-        console.log(this.state.values);
     }
 
     handleDate(date_){ //date is handled differently (not like an event)
@@ -144,11 +171,11 @@ class SearchBar extends Component {
         <div className={classes.root}>
             <Paper className={classes.paper} >
                 {/*<IconButton className={classes.iconButton} id="search_btn" type="submit"/ > */} <SearchIcon className={classes.iconSearch}/>
-                <TextField id="search-bar" name="title" placeholder="Title keywords" type="search" value={this.state.values.title} onChange={this.handleOnChange}></TextField>  
+                <TextField className={classes.innerElem} id="search-bar" name="title" placeholder="Title keywords" type="search" value={this.state.values.title} onChange={this.handleOnChange}></TextField>  
             </Paper>
             <Paper className={classes.paper} >
                 <LocationOnIcon className={classes.iconSearch} />
-                <TextField error={this.state.formErrors.city} helperText={this.state.formErrors.city} id="search-bar" name="city" placeholder="City" type="search" value={this.state.values.city} onChange={this.handleOnChange}></TextField>  
+                <TextField className={classes.innerElem} error={this.state.formErrors.city} helperText={this.state.formErrors.city} id="search-bar" name="city" placeholder="City" type="search" value={this.state.values.city} onChange={this.handleOnChange}></TextField>  
             </Paper>
             <Button id="search-button" className={classes.submitButton} variant="contained" color="primary" onClick={this.handleSearch}>
                 SEARCH
@@ -159,19 +186,28 @@ class SearchBar extends Component {
         <div className={classes.root}>
             {/*second row: show date, time, dietary requirements + filter button*/}
             <Paper className={classes.paper}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker name="date" margin="normal" clearable autoOk={true} variant="inline" format="dd/MM/yyyy"
-                value={this.state.values.date} onChange={this.handleDate} emptyLabel="Pick Date" />
+            <MuiPickersUtilsProvider className={classes.innerElem} utils={DateFnsUtils}>
+                <KeyboardDatePicker className={classes.innerElem} name="date" margin="normal" clearable autoOk={true} variant="inline" format="dd/MM/yyyy"
+                value={this.state.values.date} onChange={this.handleDate} emptyLabel="Pick Date"/>
             </MuiPickersUtilsProvider>
             </Paper>
             <Paper className={classes.paper}>
-            <TextField name="time" id="time_cm" type="time" label="Time" value={this.state.values.time} onChange={this.handleOnChange}/>
+            <Select className={classes.innerElem} displayEmpty value={this.state.values.time} name="time" 
+            onChange={this.handleOnChange} multiple renderValue={
+                selected => {if(selected == ""){
+                    return "Time frame";
+                }
+                return selected.join(',');}
+            }>
+                <MenuItem value={[]} disabled>Time frame</MenuItem>
+                {Object.keys(this.time).map((v,k) => 
+                <MenuItem value={v} key={k}>
+                    <Checkbox checked={this.state.values.time.indexOf(v) + 1} />{v}
+                </MenuItem>)}
+            </Select>
             </Paper>
             <Paper className={classes.paper}>
-
-            </Paper>
-            <Paper className={classes.paper}>
-                <Select displayEmpty value={this.state.values.dietary} name="dietary" onChange={this.handleOnChange}>
+                <Select className={classes.innerElem} displayEmpty value={this.state.values.dietary} name="dietary" onChange={this.handleOnChange}>
                     <MenuItem value="" disabled>Dietary Type</MenuItem>                    
                     {this.dietary.map((v, k) => <MenuItem value={v} key={k}>{v}</MenuItem>)}
                     <MenuItem value="none">None</MenuItem>

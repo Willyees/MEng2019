@@ -107,8 +107,8 @@ render() {
 	p3 = <p>Time: {x[3]}</p>;
     }
     return (
-		<Grid class="main-body" container>
-		
+	<Grid class="main-body" container>
+	
 		<Grid container item xs={12} justify="center">
 			<SearchBar />
 		</Grid>
@@ -135,7 +135,7 @@ render() {
 				</InfoWindow>
 			</Map>
 			</Grid>
-</Grid>	
+	</Grid>	
 
 
     );
