@@ -42,19 +42,17 @@ class ShowMealTemplate extends Component {
 		type: 'post',
 		data: {"id" : param},
 		success: function(output) {
-	            alert(output);
 		    var outParsed = JSON.parse(output);
-		   alert(outParsed["id"]);
 		    document.getElementById("title").innerHTML = outParsed["title"];
 		    document.getElementById("date").innerHTML = outParsed["date"];
 		    document.getElementById("time").innerHTML = outParsed["time"];
 		    document.getElementById("city").innerHTML = outParsed["city"];
 		    document.getElementById("proposed_meal").innerHTML = outParsed["propsed_meal"];
-		    document.getElementById("theme").innerHTML = outParsed["theme"];
-		    document.getElementById("age_range").innerHTML = outParsed["age_range"];
-		    document.getElementById("dietary_requirements").innerHTML = outParsed["dietary"];
-		    document.getElementById("expected_contribution").innerHTML = outParsed["contribution"];
-		    document.getElementById("guest_limit").innerHTML = outParsed["guest_limit"];
+		    document.getElementById("theme").innerHTML = "Theme: " + outParsed["theme"];
+		    document.getElementById("age_range").innerHTML = "Age Range: " + outParsed["age_range"];
+		    document.getElementById("dietary_requirements").innerHTML = "Dietary: " + outParsed["dietary"];
+		    document.getElementById("expected_contribution").innerHTML = "Contribution: " + outParsed["contribution"];
+		    document.getElementById("guest_limit").innerHTML = "Guest Limit: " + outParsed["guest_limit"];
 		    document.getElementById("description").innerHTML = outParsed["description"];
 		}
 	    });
