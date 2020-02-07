@@ -44,7 +44,7 @@ export default function ShowMealGrid() {
         <div className={classes.root}>
             <Paper className={classes.paper}>
                 <Grid container spacing={3}>
-                    <Grid item container xs={12} style={{justifyContent:"left"}}>
+                    <Grid id="title_grid" item container xs={12} style={{justifyContent:"left"}}>
                         <label id="title">
                             title
                         </label>
@@ -57,60 +57,60 @@ export default function ShowMealGrid() {
                     </Grid>
 
                     <Grid item container xs={6}>
-                        <Grid item xs={7}>
+                        <Grid id="date_grid" item xs={7}>
                         <label id="date">
                             Date
                         </label>
                         </Grid>
                         
-                        <Grid item xs={7}>
+                        <Grid id="time_grid" item xs={7}>
 				<label id="time">
 				    Time
 				</label>
                         </Grid>
 
-                        <Grid item xs={7}>
+                        <Grid id="city_grid" item xs={7}>
 				<label id="city">
 				    City
 				</label>
                         </Grid>
                     </Grid>
 
-                    <Grid item container xs={6}>
+                    <Grid id="proposed_meal_grid" item container xs={6}>
 				<label id="proposed_meal">
 					Proposed Meal
 				</label>
                     </Grid>
-                    <Grid item container xs={6}>
+                    <Grid id="theme_grid" item container xs={6}>
 				<label id="theme">
 					Theme
 				</label>
                     </Grid>
 
-                    <Grid item container xs={12}>
+                    <Grid id="description_grid" item container xs={12}>
                         <TextField id="description" label="description" rows={5} rowsMax={5} fullWidth multiline variant="outlined" />
                     </Grid>
 
-                    <Grid item container xs={6}>
+                    <Grid id="guest_limit_grid" item container xs={6}>
 				<label id="guest_limit">
                         Guest Limit: ...
 				</label>
                     </Grid>
 
-                    <Grid item container xs={6}>
-				<label id="dietary_requirements">
+                    <Grid id="dietary_grid" item container xs={6}>
+				<label id="dietary">
                         Dietary Requirements
 				</label>
                     </Grid>
 
-                    <Grid item container xs={6}>
+                    <Grid id="age_range_grid" item container xs={6}>
 				<label id="age_range">
                         Age Range
 				</label>
                     </Grid>
 
-                    <Grid item container xs={6}>
-				<label id="expected_contribution">
+                    <Grid id="contribution_grid" item container xs={6}>
+				<label id="contribution">
 	  			Expected Contribution
 				</label>
                     </Grid>

@@ -24,6 +24,8 @@ const useStyles = makeStyles(styles);
 class ShowMealTemplate extends Component {
     constructor(props){
         super(props);
+        //harcoded id names. If modifying in the showmealgrid, HAVE to modify here as well
+        const elementNames = ["id", "host", "title", "time", "date", "description", "guest_limit", "proposed_meal", "contribution", "city", "dietary", "theme", "age_range"];
     }
 
     componentDidMount(){
@@ -32,30 +34,55 @@ class ShowMealTemplate extends Component {
 	var url = new URL(window.location.href);
 	var param = url.searchParams.get("meal");
 	if(param == null || typeof(param) == undefined){
-		//Redirect if no meal chosen
-		window.location.href = "/map";
+        //Redirect if no meal chosen
+        console.log("not detected any meal param");
+		//window.location.href = "/map";
 	}
 	else{
-            //Lets get the meal and add it to the front end
-	    //Let pass param to ajax on the server and get meal details returned
+        //debug object to be used in local development
+        var output = '{"id":"101","host":"harrypotter","title":"NEW","time":"16:47:30","date":"2020-03-27","description":"this is an informal meal to get to know new people that would like to be eaten","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"","age_range" : ""}';
+
+        //debug for local host (no on the server)
+        var outParsed = JSON.parse(output);
+        if(window.location.host == "localhost:3000"){
+            for(var id in outParsed){
+                if(outParsed[id] == ""){
+                    let c = document.getElementById(id + "_grid")
+                    if(c != null)
+                        c.style.display = "none";
+                    else
+                        console.log("problem: null element " + id + "_grid");
+                }else{
+                    let o = document.getElementById(id) //only setting the actual value. I think would be better to add a label before it with whatever the text is wanted to be shwon other than the value (xes: <label>Dietary:</label><label>{value_from_DB}</label>)
+                    if(o != null)
+                        o.innerHTML = outParsed[id];
+                    else
+                        console.log("problem: null element " + id);
+                }
+            }
+        }
+        else{
+        //Lets get the meal and add it to the front end
+        //Let pass param to ajax on the server and get meal details returned
             $.ajax({ url: 'PHPF/getmeal.php',
-		type: 'post',
-		data: {"id" : param},
-		success: function(output) {
-		    var outParsed = JSON.parse(output);
-		    document.getElementById("title").innerHTML = outParsed["title"];
-		    document.getElementById("date").innerHTML = outParsed["date"];
-		    document.getElementById("time").innerHTML = outParsed["time"];
-		    document.getElementById("city").innerHTML = outParsed["city"];
-		    document.getElementById("proposed_meal").innerHTML = outParsed["propsed_meal"];
-		    document.getElementById("theme").innerHTML = "Theme: " + outParsed["theme"];
-		    document.getElementById("age_range").innerHTML = "Age Range: " + outParsed["age_range"];
-		    document.getElementById("dietary_requirements").innerHTML = "Dietary: " + outParsed["dietary"];
-		    document.getElementById("expected_contribution").innerHTML = "Contribution: " + outParsed["contribution"];
-		    document.getElementById("guest_limit").innerHTML = "Guest Limit: " + outParsed["guest_limit"];
-		    document.getElementById("description").innerHTML = outParsed["description"];
-		}
-	    });
+            type: 'post',
+            data: {"id" : param},
+            success: function(output) {
+                var outParsed = JSON.parse(output);
+                document.getElementById("title").innerHTML = outParsed["title"];
+                document.getElementById("date").innerHTML = outParsed["date"];
+                document.getElementById("time").innerHTML = outParsed["time"];
+                document.getElementById("city").innerHTML = outParsed["city"];
+                document.getElementById("proposed_meal").innerHTML = outParsed["propsed_meal"];
+                document.getElementById("theme").innerHTML = "Theme: " + outParsed["theme"];
+                document.getElementById("age_range").innerHTML = "Age Range: " + outParsed["age_range"];
+                document.getElementById("dietary").innerHTML = "Dietary: " + outParsed["dietary"];
+                document.getElementById("contribution").innerHTML = "Contribution: " + outParsed["contribution"];
+                document.getElementById("guest_limit").innerHTML = "Guest Limit: " + outParsed["guest_limit"];
+                document.getElementById("description").innerHTML = outParsed["description"];
+            }
+            });
+        }
 	}
     }
 
