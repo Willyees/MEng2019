@@ -10,6 +10,8 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material
 import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
 import $ from 'jquery';
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
 
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
@@ -197,12 +199,15 @@ class SignUpTemplate extends Component {
         const { formErrors } = this.state;
         return(
             
-            <div className="signup">
+            <div className="main-body">
                 SignUp page
                 <div>
                     <p />
                 </div>
+                <Grid container justify="center">
+                    <Grid item>
                 <form onSubmit={this.onSubmit}> 
+                <Paper>
                     <div>
                         <TextField error= {formErrors.fName} helperText= {formErrors.fName} name="fName" id="first-name-tb" onChange={this.onChange} value={this.fName} type="text" label="First Name"/>
                     </div>
@@ -272,8 +277,10 @@ class SignUpTemplate extends Component {
                     <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit">
                         Sign Up
                     </Button>
+                    </Paper>
                 </form>
-
+                </Grid>
+                </Grid>
             </div>
         );
     }

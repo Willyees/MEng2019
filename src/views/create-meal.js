@@ -40,7 +40,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         this.state = {
             values : {
                 title : "",
-                description: "",
+                description: "asdasd",
                 city : "",
                 date : new Date().toLocaleDateString("en-US"), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
                 time : new Date().toLocaleTimeString(),
@@ -165,7 +165,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             }
         }
         return(
-            <div>
+            <div id="main-body">
                 <Button variant="contained" color="secondary" onClick={this.debugFillFields}>
                     Debug fill fields
                 </Button>
@@ -173,7 +173,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             <div>
             <p />
             </div>
-            <Grid container>
+            <Grid container justify="center">
             <Grid item>
             <Paper>
             <form onSubmit={this.onSubmit}> 
@@ -241,7 +241,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
 
             <Grid item >
                 <FormControl>
-                    <FormLabel>Extra fields</FormLabel>
+                    <FormLabel style={{"color" : "white"}}>Extra fields</FormLabel>
                     <FormGroup>
                         <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.visibility.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
                         <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.visibility.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>

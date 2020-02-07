@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import $ from 'jquery';
 import {isUserLoggedIn, getCookie} from '../helperFunctions'
+import Paper from '@material-ui/core/Paper'
 
 class LogInTemplate extends Component {
 	constructor(props){
@@ -51,8 +52,8 @@ class LogInTemplate extends Component {
 
     render() {
         return(
-            <div className="login">
-            <Container maxWidth="sm">    
+            <Container className="main-body" maxWidth="sm">   
+            <Paper>
                 login Page
 		<TextField
 		fullWidth
@@ -77,8 +78,9 @@ class LogInTemplate extends Component {
 			id="btn-sign-up" onClick={this.redirectSignUp} variant="contained" color="secondary" margin="normal" disableElevation >
             Sign Up
 		</Button>
-	    </Container>
-        </div>
+	    </Paper>
+        </Container>
+        
         );
     }
 }

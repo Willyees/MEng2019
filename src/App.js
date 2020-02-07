@@ -10,6 +10,7 @@ import MessagesTemplate from './views/messages.js';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import AppBar from './components/AppBar'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <header className="App-header">
+          <AppBar />
           <Switch>
             <Route exact path="/sign-up">
               < SignInTemplate />

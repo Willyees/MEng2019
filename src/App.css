@@ -36,7 +36,8 @@
 }
 
 #mapM{
-  
+  width:100%;
+  height:100vh;
   /*top: 62px;
   left: 0;
   bottom: 100px;

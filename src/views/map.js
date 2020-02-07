@@ -7,6 +7,7 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import AppBar from '../components/AppBar';
 import SearchBar from '../components/SearchBar';
 import Grid from '@material-ui/core/Grid';
+import MealList from '../components/MealList';
 
 const mapStyles = {
   width: '100%',
@@ -112,11 +113,10 @@ render() {
     }
     return (
 	<Grid class="main-body" container>
-	
 		<Grid container item xs={12} justify="center">
 			<SearchBar />
 		</Grid>
-		<Grid id="mapM" item>
+		<Grid id="mapM" item xs={12}>
 			<Map
 			google={this.props.google}
 		onClick={this.onMapClicked}
@@ -139,7 +139,12 @@ render() {
 				</InfoWindow>
 			</Map>
 			</Grid>
-	</Grid>	
+
+			<Grid item><MealList title="new" time="12:00" date="06.02.2020" city="Edi"/>
+			</Grid>
+	</Grid>
+		
+	
 
 
     );

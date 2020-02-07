@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
     title: {
       flexGrow: 1,
     },
+    linkbanner:{
+      'text-decoration': 'inherit', 
+      color: 'white'
+    }
   }));
 
   export default function ButtonAppBar() {
@@ -33,11 +37,11 @@ const useStyles = makeStyles(theme => ({
       <div className={classes.root}>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton  edge="start" color="inherit" >
+            <IconButton edge="start" color="inherit" >
             < EmojiFoodBeverageSharpIcon /> {/* I'd like it to not show as a button when hovered changes color background */}
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-            <a id="title-banner" href="/" >
+            <a className={classes.linkbanner} href="/" >
                 MealTime
             </a> 
             </Typography>
