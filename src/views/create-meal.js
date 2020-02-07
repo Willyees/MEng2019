@@ -20,6 +20,8 @@ import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 
+import bear from "../res/bear1.png";
+
 
 const styles = ({
     age_range : {
@@ -40,7 +42,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
         this.state = {
             values : {
                 title : "",
-                description: "asdasd",
+                description: "",
                 city : "",
                 date : new Date().toLocaleDateString("en-US"), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
                 time : new Date().toLocaleTimeString(),
@@ -165,7 +167,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             }
         }
         return(
-            <div id="main-body">
+            <div className="main-body">
                 <Button variant="contained" color="secondary" onClick={this.debugFillFields}>
                     Debug fill fields
                 </Button>
@@ -175,7 +177,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             </div>
             <Grid container justify="center">
             <Grid item>
-            <Paper>
+            <Paper style={{"background-image" : `url(${bear})`}}>
             <form onSubmit={this.onSubmit}> 
                 <Grid item>
                     {/* id: <name_id>_cm; cm stands for create meal */}
