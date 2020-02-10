@@ -16,35 +16,7 @@ const mapStyles = {
 
 const stores = [];
 const storeDetails = [];
-//DEBUG fields to be used on local project
-storeDetails.push(
-{
-usr: "harrypotter",
-nm: "NEW",
-dt: "2020-03-27",
-tm: "16:47:30",
-id: "101",
-pos: {
-lat: 55.933056521037,
-lng: -3.2131411830015
-}
-})
-storeDetails.push(
-{
-usr: "dracomalfoy",
-nm: "NEW",
-dt: "2019-03-27",
-tm: "16:15:30",
-id: "101",
-pos: {
-lat: 55.932200701316,
-lng: -3.2121732994174
-}
-});
 
-stores.push({lat: 55.933056521037, lng: -3.2131411830015});
-stores.push({lat: 55.932200701316, lng: -3.2121732994174});
-//End Debug
 
 const objSorted = new Map();
 
@@ -83,49 +55,57 @@ function sortMealsByDate(meals){
 	objSorted.set(currDate, tempArr);
 }
 
+function ajaxCall(output){
+	console.log(output);
+	var ret = output;
+	console.log(ret[0]);
+	for (var i = 0; i < ret.length; i++) {
+		var line = ret[i].split(',');
+		console.log(line);
+		var tmp = {};
+		var tmpDetails = {};
+		for(var j = 0; j < line.length; j++){
+		if(j == 0){
+			tmpDetails.usr = line[j];
+		}
+		if(j == 1){
+			tmpDetails.nm = line[j];
+		}
+			if(j == 2){
+			tmpDetails.dt = line[j];
+		}
+		if(j == 3){
+			tmp.lat = JSON.parse(line[j]); //Parse to remove quotes
+		}
+		if(j == 4){
+			tmp.lng = JSON.parse(line[j]);
+		}
+		if(j == 5){
+			tmpDetails.tm = line[j];
+		}
+		if(j == 6){
+			tmpDetails.id = line[j];
+		}
+		}
+		tmpDetails.pos = tmp;
+		storeDetails.push(tmpDetails);
+		stores.push(tmp);
+	}
+}
 $.ajax({ url: 'PHPF/getmeals.php',
 	type: 'post',
 	dataType : "json",
 	async: false,
-	success: function(output) {
-		console.log(output);
-		var ret = output;
-		console.log(ret[0]);
-		for (var i = 0; i < ret.length; i++) {
-		    var line = ret[i].split(',');
-		    console.log(line);
-		    var tmp = {};
-		    var tmpDetails = {};
-		    for(var j = 0; j < line.length; j++){
-			if(j == 0){
-			    tmpDetails.usr = line[j];
-			}
-			if(j == 1){
-			    tmpDetails.nm = line[j];
-			}
-		        if(j == 2){
-			    tmpDetails.dt = line[j];
-			}
-			if(j == 3){
-			    tmp.lat = JSON.parse(line[j]); //Parse to remove quotes
-			}
-			if(j == 4){
-			    tmp.lng = JSON.parse(line[j]);
-			}
-			if(j == 5){
-			    tmpDetails.tm = line[j];
-			}
-			if(j == 6){
-			    tmpDetails.id = line[j];
-			}
-		    }
-		    tmpDetails.pos = tmp;
-		    storeDetails.push(tmpDetails);
-			stores.push(tmp);
-		}
-	}
+	success: ajaxCall
 });
 
+//DEBUG fields to be used on local project
+if(window.location.host == "localhost:3000"){
+	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101","harrypotter,Mexican,2020-02-28,55.932200701316,-3.2121732994174,21:41:05,102","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104"];
+	ajaxCall(s);
+}
+
+//End Debug
 
 class MapTemplate extends Component {
 	constructor(props) {
@@ -168,7 +148,9 @@ class MapTemplate extends Component {
 	    for (var i = 0; i < storeDetails.length; i++) { 
 			console.log("----");
 			console.log(storeDetails[i].pos);
+
 			console.log(tempo);
+
 			console.log("----");
 			if(storeDetails[i].pos == tempo){
 				console.log("ok");
