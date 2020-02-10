@@ -3,11 +3,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import $ from 'jquery';
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
+import { Map as Mapg, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import AppBar from '../components/AppBar';
 import SearchBar from '../components/SearchBar';
 import Grid from '@material-ui/core/Grid';
-import MealList from '../components/MealList';
+import MealList, {MealListHeaderCity, MealListHeaderDate} from '../components/MealList';
 
 const mapStyles = {
   width: '100%',
@@ -16,6 +16,72 @@ const mapStyles = {
 
 const stores = [];
 const storeDetails = [];
+//DEBUG fields to be used on local project
+storeDetails.push(
+{
+usr: "harrypotter",
+nm: "NEW",
+dt: "2020-03-27",
+tm: "16:47:30",
+id: "101",
+pos: {
+lat: 55.933056521037,
+lng: -3.2131411830015
+}
+})
+storeDetails.push(
+{
+usr: "dracomalfoy",
+nm: "NEW",
+dt: "2019-03-27",
+tm: "16:15:30",
+id: "101",
+pos: {
+lat: 55.932200701316,
+lng: -3.2121732994174
+}
+});
+
+stores.push({lat: 55.933056521037, lng: -3.2131411830015});
+stores.push({lat: 55.932200701316, lng: -3.2121732994174});
+//End Debug
+
+const objSorted = new Map();
+
+function sortDate(a,b)
+{
+	if(new Date(a.dt) < new Date(b.dt)){
+		return -1;
+	}
+	else if(new Date(a.dt) > new Date(b.dt)){
+		return 1;
+	}
+	return 0;
+}
+/**function used to format the meal array into an object sorted by dates. Useful for the meal list component
+*@param {[array]} meals meals retreived from the DB
+*/
+function sortMealsByDate(meals){
+	//meals.sort(sortDate);
+	var tempArr = [];//storing all the meal info about mealsC happening at the same day
+	var currDate = new Date(meals[0].dt);
+	for(var v of meals){
+		let date = new Date(v.dt);
+		if(date.getTime() != currDate.getTime()){
+			objSorted.set(currDate, tempArr);
+			tempArr = []
+			currDate = date;
+			//delete v.dt; //cant delete, or it will also delete on the main array
+			tempArr.push(v);
+		}
+		else{
+			//delete v.dt;
+			tempArr.push(v);
+		}
+	}
+	//push the last arrays
+	objSorted.set(currDate, tempArr);
+}
 
 $.ajax({ url: 'PHPF/getmeals.php',
 	type: 'post',
@@ -55,10 +121,11 @@ $.ajax({ url: 'PHPF/getmeals.php',
 		    }
 		    tmpDetails.pos = tmp;
 		    storeDetails.push(tmpDetails);
-		    stores.push(tmp);
+			stores.push(tmp);
 		}
 	}
 });
+
 
 class MapTemplate extends Component {
 	constructor(props) {
@@ -70,6 +137,14 @@ class MapTemplate extends Component {
 		  }
 		 this.onMarkerClick = this.onMarkerClick.bind(this);
 		 this.onMapClicked = this.onMapClicked.bind(this);
+		 this.test = this.test.bind(this);
+
+		 sortMealsByDate(storeDetails);
+		 console.log(storeDetails);
+		 console.log(stores);
+	}
+	test(){
+		console.log(stores);
 	}
 	onMarkerClick(props, marker, e) {
 	    console.log(props);
@@ -91,10 +166,16 @@ class MapTemplate extends Component {
   	};
 	getName(tempo){
 	    for (var i = 0; i < storeDetails.length; i++) { 
-		if(storeDetails[i].pos == tempo){
-		    return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt + "," + storeDetails[i].tm + "," + storeDetails[i].id;
+			console.log("----");
+			console.log(storeDetails[i].pos);
+			console.log(tempo);
+			console.log("----");
+			if(storeDetails[i].pos == tempo){
+				console.log("ok");
+		    	return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt + "," + storeDetails[i].tm + "," + storeDetails[i].id;
 		}
-	    }
+		}
+		
 	}
 
 render() {
@@ -116,8 +197,8 @@ render() {
 		<Grid container item xs={12} justify="center">
 			<SearchBar />
 		</Grid>
-		<Grid id="mapM" item xs={12}>
-			<Map
+		{<Grid id="mapM" item xs={12}>
+			<Mapg
 			google={this.props.google}
 		onClick={this.onMapClicked}
 			zoom={13}
@@ -126,6 +207,7 @@ render() {
 			>
 			{
 				stores.map(element => <Marker name={this.getName(element)} position={element} onClick={this.onMarkerClick}/>)
+				
 			}
 			<InfoWindow
 					marker={this.state.activeMarker}
@@ -137,10 +219,15 @@ render() {
 					{p3}
 					</div>
 				</InfoWindow>
-			</Map>
-			</Grid>
+			</Mapg>
+			</Grid>}
 
+			<Grid item><MealListHeaderCity city={"Edinburgh - harcoded now"} /></Grid>
+			<Grid item><MealListHeaderDate date={"06.02.2020"} /></Grid>
 			<Grid item><MealList title="new" time="12:00" date="06.02.2020" city="Edi"/>
+			</Grid>
+			<Grid item><MealList title="new" time="12:00" date="06.02.2020" city="Edi" /><button onClick={this.test}>asd</button>
+			
 			</Grid>
 	</Grid>
 		

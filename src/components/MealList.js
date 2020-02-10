@@ -24,12 +24,31 @@ export default function MealList(props){
             <Typography>{props.city}</Typography>
             </Grid>
             <Grid item xs>
-            <Typography>{props.date}</Typography>
-            </Grid>
-            <Grid item xs>
             <Typography>{props.time}</Typography>
             </Grid>
         </Grid>
         </Paper>
+    );
+}
+
+export function MealListHeaderCity(props){
+    //show city. Only needs once since the city is needed
+    return(
+    <Grid container>
+        <Grid item xs>
+            <Typography variant="h4">Meals in: {props.city}</Typography>
+        </Grid>
+    </Grid>
+    );
+}
+
+export function MealListHeaderDate(props){
+    //used to show the date before each chunck of meals
+    return(
+    <Grid container>
+        <Grid item>
+            <Typography variant="h5">{new Date(props.date).toDateString()}</Typography>
+        </Grid>
+    </Grid>
     );
 }
