@@ -13,6 +13,7 @@ import DateFnsUtils from '@date-io/date-fns'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Checkbox from '@material-ui/core/Checkbox'
+import $ from 'jquery';
 
 const styles = ({
     root:{
@@ -131,6 +132,15 @@ class SearchBar extends Component {
             }
         }
         console.log(obj)
+	//Gonna hardcode this to pass to the backend for ease of development
+	//var toPass = {title: "dinner", city: "Edinburgh", date: "2020-03-27", time: ["08:00:00", "11:00:00"], dietary: "Vegan"};
+	$.ajax({ url: 'PHPF/filter.php',
+	    type: 'post',
+	    data: {"data" : obj},
+	    success: function(output) {
+		alert(output);
+	    }
+	});
         //oscar give me feedback on how difficult was to understand my code and if comments were useful! We can put it in the final report
     }
 
@@ -163,6 +173,7 @@ class SearchBar extends Component {
         console.log("handle click filter");
         this.setState((state) => ({filter_vis : !state.filter_vis}) );
         console.log(this.state.filter_vis);
+	
     }
     render(){
         const {classes} = this.props;
