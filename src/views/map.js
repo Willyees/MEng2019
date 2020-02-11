@@ -39,7 +39,6 @@ function sortMealsByDate(meals){
 	var currDate = new Date(meals[0].dt);
 	
 	for(var v of meals){
-		console.log(v);
 		let date = new Date(v.dt);
 		if(date.getTime() != currDate.getTime()){
 			objSorted.set(currDate, tempArr);
@@ -56,7 +55,6 @@ function sortMealsByDate(meals){
 	}
 	//push the last arrays
 	objSorted.set(currDate, tempArr);
-	console.log(objSorted.size);	
 
 }
 
@@ -91,7 +89,10 @@ function ajaxCall(output){
 		if(j == 6){
 			tmpDetails.id = line[j];
 		}
+		if(j == 7){			
+			tmpDetails.city = line[j];
 		}
+	}
 		tmpDetails.pos = tmp;
 		storeDetails.push(tmpDetails);
 		stores.push(tmp);
@@ -106,7 +107,7 @@ $.ajax({ url: 'PHPF/getmeals.php',
 
 //DEBUG fields to be used on local project
 if(window.location.host == "localhost:3000"){
-	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104"];
+	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101,Edinburgh","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102,Edinburgh","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104,Edinburgh"];
 	ajaxCall(s);
 }
 
@@ -118,18 +119,25 @@ class MapTemplate extends Component {
 		this.state = {
 		    showingInfoWindow: false,
 		    activeMarker: {},
-		    selectedPlace: {},
+			selectedPlace: {},
+			filtered : false,
 		  }
 		 this.onMarkerClick = this.onMarkerClick.bind(this);
 		 this.onMapClicked = this.onMapClicked.bind(this);
+		 this.handlerFiltered = this.handlerFiltered.bind(this);
 		 this.test = this.test.bind(this);
 
 		 sortMealsByDate(storeDetails);
-		 console.log(storeDetails);
-		 console.log(stores);
 	}
 	test(){
-		console.log(stores);
+		console.log(objSorted.values().next().value[0]);
+	}
+	/**
+	 * handler passed to the search bar, in order to set the state from a child component upon certain event happened
+	 */
+	handlerFiltered(){
+		this.setState({filtered: true});
+
 	}
 	onMarkerClick(props, marker, e) {
 	    console.log(props);
@@ -151,14 +159,7 @@ class MapTemplate extends Component {
   	};
 	getName(tempo){
 	    for (var i = 0; i < storeDetails.length; i++) { 
-			console.log("----");
-			console.log(storeDetails[i].pos);
-
-			console.log(tempo);
-
-			console.log("----");
 			if(storeDetails[i].pos == tempo){
-				console.log("ok");
 		    	return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt + "," + storeDetails[i].tm + "," + storeDetails[i].id;
 		}
 		}
@@ -184,9 +185,9 @@ render() {
     return (
 	<Grid class="main-body" container>
 		<Grid container item xs={12} justify="center">
-			<SearchBar />
+			<SearchBar handlerFiltered={this.handlerFiltered}/>
 		</Grid>
-		{/*<Grid id="mapM" item xs={12}>
+		{<Grid id="mapM" item xs={12}>
 			<Mapg
 			google={this.props.google}
 		onClick={this.onMapClicked}
@@ -209,18 +210,18 @@ render() {
 					</div>
 				</InfoWindow>
 			</Mapg>
-		</Grid>*/}
-			<Grid item><MealListHeaderCity city={"Edinburgh - harcoded now"} /></Grid>
+		</Grid>}
+			<Grid item xs>
+						{
+				this.state.filtered && (objSorted.values().next().done == false ) && <MealListHeaderCity city={objSorted.values().next().value[0].city} />
+			}
+			</Grid>
 			{
 				renderMealList(objSorted)	
 			}
 		<button onClick={this.test}>asd</button>
 		</Grid>
-		
-	
-
-
-    );
+	);
   }
 }
 export default GoogleApiWrapper({

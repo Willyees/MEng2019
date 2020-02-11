@@ -46,8 +46,8 @@ const styles = ({
 })
 
 class SearchBar extends Component {
-    constructor(prop){
-        super(prop);
+    constructor(props){
+        super(props);
         
         this.state = {
             values : {//if using different types than "" and null, have to modify submit fucntion if statememnt
@@ -66,7 +66,7 @@ class SearchBar extends Component {
         }
         this.dietary = [];
         this.time = {
-            "Morning" : ["08:00:00","11:00:00"],
+            "Breakfast" : ["07:00:00","11:00:00"],
             "Lunch" : ["12:00:00", "17:00:00"],
             "Dinner" : ["18:00:00","22:00:00"],
             "Night" : ["23:00:00", "07:00:00"]
@@ -113,8 +113,11 @@ class SearchBar extends Component {
 
     //at least the city must be specified, otherwise error shown
     handleSearch(event){
+        this.props.handlerFiltered();
+        console.log(this.props);
         if(this.state.values.city == ""){
             this.setState({...this.state, formErrors : { ...this.state.formErrors, city : "city must be chosen"}});
+            
             return;
         }
 
