@@ -10,9 +10,24 @@ const useStyles = makeStyles({
     },
 })
 
+export function renderMealList(meals){
+    var output = [];
+    meals.forEach((v,k) => {
+        console.log(k);
+        output.push(<MealListHeaderDate date={k} />);
+        v.forEach(element => {
+            output.push(<MealList title={element.nm} city={"Edi - hc"} time={element.tm} />);
+        })
+    });
+    return output;
+}
+
 export default function MealList(props){
     const classes = useStyles(); 
     //props: title, city, date, time
+    
+    console.log(props.time);
+    console.log(props.title);
     return(
         <Paper className={classes.paper}>
         <Grid container>

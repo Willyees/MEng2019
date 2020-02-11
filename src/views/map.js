@@ -7,7 +7,7 @@ import { Map as Mapg, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-r
 import AppBar from '../components/AppBar';
 import SearchBar from '../components/SearchBar';
 import Grid from '@material-ui/core/Grid';
-import MealList, {MealListHeaderCity, MealListHeaderDate} from '../components/MealList';
+import MealList, {MealListHeaderCity, MealListHeaderDate, renderMealList} from '../components/MealList';
 
 const mapStyles = {
   width: '100%',
@@ -34,10 +34,12 @@ function sortDate(a,b)
 *@param {[array]} meals meals retreived from the DB
 */
 function sortMealsByDate(meals){
-	//meals.sort(sortDate);
+	meals.sort(sortDate);
 	var tempArr = [];//storing all the meal info about mealsC happening at the same day
 	var currDate = new Date(meals[0].dt);
+	
 	for(var v of meals){
+		console.log(v);
 		let date = new Date(v.dt);
 		if(date.getTime() != currDate.getTime()){
 			objSorted.set(currDate, tempArr);
@@ -50,18 +52,21 @@ function sortMealsByDate(meals){
 			//delete v.dt;
 			tempArr.push(v);
 		}
+		
 	}
 	//push the last arrays
 	objSorted.set(currDate, tempArr);
+	console.log(objSorted.size);	
+
 }
 
 function ajaxCall(output){
-	console.log(output);
+	//console.log(output);
 	var ret = output;
-	console.log(ret[0]);
+	//console.log(ret[0]);
 	for (var i = 0; i < ret.length; i++) {
 		var line = ret[i].split(',');
-		console.log(line);
+		//console.log(line);
 		var tmp = {};
 		var tmpDetails = {};
 		for(var j = 0; j < line.length; j++){
@@ -101,7 +106,7 @@ $.ajax({ url: 'PHPF/getmeals.php',
 
 //DEBUG fields to be used on local project
 if(window.location.host == "localhost:3000"){
-	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101","harrypotter,Mexican,2020-02-28,55.932200701316,-3.2121732994174,21:41:05,102","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104"];
+	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104"];
 	ajaxCall(s);
 }
 
@@ -160,6 +165,8 @@ class MapTemplate extends Component {
 		
 	}
 
+	
+
 render() {
     let head1, p1, p2, p3;
     var x;
@@ -179,7 +186,7 @@ render() {
 		<Grid container item xs={12} justify="center">
 			<SearchBar />
 		</Grid>
-		{<Grid id="mapM" item xs={12}>
+		{/*<Grid id="mapM" item xs={12}>
 			<Mapg
 			google={this.props.google}
 		onClick={this.onMapClicked}
@@ -202,16 +209,13 @@ render() {
 					</div>
 				</InfoWindow>
 			</Mapg>
-			</Grid>}
-
+		</Grid>*/}
 			<Grid item><MealListHeaderCity city={"Edinburgh - harcoded now"} /></Grid>
-			<Grid item><MealListHeaderDate date={"06.02.2020"} /></Grid>
-			<Grid item><MealList title="new" time="12:00" date="06.02.2020" city="Edi"/>
-			</Grid>
-			<Grid item><MealList title="new" time="12:00" date="06.02.2020" city="Edi" /><button onClick={this.test}>asd</button>
-			
-			</Grid>
-	</Grid>
+			{
+				renderMealList(objSorted)	
+			}
+		<button onClick={this.test}>asd</button>
+		</Grid>
 		
 	
 
