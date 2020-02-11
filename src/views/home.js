@@ -29,7 +29,7 @@ class HomeTemplate extends Component {
             <div>
                 <AppBar/>
             </div>
-                <Grid container style={{marginTop:"4%"}}>
+                <Grid container style={{marginTop:"3.5%"}}>
                     <Grid item xs={12}>
                         <Typography variant={'h5'}>
                         Meal Time is a place where people can organise their meals and share information. <p />

@@ -19,20 +19,28 @@ const styles = makeStyles(theme => ({
 
 const useStyles = makeStyles(styles);
 
+
+
 class ProfileTemplate extends Component {
     constructor(props){
         super(props);
     }
 
-    
+    onSubmit = event => {
+        //Oscar work your magic ;)
+        alert("hello there");
+    };
 
     render() {
         return(
             <div>
                 <AppBar>
                 </AppBar>
-                <ProfileGrid>
-                </ProfileGrid>
+                <form onSubmit={this.onSubmit}>
+                    <ProfileGrid>
+                    </ProfileGrid>
+                </form>
+                
 
                 
 

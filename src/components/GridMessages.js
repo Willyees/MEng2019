@@ -8,15 +8,18 @@ import ChatSettingsList from './ChatSettingsList.js';
 import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
+    root: {  
         
     },
     pagePaper:{
         padding: theme.spacing(1),
-        width: '139%',
-        marginLeft: "-20%",
-        marginTop: '-25%', 
+        width: '96%',
+        //height: , //857
+        transform: 'translate(0, 26.7%)', //84px
+        marginRight: '1.7%',
+        marginLeft: '1.6%',
+        height: 'max-content',
+        // marginBottom: '1.7%',
     },
 }));
 
@@ -39,14 +42,7 @@ export default function MessagesGrid() {
                     
                     {/* chat window to display current chat with person or group*/}
                     <Grid item container xs={6} style={{justifyContent: "left",}}>
-                        <Grid item container xs={12}>
-                            <ChatList />
-                        </Grid>
-                        <Grid item contatiner xs={12}>
-                            <TextField
-                                multiline rows={1} rowsMax={5} label= "Aa" variant="outlined" fullWidth
-                            />
-                        </Grid>
+                        <ChatList />
                     </Grid>
 
                     {/* specifec chat settings */} 
