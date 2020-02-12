@@ -7,10 +7,12 @@ import MapTemplate from './views/map.js';
 import ProfileTemplate from './views/profile.js';
 import ShowMealTemplate from './views/show-meal.js';
 import MessagesTemplate from './views/messages.js';
+import ViewProfileTemplate from './views/view-profile.js';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import AppBar from './components/AppBar'
+import AppBar from './components/AppBar';
+
 
 
 function App() {
@@ -38,6 +40,11 @@ function App() {
             <Route exact path="/profile">
                 < ProfileTemplate/>
             </Route>
+
+            <Route exact path="/view-profile">
+              < ViewProfileTemplate />
+            </Route>
+
             <Route exact path="/show-meal">
               < ShowMealTemplate />
             </Route>

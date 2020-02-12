@@ -46,11 +46,6 @@ const labels = {
     5: 'Excellent',
   };
 
-//   const onSubmit = event => {
-//     //Oscar work your magic ;)
-//     alert("hey there");
-// };
-
 export default function ProfileGrid() {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
@@ -88,6 +83,7 @@ export default function ProfileGrid() {
                                     name="hover-feedback"
                                     value={value}
                                     precision={1}
+                                    //this code should be put on the view meal page for other users rating the main user's meal event
                                     onChange={(event, newValue) => {
                                     setValue(newValue);
                                     }}
