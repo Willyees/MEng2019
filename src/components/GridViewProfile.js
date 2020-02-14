@@ -1,0 +1,214 @@
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Image from 'material-ui-image';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import GridList from './GridList.js';
+import EditIcon from '@material-ui/icons/Edit';
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
+import SaveIcon from '@material-ui/icons/Save';
+
+//get the user profile pic
+import profile from "../res/bear1.png";
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+     
+  },
+  profilePaper: {
+    padding: theme.spacing(6),
+    marginLeft: "40%",
+    marginTop: "10%",
+    marginRight: "2%",
+    // textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  recentMealsPaper:{
+    padding: theme.spacing(6),
+    marginRight: "2%",
+    marginTop: "10%",
+    marginLeft: "8%",
+    // textAlign: 'center',
+    color: theme.palette.text.secondary,
+    width: "60%",
+  },
+}));
+
+const labels = {
+    1: 'Meal Novice',
+    2: 'Meal Apprentice',
+    3: 'Meal Experienced',
+    4: 'Meal Master',
+    5: 'Meal Maestro',
+  };
+
+export default function ProfileGrid() {
+  const classes = useStyles();
+  //this stuff only needed if we need to change the rating on this page
+//   const [ value, setValue] = React.useState(2);
+//   const [ hover, setHover] = React.useState(-1);
+
+  
+
+  return (
+    <div className={classes.root}>
+        <Grid container>
+            {/* first half of page */}
+            <Grid item container xs={6}>
+                {/* profile paper */}
+                
+                    <Paper className={classes.profilePaper}>
+                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#aeb1b5", marginTop: "-4%"}}>
+                            Personal Details
+                        </Typography>
+
+                        <Grid item container xs={12} style={{marginTop: "4%", justifyContent: "center"}}>
+                            {/* get the users first name then last name */}
+                            <Typography variant="h5" component="h5" gutterBottom style={{fontWeight:"bolder"}}>
+                                First Name Last Name
+                            </Typography>
+                        </Grid>
+
+                        <Grid item container xs={12} >
+                            <Grid item xs={12} style={{justifyContent:"left", display: "flex"}} >
+                                <img src={profile} height="400px" width="100%" style={{border: "1px solid #ddd", borderRadius: "15px"}}/>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Rating
+                                    //delete this if we want users to be able to change the rating
+                                    readOnly
+                                    //this value should be set to the user's meal rating 
+                                    value={5}
+                                    precision={1}
+                                />
+                                {/* this changes the rating based on hover if we need that */}
+                                {/* {value !== null &&  */}
+                                <Box ml={1}>{labels[5]}
+                                    {/* labels[hover !== -1 ? hover : value]} */}
+                                </Box>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Paper >
+                                    <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                        Email Address
+                                    </Typography>
+
+                                    {/* get the email */}
+                                    <Typography variant="h6" component="h6" gutterBottom>
+                                        john@example.com
+                                    </Typography>
+                                </Paper>
+                                
+                            </Grid>
+                        
+                            <Grid item xs={12}>
+                                <Paper >
+                                    <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                        City
+                                    </Typography>
+                                    
+                                    {/* get the city and country */}
+                                    <Typography variant="h6" component="h6" gutterBottom>
+                                        London, United Kingdom
+                                    </Typography>
+                                </Paper>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Paper >
+                                    <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                        Age
+                                    </Typography>
+                                    
+                                    {/* get the age but maybe just age range? */}
+                                    <Typography variant="h6" component="h6" gutterBottom>
+                                        26
+                                    </Typography>
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12}>
+                            </Grid>
+                        </Grid>
+                    </Paper>
+            </Grid>
+
+            {/* second half of page */}
+            <Grid item container xs={6}>
+                {/* recent meals paper */}
+                <Grid item container xs={12}>
+                    <Paper className={classes.recentMealsPaper}>
+                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#aeb1b5", marginTop: "-4%"}}>
+                            About
+                        </Typography>
+
+                        <Grid item container xs={12}>
+                            <Typography style={{marginTop: "4%",justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                Recent Meals
+                            </Typography>
+
+                            <GridList />
+                        </Grid>
+                        <Paper style={{marginTop: "3%",}}>
+                            <Grid item xs={12}>
+                                <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                    Bio
+                                </Typography>
+
+                                {/* get the bio */}
+                                <Typography variant="h6" component="h6" gutterBottom>
+                                    I like dinner!
+                                </Typography>
+                            </Grid> 
+                        </Paper>
+                    </Paper>
+                </Grid>
+                
+                {/* preferences paper */}
+                <Grid item container xs={12}>
+                    <Paper className={classes.recentMealsPaper}>
+                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#aeb1b5", marginTop: "-4%"}}>
+                            Preferences
+                        </Typography>
+
+                        <Paper style={{marginTop: "4%",}}>
+                            <Grid item xs={12}>
+                                <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                    Dietry Requirements
+                                </Typography>
+
+                                {/* get the dietry requirements */}
+                                <Typography variant="h6" component="h6" gutterBottom>
+                                    no cheese
+                                </Typography>
+                            </Grid> 
+                        </Paper>
+
+                        <Paper style={{marginTop: "3%",}}>
+                            <Grid item xs={12}>
+                                <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                    Allergens
+                                </Typography>
+
+                                {/* get the Allergens */}
+                                <Typography variant="h6" component="h6" gutterBottom>
+                                    dogs
+                                </Typography>
+                            </Grid> 
+                        </Paper>
+
+                    </Paper>
+                </Grid>
+                
+            </Grid>
+
+        </Grid>
+    </div>
+  );
+}
