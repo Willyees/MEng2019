@@ -45,9 +45,7 @@ export default function ShowMealGrid() {
             <Paper className={classes.paper}>
                 <Grid container spacing={3}>
                     <Grid id="title_grid" item container xs={12} style={{justifyContent:"left"}}>
-                        <label id="title">
-                            title
-                        </label>
+                        <label id="title"></label>
                     </Grid>
 
                     <Grid item container xs={6} >
@@ -58,33 +56,29 @@ export default function ShowMealGrid() {
 
                     <Grid item container xs={6}>
                         <Grid id="date_grid" item xs={7}>
-                        <label id="date">
-                            Date
-                        </label>
+                        <label id="date"></label>
                         </Grid>
                         
                         <Grid id="time_grid" item xs={7}>
-				<label id="time">
-				    Time
-				</label>
+        <label id="time"></label>
                         </Grid>
 
                         <Grid id="city_grid" item xs={7}>
-				<label id="city">
-				    City
-				</label>
+        <label id="city"></label>
                         </Grid>
                     </Grid>
 
                     <Grid id="proposed_meal_grid" item container xs={6}>
-				<label id="proposed_meal">
-					Proposed Meal
+				<label id="proposed_meal_lb">
+					Proposed Meal:
 				</label>
+        <label id="proposed_meal"></label>
                     </Grid>
                     <Grid id="theme_grid" item container xs={6}>
-				<label id="theme">
-					Theme
+				<label id="theme_lb">
+					Theme:
 				</label>
+        <label id="theme"></label>
                     </Grid>
 
                     <Grid id="description_grid" item container xs={12}>
@@ -92,27 +86,32 @@ export default function ShowMealGrid() {
                     </Grid>
 
                     <Grid id="guest_limit_grid" item container xs={6}>
-				<label id="guest_limit">
-                        Guest Limit: ...
+				<label id="guest_limit_lb">
+                        Guest Limit:
 				</label>
+        <label id="guest_limit"></label>
                     </Grid>
 
                     <Grid id="dietary_grid" item container xs={6}>
-				<label id="dietary">
-                        Dietary Requirements
+				<label id="dietary_lb">
+                        Dietary Requirements:
 				</label>
+        <label id="dietary">asd</label>
                     </Grid>
 
                     <Grid id="age_range_grid" item container xs={6}>
-				<label id="age_range">
-                        Age Range
+				<label id="age_range_lb">
+                        Age Range:
 				</label>
+        <label id="age_range"></label>
                     </Grid>
 
                     <Grid id="contribution_grid" item container xs={6}>
-				<label id="contribution">
-	  			Expected Contribution
+				<label id="contribution_lb">
+	  			Expected Contribution:
 				</label>
+        <label id="contribution"></label>
+        <label>£</label>
                     </Grid>
 
                     
