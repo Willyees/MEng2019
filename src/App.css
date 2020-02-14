@@ -55,7 +55,9 @@ select:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
 textarea:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 30px transparent inset !important;/*#f59e42 this makes the background color yellowish, we might want to change color*/
+    background-color: transparent;
+    /*-webkit-box-shadow: 0 0 0 30px transparent inset !important;/*#f59e42 this makes the background color yellowish, we might want to change color*/
+    -webkit-transition-delay: 99999s;
 }
 
 

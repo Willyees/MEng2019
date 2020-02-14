@@ -14,12 +14,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Hidden from '@material-ui/core/Hidden';
-import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Typography } from '@material-ui/core';
+import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Typography, MenuItem } from '@material-ui/core';
 import { getCookie, isUserLoggedIn} from '../helperFunctions';
 import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
+import Select from '@material-ui/core/Select';
 
+import board from "../res/chopping_board_chopped.png"
 import bear from "../res/bear1.png";
 
 
@@ -34,7 +36,9 @@ const styles = ({
     }
 })
 
-class CreateMealTemplate extends Component { //this is more create meal. have to change class names
+const dietary_requirements = ["Vegan", "Vegetarian", "None"];
+
+class CreateMealTemplate extends Component {
 
     constructor(props){
         
@@ -44,7 +48,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 title : "",
                 description: "",
                 city : "",
-                date : new Date().toLocaleDateString("en-US"), //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
+                date : new Date().toLocaleDateString("en-US"),
                 time : new Date().toLocaleTimeString(),
                 proposed_meal : "",
                 expected_contribution : 0.0,
@@ -53,8 +57,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             optional : {
                 suggested_theme : "",
                 dietary : "",
-                age_range : [],//would it be better to split in 2: min and max? when rendered in show meal page, it would be automatically show them in a single range
-                                   //age_range not used to draw the slider component. only stores the value to be passed to the DB
+                age_range : [],
             },
             //visibility for extra fields
             visibility : {
@@ -177,7 +180,7 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
             </div>
             <Grid container justify="center">
             <Grid item>
-            <Paper style={{"background-image" : `url(${bear})`}}>
+            <Paper style={{"background-image" : `url(${board})`}}>
             <form onSubmit={this.onSubmit}> 
                 <Grid item>
                     {/* id: <name_id>_cm; cm stands for create meal */}
@@ -222,7 +225,10 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                 </Grid>
                 <Grid item>
                     {this.state.visibility.dietary_vis &&
-                    <TextField name="dietary" id="dietary_cm" onChange={this.onChangeOptional} value={this.state.optional.dietary} label="Dietary requirements"/>
+                    <Select name="dietary" id="dietary_cm" onChange={this.onChangeOptional} value={this.state.optional.dietary} displayEmpty>
+                        <MenuItem value="" disabled>Dietary Requirements</MenuItem>
+                        {dietary_requirements.map((v)=><MenuItem value={v}>{v}</MenuItem>)}
+                    </Select>
                     } {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
                 </Grid>
                 <Grid item>
