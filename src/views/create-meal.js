@@ -207,7 +207,8 @@ class CreateMealTemplate extends Component { //this is more create meal. have to
                     <TextField name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.values.proposed_meal} type="text" label="Proposed meal" />
                 </Grid>
                 <Grid item>
-                    <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" />
+                    <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" 
+                    InputProps={{startAdornment: <InputAdornment position="start">£</InputAdornment>}}/>
                 </Grid>
                 <Grid container>
                     <Grid item xs>
