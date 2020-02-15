@@ -58,6 +58,7 @@ function sortMealsByDate(meals){
 
 }
 
+
 function ajaxCall(output){
 	//console.log(output);
 	var ret = output;
@@ -130,7 +131,12 @@ class MapTemplate extends Component {
 		 sortMealsByDate(storeDetails);
 	}
 	test(){
-		console.log(objSorted.values().next().value[0]);
+		console.log(storeDetails);
+		console.log(stores)
+		stores.pop();
+		console.log(storeDetails);
+		console.log(stores)
+		
 	}
 	/**
 	 * handler passed to the search bar, in order to set the state from a child component upon certain event happened
@@ -169,6 +175,7 @@ class MapTemplate extends Component {
 	
 
 render() {
+	console.log("render")
     let head1, p1, p2, p3;
     var x;
     if(typeof this.state.selectedPlace.name !== "undefined"){
@@ -187,7 +194,7 @@ render() {
 		<Grid container item xs={12} justify="center">
 			<SearchBar handlerFiltered={this.handlerFiltered}/>
 		</Grid>
-		{<Grid id="mapM" item xs={12}>
+		{<Grid id="mapM" container item xs={12} justify="center">
 			<Mapg
 			google={this.props.google}
 		onClick={this.onMapClicked}
@@ -212,7 +219,7 @@ render() {
 			</Mapg>
 		</Grid>}
 			<Grid item xs>
-						{
+			{
 				this.state.filtered && (objSorted.values().next().done == false ) && <MealListHeaderCity city={objSorted.values().next().value[0].city} />
 			}
 			</Grid>

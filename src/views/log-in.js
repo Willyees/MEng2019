@@ -5,6 +5,7 @@ import Container from '@material-ui/core/Container';
 import $ from 'jquery';
 import {isUserLoggedIn, getCookie} from '../helperFunctions'
 import Paper from '@material-ui/core/Paper'
+import {Redirect} from 'react-router-dom'
 
 class LogInTemplate extends Component {
 	constructor(props){
@@ -37,7 +38,7 @@ class LogInTemplate extends Component {
 	    },
             success: function(output) {
                 if(output == "DONE"){
-		    alert("LOGIN!");
+                    return <Redirect to="/map"/>
                 }
 		else{
 		    alert("Invalid Credentials");

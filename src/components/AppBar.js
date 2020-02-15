@@ -11,6 +11,9 @@ import Button from '@material-ui/core/Button';
 import {isUserLoggedIn} from '../helperFunctions';
 import EmojiFoodBeverageSharpIcon from '@material-ui/icons/EmojiFoodBeverageSharp';
 import Link from '@material-ui/core/Link'
+import AddIcon from '@material-ui/icons/Add';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExploreIcon from '@material-ui/icons/Explore';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -97,9 +100,17 @@ const useStyles = makeStyles(theme => ({
         // }}
       >
         {/*todo: change href to correct ones using the map*/}
-        <MenuItem val="profile-menu" component={Link} href='#' color="inherit" onClick={handleClose}>Profile</MenuItem>
-        <MenuItem val="meals-menu" component={Link} href='# 'color="inherit" onClick={handleClose}>My Meals</MenuItem>
-        <MenuItem val="settings-menu" component={Link} href='#' color="inherit" onClick={handleClose}>Settings</MenuItem>
+        <MenuItem val="profile-menu" component={Link} href="/profile" color="inherit" onClick={handleClose}>Profile</MenuItem>
+        <MenuItem val="meals-menu" component={Link} href="#"color="inherit" onClick={handleClose}>My Meals</MenuItem>
+        <MenuItem val="show-meals-menu" component={Link} href="/map" color="inherit" onClick={handleClose}>
+          <ExploreIcon/>Show me meals
+        </MenuItem>
+        <MenuItem val="create-meal-menu" component={Link} href="/create-meal" color="inherit" onClick={handleClose}>
+          <AddIcon/>Create Meal
+        </MenuItem>
+        <MenuItem val="settings-menu" component={Link} href="#" color="inherit" onClick={handleClose}>
+          <SettingsIcon/>Settings
+          </MenuItem>
       </Menu>  
     </div>
     )
