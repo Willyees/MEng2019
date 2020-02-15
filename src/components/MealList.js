@@ -8,6 +8,10 @@ const useStyles = makeStyles({
     paper:{
         margin : 5,
     },
+    linkmeal :{
+        'text-decoration': 'inherit', 
+        color: 'blue',
+    },
 })
 
 export function renderMealList(meals){
@@ -15,7 +19,7 @@ export function renderMealList(meals){
     meals.forEach((v,k) => {
         output.push(<MealListHeaderDate date={k} />);
         v.forEach(element => {
-            output.push(<MealList title={element.nm} city={element.city} time={element.tm} />);
+            output.push(<MealList title={element.nm} city={element.city} time={element.tm} id={element.id}/>);
         })
     });
     return output;
@@ -29,7 +33,7 @@ export default function MealList(props){
         <Grid container>
             
             <Grid item xs>
-            <Typography>{props.title}</Typography>
+            <Typography><a href={"/show-meal?meal=" + props.id} className={classes.linkmeal}>{props.title}</a></Typography>
             </Grid>
             <Grid item xs>
             <Typography>{props.city}</Typography>

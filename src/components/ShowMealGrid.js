@@ -35,6 +35,11 @@ const theme = createMuiTheme({
     },
   });
 
+function test(e){
+  console.log(e);
+  console.log("---------------")
+}
+
 export default function ShowMealGrid() {
   const classes = useStyles();
 
@@ -60,7 +65,7 @@ export default function ShowMealGrid() {
                         </Grid>
                         
                         <Grid id="time_grid" item xs={7}>
-        <label id="time"></label>
+        <label id="time" onChange={test}></label>
                         </Grid>
 
                         <Grid id="city_grid" item xs={7}>
@@ -117,6 +122,7 @@ export default function ShowMealGrid() {
                     
                 </Grid>
             </Paper>
+            <Button >TEST</Button>
         </div>
     </ThemeProvider>
   );

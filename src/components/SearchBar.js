@@ -207,7 +207,7 @@ class SearchBar extends Component {
             </Paper>
             <Paper className={classes.paper}>
             <Select className={classes.innerElem} displayEmpty value={this.state.values.time} name="time" 
-            onChange={this.handleOnChange} multiple renderValue={
+            onChange={this.handleOnChange} renderValue={
                 selected => {if(selected == ""){
                     return "Time frame";
                 }
@@ -216,7 +216,8 @@ class SearchBar extends Component {
                 <MenuItem value={[]} disabled>Time frame</MenuItem>
                 {Object.keys(this.time).map((v,k) => 
                 <MenuItem value={v} key={k}>
-                    <Checkbox checked={this.state.values.time.indexOf(v) + 1} />{v}
+                    {/*<Checkbox checked={this.state.values.time.indexOf(v) + 1} />{v}*/}
+                    {v} 
                 </MenuItem>)}
             </Select>
             </Paper>

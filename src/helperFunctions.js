@@ -28,3 +28,14 @@ export function getCookie(cookieName) {
     }
     return "";
 }
+/**
+ * function used to format time to a specific format
+ * @param time format: "HH:MM:SS"
+ */
+export function formatTime(time){
+    var t_split = time.split(':');
+    let ampm = t_split[0] <= 12 ? "AM" : "PM";
+    let hh = t_split[0] % 12;
+    hh = hh ? hh : 12; //in case hh is 0, then set it back to 12
+    return hh + ":" + t_split[1] + " " + ampm; 
+}
