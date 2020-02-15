@@ -62,6 +62,7 @@ class SearchBar extends Component {
             },
             formErrors : {
                 city : "",
+                date : "",
             }
         }
         this.dietary = [];
@@ -77,6 +78,7 @@ class SearchBar extends Component {
         this.handleDate = this.handleDate.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleErrorDate = this.handleErrorDate.bind(this);
     }
    
 
@@ -114,10 +116,14 @@ class SearchBar extends Component {
     //at least the city must be specified, otherwise error shown
     handleSearch(event){
         this.props.handlerFiltered();
-        console.log(this.props);
+        //check no errors in the form
         if(this.state.values.city == ""){
             this.setState({...this.state, formErrors : { ...this.state.formErrors, city : "city must be chosen"}});
             
+            return;
+        }
+        if(this.state.formErrors.date != ""){
+            console.log("error in date format");
             return;
         }
 
@@ -157,11 +163,15 @@ class SearchBar extends Component {
 
         }
         else{
+            if(event.target.value == "none")
+                event.target.value = "";
             this.setState({...this.state, values : { ...this.state.values, [event.target.name] : event.target.value}});
         }
     }
 
     handleDate(date_){ //date is handled differently (not like an event)
+        if(!date_) //checking date is not empty string or null
+            return;
         var str = date_.toString();
             console.log("handle data");
             //console.log(this.state.values.date + "state");
@@ -170,6 +180,14 @@ class SearchBar extends Component {
           replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2');
           console.log(d);
           this.setState({...this.state, values : { ...this.state.values, date : d}});
+    }
+
+    handleErrorDate(e,v){
+        console.log("Handle date error");
+        console.log(e);
+        console.log(v);
+        this.setState({...this.state, formErrors : { ...this.state.formErrors, date : e}});//setting error if any happened. In case no error, it will set ""
+
     }
 
     handleClickFilter(e){
@@ -202,7 +220,7 @@ class SearchBar extends Component {
             <Paper className={classes.paper}>
             <MuiPickersUtilsProvider className={classes.innerElem} utils={DateFnsUtils}>
                 <KeyboardDatePicker className={classes.innerElem} name="date" margin="normal" clearable autoOk={true} variant="inline" format="dd/MM/yyyy"
-                value={this.state.values.date} onChange={this.handleDate} emptyLabel="Pick Date"/>
+                value={this.state.values.date} onError={this.handleErrorDate} onChange={this.handleDate} emptyLabel="Pick Date"/>
             </MuiPickersUtilsProvider>
             </Paper>
             <Paper className={classes.paper}>
