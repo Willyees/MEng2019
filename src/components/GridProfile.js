@@ -17,7 +17,6 @@ import profile from "../res/profile.png";
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-     
   },
   profilePaper: {
     padding: theme.spacing(6),
@@ -54,8 +53,8 @@ export default function ProfileGrid() {
   
 
   return (
-    <div className={classes.root}>
-        <Grid container>
+    <div className={classes.root} >
+        <Grid container style={{width:'90%'}}>
             {/* first half of page */}
             <Grid item container xs={6}>
                 {/* profile paper */}
