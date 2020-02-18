@@ -81,8 +81,14 @@ class SearchBar extends Component {
         this.handleErrorDate = this.handleErrorDate.bind(this);
     }
    
-    testx(){
-        console.log("test");
+    ajaxCallFilter(obj){
+        $.ajax({ url: 'PHPF/filter.php',
+	    type: 'post',
+	    data: {"data" : obj},
+	    success: function(output) {
+		alert(output);
+	    }
+	    });
     }
 
     getDietReqDb(){
@@ -129,7 +135,6 @@ class SearchBar extends Component {
             console.log("error in date format");
             return;
         }
-        console.log("asd");
         //ajax call with this.state.values wiht only the non empty ones
         let obj = {}
         //console.log(this.time[this.state.values.time]);
@@ -144,17 +149,7 @@ class SearchBar extends Component {
             }
         }
         console.log(obj)
-    this.testx();
-	//Gonna hardcode this to pass to the backend for ease of development
-	//var toPass = {title: "dinner", city: "Edinburgh", date: "2020-03-27", time: ["08:00:00", "11:00:00"], dietary: "Vegan"};
-	$.ajax({ url: 'PHPF/filter.php',
-	    type: 'post',
-	    data: {"data" : obj},
-	    success: function(output) {
-		alert(output);
-	    }
-	});
-        //oscar give me feedback on how difficult was to understand my code and if comments were useful! We can put it in the final report
+    this.ajaxCallFilter(obj);
     }
 
     handleOnChange(event){

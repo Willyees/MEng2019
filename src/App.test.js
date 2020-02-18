@@ -9,7 +9,7 @@ import SearchBar from './components/SearchBar';
 import { mount, shallow, render} from 'enzyme';
 
 import { createShallow } from '@material-ui/core/test-utils'
-
+import $ from 'jquery';
 
 test('renders learn react link', () => {
   const { getAllByText } = renderT(<App />);
@@ -41,8 +41,6 @@ describe('helper functions', () => {
 })
 
 describe('SearchBar', () => {
-  jest.mock('jquery');
-  const $ = require('jquery');
   const mockHandlerFiltered = jest.fn();
 
   it('all fields are empty', () => {
@@ -71,15 +69,18 @@ describe('SearchBar', () => {
     
     expect(testx).toBeCalled();*/
     //using enzyme
-    const mockedTest = jest.fn();
+
+    const mockedFn = jest.fn();
+    const spy = jest.spyOn($, 'ajax').mockImplementation(() => Promise.resolve({ success: true }))
     let shallowui = createShallow()
     const wrapper = shallowui(<SearchBar handlerFiltered={mockHandlerFiltered}/>).dive();
     const instance = wrapper.instance();
-    $.ajax = mockedTest;
+    instance.ajaxCallFilter = mockedFn;
     wrapper.find('#search-bar-city').simulate('change', { target : {value : 'Edinburgh', name : 'city'}});
     wrapper.find('#search-button').simulate('click');
 
-    expect(mockedTest).toHaveBeenCalled();
+    let expected = {city : 'Edinburgh'};
     
+    expect(mockedFn.mock.calls[0][0]).toEqual(expected);    
   })
 })
