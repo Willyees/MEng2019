@@ -6,12 +6,13 @@ import Image from 'material-ui-image';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import {getCookie} from '../helperFunctions';
 import GridList from '../components/GridList.js';
 import EditIcon from '@material-ui/icons/Edit';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import SaveIcon from '@material-ui/icons/Save';
-
+import $ from 'jquery';
 import profile from "../res/profile.png";
 
 const useStyles = makeStyles(theme => ({
@@ -36,6 +37,7 @@ const useStyles = makeStyles(theme => ({
     width: "60%",
   },
 }));
+var fromServer;
 
 const labels = {
     1: 'Useless',
@@ -49,8 +51,16 @@ export default function ProfileGrid() {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
   const [ hover, setHover] = React.useState(-1);
+  $.ajax({ url: 'PHPF/getuserinfo.php',
+      type: 'post',
+      async: false,
+      data: {"username" : getCookie("Username")},
+          success: function(output) {
+	      fromServer = JSON.parse(output);
+	  }
+  });
 
-  
+ 
 
   return (
     <div className={classes.root} >
@@ -62,9 +72,9 @@ export default function ProfileGrid() {
                     <Paper className={classes.profilePaper}>
                         <Grid item container xs={12} style={{justifyContent: "center"}}>
                             {/* these textfields should be hidden until edit button clicked */}
-                            <TextField label="First Name" style={{fontWeight: "bolder", marginTop: "-8%"}} 
+                            <TextField label="First Name" style={{fontWeight: "bolder", marginTop: "-8%"}} defaultValue={fromServer["name"]} 
                             />
-                            <TextField label="Last Name" style={{fontWeight: "bolder", marginTop: "-8%"}} 
+                            <TextField label="Last Name" style={{fontWeight: "bolder", marginTop: "-8%"}} defaultValue={fromServer["surname"]}
                             />
                             {/* edit icon on click reveal textfields and hide label, change (or add another icon) to a save icon when clicked and it switch between them every time */}
                             {/* <EditIcon onClick>
@@ -95,42 +105,37 @@ export default function ProfileGrid() {
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField label="Email Address" fullWidth defaultValue="john@example.com" 
+                                <TextField label="Email Address" fullWidth defaultValue={fromServer["username"]} 
                                 />
                             </Grid>
                             
                             <Grid item xs={12}>
-                                <TextField label="password" fullWidth defaultValue="Password" 
+                                <TextField label="Address" fullWidth defaultValue={fromServer["addressOne"] + " " + fromServer["addressTwo"]}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField label="Address" fullWidth defaultValue="1 old kent road"
+                                <TextField label="Postcode" fullWidth defaultValue={fromServer["postcode"]}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField label="Postcode" fullWidth defaultValue="LN1 OKR"
+                                <TextField label="City" fullWidth defaultValue={fromServer["city"]}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField label="City" fullWidth defaultValue="London"
+                                <TextField label="Country" fullWidth defaultValue={fromServer["country"]}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField label="Country" fullWidth defaultValue="United Kingdom"
+                                <TextField label="DOB" fullWidth defaultValue={fromServer["dob"]}
                                 />
                             </Grid>
 
                             <Grid item xs={12}>
-                                <TextField label="DOB" fullWidth defaultValue="1/1/0000"
-                                />
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <TextField label="Mobile Number" fullWidth defaultValue="07123 456789"
+                                <TextField label="Mobile Number" fullWidth defaultValue={fromServer["mobile"]}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -159,7 +164,7 @@ export default function ProfileGrid() {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <TextField label="Bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" defaultValue="I like dinner!" style={{marginTop: "8%"}}
+                            <TextField label="Bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" defaultValue={fromServer["bio"]} style={{marginTop: "8%"}}
                             />
                         </Grid> 
                     </Paper>
@@ -169,12 +174,12 @@ export default function ProfileGrid() {
                 <Grid item container xs={12}>
                     <Paper className={classes.recentMealsPaper}>
                         <Grid item xs={12}>
-                            <TextField label="Dietry Requirements" fullWidth defaultValue="no cheese"
+                            <TextField label="Dietry Requirements" fullWidth defaultValue={fromServer["dietary"]}
                             />
                         </Grid>
 
                         <Grid item xs={12}>
-                            <TextField label="Allergens" fullWidth defaultValue="dogs"
+                            <TextField label="Allergens" fullWidth defaultValue={fromServer["allergens"]}
                             />
                         </Grid>
                     </Paper>
