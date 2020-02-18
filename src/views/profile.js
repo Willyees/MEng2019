@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '../components/AppBar.js';
 import ProfileGrid from '../components/GridProfile.js';
+import {fromServer} from '../components/GridProfile.js';
+import $ from 'jquery';
 
 
 const styles = makeStyles(theme => ({
@@ -18,17 +20,30 @@ const styles = makeStyles(theme => ({
 }));
 
 const useStyles = makeStyles(styles);
-
-
+var copyInitial;
 
 class ProfileTemplate extends Component {
     constructor(props){
         super(props);
     }
+	
+    componentDidMount() {
+	//Copy initial data to see what is changed
+	copyInitial = fromServer;
+    }
 
     onSubmit = event => {
-        //Oscar work your magic ;)
-        alert("hello there");
+	event.preventDefault(); //stop page reload
+	//Loop through fromServer array, see if anything has changed
+	$.each(fromServer, function(key, valueObj){
+	    if(valueObj != copyInitial[key]){ //Done use !==
+		alert("changed");
+		//Something has changed at it needs updating
+		//IMPORTANT: This working relies on the ID's of the textfields in GridProfile
+		//Been the same as the database ids kinda confusing
+	    }
+	});
+        	
     };
 
     render() {
