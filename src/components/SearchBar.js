@@ -81,6 +81,9 @@ class SearchBar extends Component {
         this.handleErrorDate = this.handleErrorDate.bind(this);
     }
    
+    testx(){
+        console.log("test");
+    }
 
     getDietReqDb(){
         //ajax call to db to get the available dietary requirements. Or just hardcode them here
@@ -126,7 +129,7 @@ class SearchBar extends Component {
             console.log("error in date format");
             return;
         }
-
+        console.log("asd");
         //ajax call with this.state.values wiht only the non empty ones
         let obj = {}
         //console.log(this.time[this.state.values.time]);
@@ -141,6 +144,7 @@ class SearchBar extends Component {
             }
         }
         console.log(obj)
+    this.testx();
 	//Gonna hardcode this to pass to the backend for ease of development
 	//var toPass = {title: "dinner", city: "Edinburgh", date: "2020-03-27", time: ["08:00:00", "11:00:00"], dietary: "Vegan"};
 	$.ajax({ url: 'PHPF/filter.php',
@@ -203,11 +207,11 @@ class SearchBar extends Component {
         <div className={classes.root}>
             <Paper className={classes.paper} >
                 {/*<IconButton className={classes.iconButton} id="search_btn" type="submit"/ > */} <SearchIcon className={classes.iconSearch}/>
-                <TextField className={classes.innerElem} id="search-bar" name="title" placeholder="Title keywords" type="search" value={this.state.values.title} onChange={this.handleOnChange}></TextField>  
+                <TextField className={classes.innerElem} id="search-bar-title" name="title" placeholder="Title keywords" type="search" value={this.state.values.title} onChange={this.handleOnChange}></TextField>  
             </Paper>
             <Paper className={classes.paper} >
                 <LocationOnIcon className={classes.iconSearch} />
-                <TextField className={classes.innerElem} error={this.state.formErrors.city} helperText={this.state.formErrors.city} id="search-bar" name="city" placeholder="City" type="search" value={this.state.values.city} onChange={this.handleOnChange}></TextField>  
+                <TextField className={classes.innerElem} error={this.state.formErrors.city} helperText={this.state.formErrors.city} id="search-bar-city" name="city" placeholder="City" type="search" value={this.state.values.city} onChange={this.handleOnChange}></TextField>  
             </Paper>
             <Button id="search-button" className={classes.submitButton} variant="contained" color="primary" onClick={this.handleSearch}>
                 SEARCH
