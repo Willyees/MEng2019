@@ -38,7 +38,7 @@ class LogInTemplate extends Component {
 	    },
             success: function(output) {
                 if(output == "DONE"){
-                    return <Redirect to="/map"/>
+			document.location = "/map";
                 }
 		else{
 		    alert("Invalid Credentials");
