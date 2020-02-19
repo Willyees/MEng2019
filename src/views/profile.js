@@ -21,7 +21,6 @@ const styles = makeStyles(theme => ({
 
 const useStyles = makeStyles(styles);
 var copyInitial;
-
 class ProfileTemplate extends Component {
     constructor(props){
         super(props);
@@ -29,7 +28,8 @@ class ProfileTemplate extends Component {
 	
     componentDidMount() {
 	//Copy initial data to see what is changed
-	copyInitial = fromServer;
+	   // copyInitial = fromServer;
+	    copyInitial = Object.assign({}, fromServer);
     }
 
     onSubmit = event => {
@@ -37,6 +37,8 @@ class ProfileTemplate extends Component {
 	//Loop through fromServer array, see if anything has changed
 	let toServer = {};
 	let flag = 0;
+	console.log("INITIAL");
+	console.log(copyInitial);
 	$.each(fromServer, function(key, valueObj){
 	    if(valueObj != copyInitial[key]){ //DONT use !==
 		//Something has changed at it needs updating
@@ -58,7 +60,7 @@ class ProfileTemplate extends Component {
 			      "update" : toServer
 		      },
 			  success: function(output) {
-			      alert(output);
+		              alert(output);
 			      if(output == "DONE"){
 				  alert("Records Updated");
 			      }
