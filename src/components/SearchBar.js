@@ -45,6 +45,7 @@ const styles = ({
 
 })
 
+
 class SearchBar extends Component {
     constructor(props){
         super(props);
@@ -80,15 +81,27 @@ class SearchBar extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.handleErrorDate = this.handleErrorDate.bind(this);
     }
-   
+    
+    //debug method because cant use a ajax locally
+    handleResponseAjax(data){
+        this.props.handlerFiltered(data);
+    }
     ajaxCallFilter(obj){
-        $.ajax({ url: 'PHPF/filter.php',
-	    type: 'post',
-	    data: {"data" : obj},
-	    success: function(output) {
-		alert(output);
-	    }
-	    });
+        if(window.location.host == "localhost:3000"){
+            //fetch wont work because missing CORS from php header. will hardcode data for quick debug purposes
+            //fetch('http://3.94.4.155/PHPF/filter.php', {mode : 'no-cors'}).then((response) => {return response.json();}).then((a) =>{console.log(a);});
+            var data = ["104"];
+            this.handleResponseAjax(data);
+            
+        } else{
+            $.ajax({ url: 'PHPF/filter.php',
+            type: 'post',
+            data: {"data" : obj},
+            success: function(data){
+                this.handleResponseAjax(data);
+            }
+            });
+        }
     }
 
     getDietReqDb(){
@@ -124,7 +137,6 @@ class SearchBar extends Component {
 
     //at least the city must be specified, otherwise error shown
     handleSearch(event){
-        this.props.handlerFiltered();
         //check no errors in the form
         if(this.state.values.city == ""){
             this.setState({...this.state, formErrors : { ...this.state.formErrors, city : "city must be chosen"}});

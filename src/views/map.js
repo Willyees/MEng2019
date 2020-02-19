@@ -14,8 +14,8 @@ const mapStyles = {
   height: '100%',
 };
 
-const stores = [];
-const storeDetails = [];
+const stores = [];//[{lat1, lng1}, {..}]
+const storeDetails = [];//[{usr, nm, dt, tm, id, city}, {..}]
 
 
 const objSorted = new Map();
@@ -34,6 +34,7 @@ function sortDate(a,b)
 *@param {[array]} meals meals retreived from the DB
 */
 function sortMealsByDate(meals){
+	objSorted.clear();
 	meals.sort(sortDate);
 	var tempArr = [];//storing all the meal info about mealsC happening at the same day
 	var currDate = new Date(meals[0].dt);
@@ -55,7 +56,6 @@ function sortMealsByDate(meals){
 	}
 	//push the last arrays
 	objSorted.set(currDate, tempArr);
-
 }
 
 
@@ -108,8 +108,9 @@ $.ajax({ url: 'PHPF/getmeals.php',
 
 //DEBUG fields to be used on local project
 if(window.location.host == "localhost:3000"){
-	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101,Edinburgh","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102,Edinburgh","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104,Edinburgh"];
+	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101,Edinburgh","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102,Glasgow","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104,Edinburgh"];
 	ajaxCall(s);
+
 }
 
 //End Debug
@@ -122,6 +123,7 @@ class MapTemplate extends Component {
 		    activeMarker: {},
 			selectedPlace: {},
 			filtered : false,
+			dataMeals : new Map(),
 		  }
 		 this.onMarkerClick = this.onMarkerClick.bind(this);
 		 this.onMapClicked = this.onMapClicked.bind(this);
@@ -129,22 +131,35 @@ class MapTemplate extends Component {
 		 this.test = this.test.bind(this);
 
 		 sortMealsByDate(storeDetails);
+		 this.state.meals = objSorted;
 	}
+
 	test(){
-		console.log(storeDetails);
-		console.log(stores)
-		stores.pop();
-		console.log(storeDetails);
-		console.log(stores)
+		objSorted.clear();
 		
 	}
 	/**
 	 * handler passed to the search bar, in order to set the state from a child component upon certain event happened
 	 */
-	handlerFiltered(){
-		this.setState({filtered: true});
-
+	handlerFiltered(idMeals){
+		console.log("handlerfiltered" + idMeals);
+		//find the meals using their id and then create a new objsorted by sorting it
+		var filteredMeals = [];
+		for(var id of idMeals){
+			console.log(id);
+			for(var index in storeDetails){
+				console.log(storeDetails[index].id);
+				if(storeDetails[index].id == id){
+					console.log("entered");
+					filteredMeals.push(storeDetails[index]);
+				}
+			}
+		}
+		sortMealsByDate(filteredMeals);
+		//update the state to update the meallist
+		this.setState({filtered: true, meals : objSorted});
 	}
+
 	onMarkerClick(props, marker, e) {
 	    console.log(props);
 	    console.log(marker);
@@ -224,7 +239,7 @@ render() {
 			}
 			</Grid>
 			{
-				renderMealList(objSorted)	
+				<MealList meals={this.state.meals}/>	
 			}
 		<button onClick={this.test}>asd</button>
 		</Grid>

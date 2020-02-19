@@ -1,10 +1,15 @@
 import React from 'react';
 import ReactDom from 'react-dom'
-import { render as renderT, getAllByText, findAllByText, fireEvent, findByTestId, getByTestId } from '@testing-library/react';
+import { render as renderT, getAllByText, findAllByText, fireEvent, findByTestId, getByTestId, cleanup } from '@testing-library/react';
 import App from './App';
 import ShowMealTemplate from './views/show-meal';
 import {formatTime} from './helperFunctions'
 import SearchBar from './components/SearchBar';
+import MapTemplate from './views/map';
+import LogInTemplate from './views/log-in';
+import SignUpTemplate from './views/sign-up';
+import CreateMealTemplate from './views/create-meal';
+import HomeTemplate from './views/home';
 
 import { mount, shallow, render} from 'enzyme';
 
@@ -21,6 +26,7 @@ describe('show-meals', () => {
   it('renders wihtout crashing', () => {
     const div = document.createElement('div');
     renderT(<ShowMealTemplate/>, div);
+    cleanup();
   })
 })
 
@@ -43,20 +49,21 @@ describe('helper functions', () => {
 describe('SearchBar', () => {
   const mockHandlerFiltered = jest.fn();
 
-  it('all fields are empty', () => {
-    const { getByText } = renderT(<SearchBar handlerFiltered={mockHandlerFiltered}/>);
-    
-    const node = getByText('SEARCH');
-    //simulate ajax call
-    fireEvent.click(node);
+  it('all fields are empty - ajax not called', () => {
+    const mockedFn = jest.fn();
+    let shallowui = createShallow()
+    const wrapper = shallowui(<SearchBar handlerFiltered={mockHandlerFiltered}/>).dive();
+    const instance = wrapper.instance();
+    instance.ajaxCallFilter = mockedFn;
+    wrapper.find('#search-button').simulate('click');
 
-    expect($.ajax).not.toBeCalled();
+    expect(mockedFn).not.toBeCalled();
   })
 
-  fit('only city is passed', () => {
+  it('only city is passed - ajax called', () => {
     /*
     const component = require('./components/SearchBar')
-    //jest.spyOn(SearchBar.prototype, 'testx');
+    //const spy = jest.spyOn($, 'ajax').mockImplementation(() => Promise.resolve({ success: true }))
     const { getByPlaceholderText, getByText } = render(<SearchBar handlerFiltered={mockHandlerFiltered}/>);
     
     const city = getByPlaceholderText('City');
@@ -71,7 +78,7 @@ describe('SearchBar', () => {
     //using enzyme
 
     const mockedFn = jest.fn();
-    const spy = jest.spyOn($, 'ajax').mockImplementation(() => Promise.resolve({ success: true }))
+    
     let shallowui = createShallow()
     const wrapper = shallowui(<SearchBar handlerFiltered={mockHandlerFiltered}/>).dive();
     const instance = wrapper.instance();
@@ -84,3 +91,38 @@ describe('SearchBar', () => {
     expect(mockedFn.mock.calls[0][0]).toEqual(expected);    
   })
 })
+
+
+describe('map page', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    renderT(<MapTemplate/>, div);
+    cleanup();
+  })
+})
+
+
+describe('log in page', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    renderT(<LogInTemplate/>, div);
+    cleanup();
+  })
+})
+
+describe('sign up page', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    renderT(<SignUpTemplate/>, div);
+    cleanup();
+  })
+})
+
+describe('create-meal page', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    renderT(<CreateMealTemplate/>, div);
+    cleanup();
+  })
+})
+

@@ -14,18 +14,31 @@ const useStyles = makeStyles({
     },
 })
 
-export function renderMealList(meals){
-    var output = [];
-    meals.forEach((v,k) => {
+export default class MealList extends Component{
+    constructor(props){
+        super(props);
+        console.log(props.meals);
+
+    }
+    setUp(){
+        var output = [];
+        this.props.meals.forEach((v,k) => {
         output.push(<MealListHeaderDate date={k} />);
         v.forEach(element => {
-            output.push(<MealList title={element.nm} city={element.city} time={element.tm} id={element.id}/>);
+            output.push(<MealListSingle title={element.nm} city={element.city} time={element.tm} id={element.id}/>);
         })
     });
     return output;
+    }
+    render(){
+        return(
+            this.setUp()
+        );
+    }
+    
 }
 
-export default function MealList(props){
+function MealListSingle(props){
     const classes = useStyles(); 
     //props: title, city, date, time
     return(
