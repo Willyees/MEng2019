@@ -7,3 +7,6 @@ Napier MEng 2019-2020 project
 - Open a normal terminal and cd to where you cloned this project.
 - Run "npm install" to get the node modules needed to run this project.
 - Run "npm start" to run this project in a browser locally.
+
+
+[![CircleCI](https://circleci.com/gh/Willyees/MEng2019.svg?style=svg&circle-token=ab19919e50b034ad1d0ba895ad57c659bfbf1c6d)](https://circleci.com/gh/Willyees/workflows/MEng2019)
