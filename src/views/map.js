@@ -241,7 +241,7 @@ render() {
 			{
 				<MealList meals={this.state.meals}/>	
 			}
-		<button onClick={this.test}>asd</button>
+		<button onClick={this.test}>testbtn</button>
 		</Grid>
 	);
   }

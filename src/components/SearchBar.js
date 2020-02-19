@@ -91,15 +91,13 @@ class SearchBar extends Component {
             //fetch wont work because missing CORS from php header. will hardcode data for quick debug purposes
             //fetch('http://3.94.4.155/PHPF/filter.php', {mode : 'no-cors'}).then((response) => {return response.json();}).then((a) =>{console.log(a);});
             var data = ["104"];
-            this.handleResponseAjax(data);
-            
+                this.handleResponseAjax(data);
         } else{
+            var f = this;
             $.ajax({ url: 'PHPF/filter.php',
             type: 'post',
             data: {"data" : obj},
-            success: function(data){
-                this.handleResponseAjax(data);
-            }
+            success: f.handleResponseAjax
             });
         }
     }
