@@ -35,15 +35,39 @@ class ProfileTemplate extends Component {
     onSubmit = event => {
 	event.preventDefault(); //stop page reload
 	//Loop through fromServer array, see if anything has changed
+	let toServer = {};
+	let flag = 0;
 	$.each(fromServer, function(key, valueObj){
-	    if(valueObj != copyInitial[key]){ //Done use !==
-		alert("changed");
+	    if(valueObj != copyInitial[key]){ //DONT use !==
 		//Something has changed at it needs updating
 		//IMPORTANT: This working relies on the ID's of the textfields in GridProfile
 		//Been the same as the database ids kinda confusing
+		toServer[key] = valueObj;
+		flag = 1;
 	    }
 	});
-        	
+	//Lets pass this to the server, then clear the toServer array. 	
+	//Should only call if toServer is not empty, but easy to check that with PHP
+	console.log(toServer);
+	if(flag == 1){
+		$.ajax({ url: 'PHPF/updateuserinfo.php',
+		      type: 'post',
+		      async: false,
+		      data: {
+			      "username" : copyInitial["username"], 
+			      "update" : toServer
+		      },
+			  success: function(output) {
+			      alert(output);
+			      if(output == "DONE"){
+				  alert("Records Updated");
+			      }
+			      else{
+				  alert("failed");
+			      }
+			  }
+		});
+	}
     };
 
     render() {
