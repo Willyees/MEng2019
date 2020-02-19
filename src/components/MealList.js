@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import {makeStyles} from '@material-ui/core/styles'
+import {formatTime} from '../helperFunctions'
 
 const useStyles = makeStyles({
     paper:{
@@ -52,7 +53,7 @@ function MealListSingle(props){
             <Typography>{props.city}</Typography>
             </Grid>
             <Grid item xs>
-            <Typography>{props.time}</Typography>
+            <Typography>{formatTime(props.time)}</Typography>
             </Grid>
         </Grid>
         </Paper>
