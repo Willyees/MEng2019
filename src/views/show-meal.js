@@ -12,11 +12,6 @@ const styles = makeStyles(theme => ({
         display: "flex",
         justifyContent: "space-between",
     },
-    // grid:{
-    //     marginRight: "-15px",
-    //     marginLeft: "-15px",
-    //     width: "auto"
-    // }
     
 }));
 
