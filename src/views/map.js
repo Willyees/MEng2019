@@ -140,9 +140,11 @@ class MapTemplate extends Component {
 	}
 	/**
 	 * handler passed to the search bar, in order to set the state from a child component upon certain event happened
+	 * @param idMeals string representation of array of strings
 	 */
 	handlerFiltered(idMeals){
-		console.log("handlerfiltered" + idMeals);
+		console.log(idMeals);
+		idMeals = JSON.parse(idMeals);
 		//find the meals using their id and then create a new objsorted by sorting it
 		var filteredMeals = [];
 		for(var id of idMeals){
@@ -155,8 +157,10 @@ class MapTemplate extends Component {
 				}
 			}
 		}
+		console.log(filteredMeals);
 		sortMealsByDate(filteredMeals);
 		//update the state to update the meallist
+		console.log(objSorted);
 		this.setState({filtered: true, meals : objSorted});
 	}
 

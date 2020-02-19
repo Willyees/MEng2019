@@ -84,6 +84,8 @@ class SearchBar extends Component {
     
     //debug method because cant use a ajax locally
     handleResponseAjax(data){
+        console.log(this);//used to check why server version is not finding the fucntion handlerfiltered
+        console.log(data);
         this.props.handlerFiltered(data);
     }
     ajaxCallFilter(obj){
@@ -91,13 +93,17 @@ class SearchBar extends Component {
             //fetch wont work because missing CORS from php header. will hardcode data for quick debug purposes
             //fetch('http://3.94.4.155/PHPF/filter.php', {mode : 'no-cors'}).then((response) => {return response.json();}).then((a) =>{console.log(a);});
             var data = ["104"];
-                this.handleResponseAjax(data);
+            this.handleResponseAjax(data);
+            var f = this;
+            console.log(f);
         } else{
             var f = this;
             $.ajax({ url: 'PHPF/filter.php',
             type: 'post',
             data: {"data" : obj},
-            success: f.handleResponseAjax
+            success: function(output) {
+                f.props.handlerFiltered(output);
+            }
             });
         }
     }
