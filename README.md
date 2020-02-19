@@ -9,4 +9,4 @@ Napier MEng 2019-2020 project
 - Run "npm start" to run this project in a browser locally.
 
 CircleCi status project tests:
-[![CircleCI](https://circleci.com/gh/Willyees/MEng2019.svg?style=svg)](https://circleci.com/gh/Willyees/workflows/MEng2019)
+[![CircleCI](https://circleci.com/gh/Willyees/MEng2019.svg?style=svg&circle-token=ab19919e50b034ad1d0ba895ad57c659bfbf1c6d)](https://circleci.com/gh/Willyees/workflows/MEng2019)
