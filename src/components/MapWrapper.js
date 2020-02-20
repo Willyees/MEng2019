@@ -43,7 +43,8 @@ class MapWrapper extends Component{
         console.log(this.props.meals);
         this.props.meals.forEach((v,k) => {
             v.forEach(element => {
-                output.push(<Marker name={element.nm} position={element.pos} onClick={this.onMarkerClick}/>)
+                output.push(<Marker name={element.usr + "," + element.nm + "," + element.dt + "," + element.tm + "," + element.id}
+                position={element.pos} onClick={this.onMarkerClick}/>)
             })
         
             
@@ -55,15 +56,15 @@ class MapWrapper extends Component{
         let head1, p1, p2, p3;
         var x;
         if(typeof this.state.selectedPlace.name !== "undefined"){
-        var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-        x = this.state.selectedPlace.name.split(",");
-        var today  = new Date(x[2]);
-        var new1 = today.toLocaleDateString("en-US", options);
-        var li = "/show-meal?meal=" + x[4];
-        head1 = <h1><a href={li}>{x[1]}</a></h1>; //Meal Name Make this a link to view meal with ID as param meal
-        p1 = <p>Host: {x[0]}</p>;
-        p2 = <p>Date: {new1}</p>;
-        p3 = <p>Time: {x[3]}</p>;
+            var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            x = this.state.selectedPlace.name.split(",");
+            var today  = new Date(x[2]);
+            var new1 = today.toLocaleDateString("en-US", options);
+            var li = "/show-meal?meal=" + x[4];
+            head1 = <h1><a href={li}>{x[1]}</a></h1>; //Meal Name Make this a link to view meal with ID as param meal
+            p1 = <p>Host: {x[0]}</p>;
+            p2 = <p>Date: {new1}</p>;
+            p3 = <p>Time: {x[3]}</p>;
         }
         return(
             <Map
