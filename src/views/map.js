@@ -3,24 +3,19 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import $ from 'jquery';
-import { Map as Mapg, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react';
 import AppBar from '../components/AppBar';
 import SearchBar from '../components/SearchBar';
 import Grid from '@material-ui/core/Grid';
 import MealList, {MealListHeaderCity, MealListHeaderDate, renderMealList} from '../components/MealList';
+import MapWrapper from '../components/MapWrapper'
 
-const mapStyles = {
-  width: '100%',
-  height: '100%',
-};
 
 const stores = [];//[{lat1, lng1}, {..}]
 const storeDetails = [];//[{usr, nm, dt, tm, id, city}, {..}]
 
-
 const objSorted = new Map();
 
-function sortDate(a,b)
+function sortByDate(a,b)
 {
 	if(new Date(a.dt) < new Date(b.dt)){
 		return -1;
@@ -35,7 +30,13 @@ function sortDate(a,b)
 */
 function sortMealsByDate(meals){
 	objSorted.clear();
-	meals.sort(sortDate);
+	// if(Array.isArray(meals) || meals.length == 0){
+	// 	console.log("can't sort empty array of meals");
+	// 	return;
+	// }
+
+	
+	meals.sort(sortByDate);
 	var tempArr = [];//storing all the meal info about mealsC happening at the same day
 	var currDate = new Date(meals[0].dt);
 	
@@ -58,8 +59,8 @@ function sortMealsByDate(meals){
 	objSorted.set(currDate, tempArr);
 }
 
-
-function ajaxCall(output){
+//export for debug
+export function ajaxCall(output){
 	//console.log(output);
 	var ret = output;
 	//console.log(ret[0]);
@@ -97,6 +98,7 @@ function ajaxCall(output){
 		tmpDetails.pos = tmp;
 		storeDetails.push(tmpDetails);
 		stores.push(tmp);
+		stores.push(tmpDetails.id);
 	}
 }
 $.ajax({ url: 'PHPF/getmeals.php',
@@ -108,6 +110,7 @@ $.ajax({ url: 'PHPF/getmeals.php',
 
 //DEBUG fields to be used on local project
 if(window.location.host == "localhost:3000"){
+	console.log("debug local host");
 	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101,Edinburgh","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102,Glasgow","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104,Edinburgh"];
 	ajaxCall(s);
 
@@ -119,19 +122,16 @@ class MapTemplate extends Component {
 	constructor(props) {
         super(props);
 		this.state = {
-		    showingInfoWindow: false,
-		    activeMarker: {},
-			selectedPlace: {},
 			filtered : false,
 			dataMeals : new Map(),
 		  }
-		 this.onMarkerClick = this.onMarkerClick.bind(this);
-		 this.onMapClicked = this.onMapClicked.bind(this);
 		 this.handlerFiltered = this.handlerFiltered.bind(this);
 		 this.test = this.test.bind(this);
 
 		 sortMealsByDate(storeDetails);
-		 this.state.meals = objSorted;
+		 this.state.dataMeals = objSorted;
+		 console.log(storeDetails);
+		 console.log(this.state.dataMeals);
 	}
 
 	test(){
@@ -161,98 +161,45 @@ class MapTemplate extends Component {
 		sortMealsByDate(filteredMeals);
 		//update the state to update the meallist
 		console.log(objSorted);
-		this.setState({filtered: true, meals : objSorted});
+		this.setState({filtered: true, dataMeals : objSorted});
 	}
 
-	onMarkerClick(props, marker, e) {
-	    console.log(props);
-	    console.log(marker);
-	    console.log(e);
-            this.setState({
-	      selectedPlace: props,
-	      activeMarker: marker,
-	      showingInfoWindow: true
-	    });
-	}
-	onMapClicked = (props) => {
-	    if (this.state.showingInfoWindow) {
-	      this.setState({
-		showingInfoWindow: false,
-		activeMarker: null
-	      })
-	    }
-  	};
-	getName(tempo){
+
+	/*getName(tempo){
 	    for (var i = 0; i < storeDetails.length; i++) { 
 			if(storeDetails[i].pos == tempo){
 		    	return storeDetails[i].usr + "," + storeDetails[i].nm + "," + storeDetails[i].dt + "," + storeDetails[i].tm + "," + storeDetails[i].id;
 		}
 		}
 		
-	}
+	}*/
 
 	
 
 render() {
 	console.log("render")
-    let head1, p1, p2, p3;
-    var x;
-    if(typeof this.state.selectedPlace.name !== "undefined"){
-	var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-	x = this.state.selectedPlace.name.split(",");
-	var today  = new Date(x[2]);
-	var new1 = today.toLocaleDateString("en-US", options);
-	var li = "/show-meal?meal=" + x[4];
-	head1 = <h1><a href={li}>{x[1]}</a></h1>; //Meal Name Make this a link to view meal with ID as param meal
-	p1 = <p>Host: {x[0]}</p>;
-	p2 = <p>Date: {new1}</p>;
-	p3 = <p>Time: {x[3]}</p>;
-    }
     return (
 	<Grid class="main-body" container>
 		<Grid container item xs={12} justify="center">
 			<SearchBar handlerFiltered={this.handlerFiltered}/>
 		</Grid>
-		{<Grid id="mapM" container item xs={12} justify="center">
-			<Mapg
-			google={this.props.google}
-		onClick={this.onMapClicked}
-			zoom={13}
-			style={mapStyles}
-			initialCenter={{ lat: 55.9533, lng: -3.1883}}
-			>
-			{
-				stores.map(element => <Marker name={this.getName(element)} position={element} onClick={this.onMarkerClick}/>)
-				
-			}
-			<InfoWindow
-					marker={this.state.activeMarker}
-					visible={this.state.showingInfoWindow}>
-					<div style={{color:"black"}}>
-					{head1}
-					{p1}
-					{p2}
-					{p3}
-					</div>
-				</InfoWindow>
-			</Mapg>
-		</Grid>}
+		<Grid id="mapM" container item xs={12}>
+			{<MapWrapper meals={this.state.dataMeals}/>}
+		</Grid>
 			<Grid item xs>
 			{
 				this.state.filtered && (objSorted.values().next().done == false ) && <MealListHeaderCity city={objSorted.values().next().value[0].city} />
 			}
 			</Grid>
 			{
-				<MealList meals={this.state.meals}/>	
+				<MealList meals={this.state.dataMeals}/>	
 			}
 		<button onClick={this.test}>testbtn</button>
 		</Grid>
 	);
   }
 }
-export default GoogleApiWrapper({
-  apiKey: 'AIzaSyBY6v3bJwMKv6Ov4t1pVjGX0byoaX1K2gI'
-})(MapTemplate)
+export default (MapTemplate)
 
 //export default MapTemplate;
 

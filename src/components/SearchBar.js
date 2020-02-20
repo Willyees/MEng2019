@@ -92,7 +92,7 @@ class SearchBar extends Component {
         if(window.location.host == "localhost:3000"){
             //fetch wont work because missing CORS from php header. will hardcode data for quick debug purposes
             //fetch('http://3.94.4.155/PHPF/filter.php', {mode : 'no-cors'}).then((response) => {return response.json();}).then((a) =>{console.log(a);});
-            var data = ["104"];
+            var data = '["104", "101"]';
             this.handleResponseAjax(data);
             var f = this;
             console.log(f);
