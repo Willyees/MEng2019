@@ -131,10 +131,7 @@ class SearchBar extends Component {
         var numRange = [];
         console.log(this.state.values.time);
         console.log(strRange);
-        for(var s of strRange){
-            numRange.push(this.time[s]);
-            console.log(s);
-        }
+        numRange.push([this.time[strRange]]);
         console.log(numRange);
         return numRange;
     }
@@ -185,8 +182,16 @@ class SearchBar extends Component {
     }
 
     handleDate(date_){ //date is handled differently (not like an event)
+        console.log(date_);
         if(!date_) //checking date is not empty string or null
-            return;
+            if(date_ == null){//in case is null (was set by the clearing button on the calendar, set the state without any modification on date_)
+                console.log("null date");
+                console.log(date_)
+                this.setState({...this.state, values : { ...this.state.values, date : date_}});
+                return;
+            }
+            else
+                return;
         var str = date_.toString();
             console.log("handle data");
             //console.log(this.state.values.date + "state");
@@ -234,7 +239,7 @@ class SearchBar extends Component {
             {/*second row: show date, time, dietary requirements + filter button*/}
             <Paper className={classes.paper}>
             <MuiPickersUtilsProvider className={classes.innerElem} utils={DateFnsUtils}>
-                <KeyboardDatePicker className={classes.innerElem} name="date" margin="normal" clearable autoOk={true} variant="inline" format="dd/MM/yyyy"
+                <KeyboardDatePicker className={classes.innerElem} name="date" margin="normal" clearable={true} autoOk={true} variant="dialog" format="dd/MM/yyyy"
                 value={this.state.values.date} onError={this.handleErrorDate} onChange={this.handleDate} emptyLabel="Pick Date"/>
             </MuiPickersUtilsProvider>
             </Paper>
@@ -244,7 +249,7 @@ class SearchBar extends Component {
                 selected => {if(selected == ""){
                     return "Time frame";
                 }
-                return selected.join(',');}
+                return selected;}
             }>
                 <MenuItem value={[]} disabled>Time frame</MenuItem>
                 {Object.keys(this.time).map((v,k) => 
@@ -252,6 +257,7 @@ class SearchBar extends Component {
                     {/*<Checkbox checked={this.state.values.time.indexOf(v) + 1} />{v}*/}
                     {v} 
                 </MenuItem>)}
+                <MenuItem value="none">None</MenuItem>
             </Select>
             </Paper>
             <Paper className={classes.paper}>
