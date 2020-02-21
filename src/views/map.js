@@ -26,16 +26,15 @@ function sortByDate(a,b)
 	return 0;
 }
 /**function used to format the meal array into an object sorted by dates. Useful for the meal list component
-*@param {[array]} meals meals retreived from the DB
+*@param meals meals retreived from the DB
 */
 function sortMealsByDate(meals){
-	objSorted.clear();
-	// if(Array.isArray(meals) || meals.length == 0){
-	// 	console.log("can't sort empty array of meals");
-	// 	return;
-	// }
-
-	
+	objSorted.clear();//clear as first thing in case an empty filter string is passed. In this way all the markers will be removed from the map
+	if(meals.length == 0){
+		console.log("can't sort empty array of meals");
+		return;
+	}
+		
 	meals.sort(sortByDate);
 	var tempArr = [];//storing all the meal info about mealsC happening at the same day
 	var currDate = new Date(meals[0].dt);
@@ -124,14 +123,16 @@ class MapTemplate extends Component {
 		this.state = {
 			filtered : false,
 			dataMeals : new Map(),
+			mapCenter : {},
 		  }
 		 this.handlerFiltered = this.handlerFiltered.bind(this);
 		 this.test = this.test.bind(this);
 
 		 sortMealsByDate(storeDetails);
 		 this.state.dataMeals = objSorted;
+		 this.state.mapCenter = (objSorted.values().next().done ? this.state.mapCenter : objSorted.values().next().value[0].pos)
 		 console.log(storeDetails);
-		 console.log(this.state.dataMeals);
+		 console.log(this.state);
 	}
 
 	test(){
@@ -157,11 +158,12 @@ class MapTemplate extends Component {
 				}
 			}
 		}
+		console.log(typeof(filteredMeals));
 		console.log(filteredMeals);
 		sortMealsByDate(filteredMeals);
 		//update the state to update the meallist
 		console.log(objSorted);
-		this.setState({filtered: true, dataMeals : objSorted});
+		this.setState({filtered: true, dataMeals : objSorted, mapCenter : (objSorted.values().next().done ? this.state.mapCenter : objSorted.values().next().value[0].pos)}, () => console.log(this.state.mapCenter));
 	}
 
 
@@ -184,7 +186,7 @@ render() {
 			<SearchBar handlerFiltered={this.handlerFiltered}/>
 		</Grid>
 		<Grid id="mapM" container item xs={12}>
-			{<MapWrapper meals={this.state.dataMeals}/>}
+			{<MapWrapper meals={this.state.dataMeals} mapCenter={this.state.mapCenter}/>}
 		</Grid>
 			<Grid item xs>
 			{

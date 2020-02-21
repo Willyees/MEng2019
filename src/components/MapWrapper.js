@@ -13,10 +13,11 @@ class MapWrapper extends Component{
         this.state = {
             showingInfoWindow: false,
 		    activeMarker: {},
-			selectedPlace: {},
+            selectedPlace: {},
         }
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
+        this.renderMarkers = this.renderMarkers.bind(this);
     }
 
     onMarkerClick(props, marker, e) {
@@ -53,6 +54,8 @@ class MapWrapper extends Component{
         return output;
     }
     render(){
+        console.log("CENTER: ");
+        console.log(this.props.mapCenter)
         let head1, p1, p2, p3;
         var x;
         if(typeof this.state.selectedPlace.name !== "undefined"){
@@ -65,14 +68,22 @@ class MapWrapper extends Component{
             p1 = <p>Host: {x[0]}</p>;
             p2 = <p>Date: {new1}</p>;
             p3 = <p>Time: {x[3]}</p>;
+            
         }
+        // console.log(this.props.meals)
+        //     if(this.props.meals.length != 0){
+        //         console.log("setting center map");
+        //         this.setState({mapCenter : this.props.meals.values().next().value.position});
+        //     }
         return(
             <Map
 			google={this.props.google}
 		onClick={this.onMapClicked}
 			zoom={13}
 			style={mapStyles}
-			initialCenter={{ lat: 55.9533, lng: -3.1883}}
+            //initialCenter={this.props.mapCenter}
+            center={this.props.mapCenter}
+            initialCenter = {this.props.mapCenter}
 			>
                 {this.renderMarkers()}
 			<InfoWindow
