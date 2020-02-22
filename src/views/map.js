@@ -8,6 +8,10 @@ import SearchBar from '../components/SearchBar';
 import Grid from '@material-ui/core/Grid';
 import MealList, {MealListHeaderCity, MealListHeaderDate, renderMealList} from '../components/MealList';
 import MapWrapper from '../components/MapWrapper'
+import ToggleButton from '@material-ui/lab/ToggleButton'
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
+import MapIcon from '@material-ui/icons/Map';
+import ListIcon from '@material-ui/icons/List';
 
 
 const stores = [];//[{lat1, lng1}, {..}]
@@ -124,9 +128,11 @@ class MapTemplate extends Component {
 			filtered : false,
 			dataMeals : new Map(),
 			mapCenter : {},
+			sliderBtnChosen : "map-view"
 		  }
 		 this.handlerFiltered = this.handlerFiltered.bind(this);
 		 this.test = this.test.bind(this);
+		 this.handleToggleBtnChange = this.handleToggleBtnChange.bind(this);
 
 		 sortMealsByDate(storeDetails);
 		 this.state.dataMeals = objSorted;
@@ -166,7 +172,12 @@ class MapTemplate extends Component {
 		this.setState({filtered: true, dataMeals : objSorted, mapCenter : (objSorted.values().next().done ? this.state.mapCenter : objSorted.values().next().value[0].pos)}, () => console.log(this.state.mapCenter));
 	}
 
+	handleToggleBtnChange(e, v){
+		console.log(v);
+		this.setState({sliderBtnChosen : v});
+	}
 
+	
 	/*getName(tempo){
 	    for (var i = 0; i < storeDetails.length; i++) { 
 			if(storeDetails[i].pos == tempo){
@@ -185,15 +196,29 @@ render() {
 		<Grid container item xs={12} justify="center">
 			<SearchBar handlerFiltered={this.handlerFiltered}/>
 		</Grid>
+		<Grid container item xs justify="flex-end">
+				<ToggleButtonGroup value={this.state.sliderBtnChosen} style={{margin : "10px"}} onChange={this.handleToggleBtnChange} exclusive>
+					<ToggleButton value="map-view" aligned >
+						<MapIcon/>
+					</ToggleButton>
+					<ToggleButton value="list-view" aligned>
+						<ListIcon/>
+					</ToggleButton>
+				</ToggleButtonGroup>
+			
+		</Grid>
+		{ this.state.sliderBtnChosen == "map-view" &&
 		<Grid id="mapM" container item xs={12}>
 			{<MapWrapper meals={this.state.dataMeals} mapCenter={this.state.mapCenter}/>}
 		</Grid>
+		}
+			{ this.state.sliderBtnChosen == "list-view" &&
 			<Grid item xs>
 			{
 				this.state.filtered && (objSorted.values().next().done == false ) && <MealListHeaderCity city={objSorted.values().next().value[0].city} />
 			}
-			</Grid>
-			{
+			</Grid> &&
+			
 				<MealList meals={this.state.dataMeals}/>	
 			}
 		<button onClick={this.test}>testbtn</button>
