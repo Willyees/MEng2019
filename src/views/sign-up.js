@@ -127,18 +127,6 @@ class SignUpTemplate extends Component {
         let formErrors = this.state.formErrors;
 
         switch(name){
-            case 'fName':
-                formErrors.fName = 
-                    value.length < 3
-                    ? "minimum 3 characters required"
-                    : "";
-                break;
-            case 'lName':
-                formErrors.lName = 
-                    value.length < 3 
-                    ? "minimum 3 characters required"
-                    : "";
-                break;
 
             //not sure how to test the username to see if its already in db so I have left the username check for now, should go here like the others though.
 
@@ -150,7 +138,7 @@ class SignUpTemplate extends Component {
                 break;
             case 'password_c':
                 formErrors.password_c = 
-                    value.match(this.state.password)
+                (value.match(this.state.password) && (value.length == this.state.password.length))
                     ? ""
                     : "passwords must match"
                 break;
@@ -220,6 +208,7 @@ class SignUpTemplate extends Component {
             });
         } else{
             console.error('FORM INVALID - DISPLAY ERROR MESSAGE');
+            alert("Form invalid, please check again");
         }
         
     };
