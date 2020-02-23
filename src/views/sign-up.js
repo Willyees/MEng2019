@@ -451,18 +451,12 @@ class SignUpTemplate extends Component {
                         {/* preferences paper */}
                         <Grid item container xs={12} style={{width:'40%', marginTop:'7.5%'}}>
                             <Paper style={{width:'100%', padding:'5%',marginBottom:'18.7%', "background-image" : `url(${board})`}}>
-                                
-                                    {/* <TextField label="Dietry Requirements" fullWidth defaultValue="no cheese"
-                                    /> */}
                                     
-                                    <TextField name="dietary" id="dietary-ddmenu" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth/>
-                                
+                                <TextField name="dietary" id="dietary-ddmenu" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%", marginTop:"20%"}}/>
 
                                 <Grid item xs={12}>
-                                    {/* <TextField label="Allergens" fullWidth defaultValue="dogs"
-                                    /> */}
 
-                                    <TextField multiline name="allergens" id="allergens-mltb" onChange={this.onChange} value={this.allergens} type="text" label="Allergens" variant="outlined" fullWidth/>
+                                    <TextField multiline name="allergens" id="allergens-mltb" onChange={this.onChange} value={this.allergens} type="text" rows={3}label="Allergens" variant="outlined" fullWidth/>
                                 </Grid>
                             </Paper>
                         </Grid>

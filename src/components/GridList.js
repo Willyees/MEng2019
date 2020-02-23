@@ -5,10 +5,13 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import InfoIcon from '@material-ui/icons/Info';
 
-import image1 from '../res/bear1.png';
-import image2 from '../res/bear2.png';
-import image3 from '../res/bear3.png';
+import image1 from '../res/burger.jfif';
+import image2 from '../res/spaghetti.jfif';
+import image3 from '../res/group_meal.webp';
+
+// import recentMeals from '../views/alessiosmealpage';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,72 +26,113 @@ const useStyles = makeStyles(theme => ({
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
   },
-  title: {
-    color: theme.palette.primary.light,
-  },
   titleBar: {
     background:
       'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
   },
+  icon:{
+    color: 'rgba(255, 255, 255, 0.54)',
+  },
 }));
 
-/**
- * The example data is structured as follows:
- *
- * import image from 'path/to/image.jpg';
- * [etc...]
- *
- * const tileData = [
- *   {
- *     img: image,
- *     title: 'Image',
- *     author: 'author',
- *   },
- *   {
- *     [etc...]
- *   },
- * ];
- */
+// function sortRecentMeals(){
+//   recentMeals.sort((a,b) => a.date > b.date );
+// }
 
 export default function SingleLineGridList() {
   const classes = useStyles();
+  
+  //sortRecentMeals;
 
+  // if(recentMeals.size >=3){
+  //   const tileData = [
+  //     {
+  //       /* 
+  //         img: {recentMeals["meal[0].image"]},
+  //         title: {recentMeals["meal[0].title"]},
+  //         author: {recentMeals["meal[0].author"]},
+  //       */
+  //     },
+
+  //     {
+  //       /* 
+  //         img: {recentMeals["meal[1].image"]},
+  //         title: {recentMeals["meal[1].title"]},
+  //         author: {recentMeals["meal[1].author"]},
+  //       */
+  //     },
+
+  //     {
+  //       /* 
+  //         img: {recentMeals["meal[2].image"]},
+  //         title: {recentMeals["meal[2].title"]},
+  //         author: {recentMeals["meal[2].author"]},
+  //       */
+  //     },
+  //   ];
+  // } else{
+  //   //keep the default
+  //   const tileData = [
+  //     {
+  //         img: image1,
+  //         title: 'meal1',
+  //         author: 'unknown',
+          
+  //     },
+  //     {
+  //        img: image2,
+  //        title: 'meal2',
+  //        author: 'unknown',
+  //    },
+  //    {
+  //        img: image3,
+  //        title: 'meal3',
+  //        author: 'unknown',
+  //    },
+  //   ];
+  // }
+
+  //this should be replaced by the above once new meals page is introduced
   const tileData = [
     {
         img: image1,
-        title: 'bear1',
-        author: 'Dylan!',
+        title: 'meal1',
+        author: 'unknown',
+        
     },
     {
        img: image2,
-       title: 'bear2',
-       author: 'Dylan!!',
+       title: 'meal2',
+       author: 'unknown',
    },
    {
        img: image3,
-       title: 'bear3',
-       author: 'Dylan!!!',
-   },     
-];
+       title: 'meal3',
+       author: 'unknown',
+   },
+  ];
+
 
   return (
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={2.5}>
         {tileData.map(tile => (
-          <GridListTile key={tile.img}>
+          <GridListTile key={tile.img} cols={2} >
             <img src={tile.img} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
+              subtitle={<span>by: {tile.author}</span>}
               classes={{
                 root: classes.titleBar,
                 title: classes.title,
               }}
               actionIcon={
-                <IconButton aria-label={`star ${tile.title}`}>
-                  <StarBorderIcon className={classes.title} />
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                  <InfoIcon />
                 </IconButton>
               }
             />
+            
           </GridListTile>
         ))}
       </GridList>

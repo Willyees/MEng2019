@@ -454,14 +454,14 @@ class ProfileTemplate extends Component {
                         {/* preferences paper */}
                         <Grid item container xs={12} style={{width:'40%', marginTop:'7.5%'}}>
                             <Paper style={{width:'100%', padding:'5%',marginBottom:'18.7%', "background-image" : `url(${board})`}}> 
-                                <TextField name="dietary" id="dietary" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth/>
+
+                                <TextField name="dietary" id="dietary" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%", marginTop:"20%"}}/>
                                 {/* oscar stuff */}
                                 {/* deafultValue={fromServer["dietary"]}*/}
-                                
 
                                 <Grid item xs={12}>
-                                    <TextField multiline name="allergens" id="allergens" onChange={this.onChange} value={this.allergens} type="text" label="Allergens" variant="outlined" fullWidth/>
 
+                                    <TextField multiline name="allergens" id="allergens" onChange={this.onChange} value={this.allergens} type="text" rows={3}label="Allergens" variant="outlined" fullWidth/>
                                     {/* oscar stuff */}
                                     {/* deafultValue={fromServer["allergens"]}*/}
                                 </Grid>
