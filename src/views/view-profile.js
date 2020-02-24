@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '../components/AppBar.js';
 import ViewProfileGrid from '../components/GridViewProfile.js';
-
+import {isUserLoggedIn, getCookie} from '../helperFunctions';
 
 const styles = makeStyles(theme => ({
     root:{
@@ -22,6 +22,9 @@ class ProfileViewTemplate extends Component {
     }
 
     render() {
+	if(!isUserLoggedIn()){
+	    document.locaction = "/log-in";
+	}
         return(
             <div>
                 <AppBar>

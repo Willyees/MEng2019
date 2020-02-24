@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import SaveIcon from '@material-ui/icons/Save';
+import $ from 'jquery';
 
 //get the user profile pic
 import profile from "../res/bear1.png";
@@ -46,12 +47,26 @@ const labels = {
     4: 'Meal Master',
     5: 'Meal Maestro',
   };
-
+var dataPopulate;
 export default function ProfileGrid() {
   const classes = useStyles();
   //this stuff only needed if we need to change the rating on this page
 //   const [ value, setValue] = React.useState(2);
 //   const [ hover, setHover] = React.useState(-1);
+   var url = new URL(window.location.href);
+   var param = url.searchParams.get("usr");
+   $.ajax({ url: 'PHPF/viewprofile.php',
+      type: 'post',
+      async: false,
+      data: {
+	      //Get from URL
+	      "username" : param,
+      },
+	  success: function(output) {
+	      dataPopulate = JSON.parse(output);
+	  }
+   });
+
 
   
 
@@ -70,7 +85,7 @@ export default function ProfileGrid() {
                         <Grid item container xs={12} style={{marginTop: "4%", justifyContent: "center"}}>
                             {/* get the users first name then last name */}
                             <Typography variant="h5" component="h5" gutterBottom style={{fontWeight:"bolder"}}>
-                                First Name Last Name
+	  			{dataPopulate["name"] + " " + dataPopulate["surname"]}
                             </Typography>
                         </Grid>
 
@@ -102,7 +117,7 @@ export default function ProfileGrid() {
 
                                     {/* get the email */}
                                     <Typography variant="h6" component="h6" gutterBottom>
-                                        john@example.com
+	  				{dataPopulate["username"]}
                                     </Typography>
                                 </Paper>
                                 
@@ -116,7 +131,7 @@ export default function ProfileGrid() {
                                     
                                     {/* get the city and country */}
                                     <Typography variant="h6" component="h6" gutterBottom>
-                                        London, United Kingdom
+	  				{dataPopulate["city"] + ", " + dataPopulate["country"]}
                                     </Typography>
                                 </Paper>
                             </Grid>
@@ -129,7 +144,7 @@ export default function ProfileGrid() {
                                     
                                     {/* get the age but maybe just age range? */}
                                     <Typography variant="h6" component="h6" gutterBottom>
-                                        26
+	  				{dataPopulate["dob"]}
                                     </Typography>
                                 </Paper>
                             </Grid>
@@ -163,7 +178,7 @@ export default function ProfileGrid() {
 
                                 {/* get the bio */}
                                 <Typography variant="h6" component="h6" gutterBottom>
-                                    I like dinner!
+	  				{dataPopulate["bio"]}
                                 </Typography>
                             </Grid> 
                         </Paper>
@@ -185,7 +200,7 @@ export default function ProfileGrid() {
 
                                 {/* get the dietry requirements */}
                                 <Typography variant="h6" component="h6" gutterBottom>
-                                    no cheese
+	  				{dataPopulate["dietary"]}
                                 </Typography>
                             </Grid> 
                         </Paper>
@@ -198,7 +213,7 @@ export default function ProfileGrid() {
 
                                 {/* get the Allergens */}
                                 <Typography variant="h6" component="h6" gutterBottom>
-                                    dogs
+	  			 	{dataPopulate["allergens"]}
                                 </Typography>
                             </Grid> 
                         </Paper>
