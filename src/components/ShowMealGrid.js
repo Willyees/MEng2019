@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import GridList from '../components/GridList.js';
 import { blue } from '@material-ui/core/colors';
+import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns'
+import 'date-fns'
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -19,6 +22,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import mealPic from "../res/mealPic.jpg";
 import board from "../res/chopping_board_chopped.png";
 import calendar from "../res/calendar.png";
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,11 +59,12 @@ function test(e){
   console.log("---------------")
 }
 
-export default function ShowMealGrid() {
+export default function ShowMealGrid(props) {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
   const [ hover, setHover] = React.useState(-1);
-
+  //const [ date, setDate] = React.useState(props.date)
+  console.log("gay2" + props.date)
   return (
     
     <ThemeProvider theme={theme}>
@@ -84,10 +89,12 @@ export default function ShowMealGrid() {
               <Grid item container xs={6}>
                 {/* date grid */}
                 <Grid id="date_grid" item xs={12}>
-                  <Typography id="date" variant="h4" component="h4" gutterBottom>
-                    Date
-                  </Typography>
-                  <img id="calendar" src={calendar} height='80%' width='80%' style={{justifyContent:'right'}}/>
+                  <Grid item container justify="center">
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <KeyboardDatePicker value={props.date} name="date" margin="normal" clearable autoOk={true} disabled disableOpenOnEnter variant="static" label="Date picker" format="dd/MM/yyyy"
+                          onChange={() =>{}}/>
+                    </MuiPickersUtilsProvider>
+                  </Grid>
                 </Grid>
                 {/* time and city grid */}
                 <Grid id="time_and_city_grid" container item xs={12} style={{justifyContent:"left"}}>
@@ -100,7 +107,7 @@ export default function ShowMealGrid() {
                       </Typography>
                     </Grid>
                     {/* actual time from db grid */}
-                    <Grid id="get_time_grid" item xs={2}>
+                    <Grid id="get_time_grid" item xs={6}>
                       <Typography id="time" variant="h4" component="h4" gutterBottom style={{justifyContent:"left"}}>
                         "Time"
                       </Typography>
@@ -116,7 +123,7 @@ export default function ShowMealGrid() {
                       </Typography>
                     </Grid>
                     {/* actual city from db grid */}
-                    <Grid id="get_city_grid" item xs={2}>
+                    <Grid id="get_city_grid" item xs={6}>
                       <Typography id="city" variant="h4" component="h4" gutterBottom style={{justifyContent:"left"}}>
                         "City"
                       </Typography>
@@ -155,21 +162,21 @@ export default function ShowMealGrid() {
             </Grid>
                   
 
-            <Grid id="description_grid" item container xs={12}>
-              <Card variant="outlined" height="100%">
-                <CardContent>
-                  <Typography id="description_title" gutterBottom style={{"justify-content": `center`, fontSize:'18', "text-decoration-line": `underline`}}>
-                    Meal Description
-                  </Typography>
-                  <Typography variant="body2" component="p" style={{"justify-items": `left`, fontSize:'13'}}>
-                    body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
-                    unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
-                    dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                  </Typography>
-                </CardContent>
-              </Card>
+            <Grid id="description_grid" container >
+              <Grid item xs={12}>
+                <Card variant="outlined" height="100%">
+                  <CardContent>
+                    <Typography id="description_title" gutterBottom style={{"justify-content": `center`, fontSize:'18', "text-decoration-line": `underline`}}>
+                      Meal Description
+                    </Typography>
+                    <Typography id="description" variant="body2" component="p" style={{"justify-items": `left`, fontSize:'13'}}>
+                      this is an informal meal to get to know new people that would like to be eaten
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
             </Grid>
-
+            <br/>
             <Grid id="guest_limit_grid" item container xs={6}>
               <Typography id="guest_limit_lb" variant="h4" component="h4">
                   Guest Limit:
