@@ -68,9 +68,9 @@ class SearchBar extends Component {
         }
         this.dietary = [];
         this.time = {
-            "Breakfast" : ["07:00:00","11:00:00"],
-            "Lunch" : ["12:00:00", "17:00:00"],
-            "Dinner" : ["18:00:00","22:00:00"],
+            "Breakfast" : ["07:00:00","11:59:59"],
+            "Lunch" : ["12:00:00", "17:00:59"],
+            "Dinner" : ["17:01:00","22:59:59"],
             "Night" : ["23:00:00", "07:00:00"]
         };
 
@@ -102,6 +102,7 @@ class SearchBar extends Component {
             type: 'post',
             data: {"data" : obj},
             success: function(output) {
+                alert(output);
                 f.props.handlerFiltered(output);
             }
             });
@@ -131,9 +132,9 @@ class SearchBar extends Component {
         var numRange = [];
         console.log(this.state.values.time);
         console.log(strRange);
-        numRange.push([this.time[strRange]]);
+        //numRange.push();
         console.log(numRange);
-        return numRange;
+        return this.time[strRange];
     }
 
     //at least the city must be specified, otherwise error shown
