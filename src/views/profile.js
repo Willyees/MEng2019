@@ -184,8 +184,10 @@ class ProfileTemplate extends Component {
         
         
         this.setState({formErrors, [name]: value }, () => console.log(this.state));
-        // if(event.target.value !== undefined){
-        //     fromServer[event.target.id] = event.target.value;
+        
+        // if(typeof(event.target.value) !== undefined){
+        //     console.log(fromServer);
+            fromServer[event.target.id] = event.target.value;
         // }
     };
 
@@ -293,7 +295,7 @@ class ProfileTemplate extends Component {
 
                 /* oscar stuff 
                 instead of src={profile} do this:
-                src={fromServer["profilePic"]}  */
+                src={fromServer["profilePic"]}*/  
             )
         }
 
@@ -311,16 +313,13 @@ class ProfileTemplate extends Component {
                                     {/* <TextField label="First Name" style={{fontWeight: "bolder", marginTop: "-8%"}} 
                                     /> */}
 
-                                    <TextField error= {formErrors.fName} helperText= {formErrors.fName} name="fName" id="name" onChange={this.onChange} value={this.fName} type="text" label="First Name" style={{fontWeight: "bolder", color: 'red'}} />
-                                    {/* oscar stuff */}
-                                    {/* defaultValue={fromServer["name"]}  */}
+                                    <TextField error= {formErrors.fName} helperText= {formErrors.fName} name="fName" id="name" onChange={this.onChange} value={this.fName} type="text" label="First Name" style={{fontWeight: "bolder", color: 'red'}} defaultValue={fromServer["name"]} />
+                                    
 
                                     {/* <TextField label="Last Name" style={{fontWeight: "bolder", marginTop: "-8%"}}/> */}
 
-                                    <TextField error= {formErrors.lName} helperText= {formErrors.lName} name="lName" id="surname" onChange={this.onChange} value={this.lName} type="text" label="Last Name" style={{fontWeight: "bolder"}} />
-
-                                    {/* oscar stuff */}
-                                    {/* defaultValue={fromServer["surname"]}  */}
+                                    <TextField error= {formErrors.lName} helperText= {formErrors.lName} name="lName" id="surname" onChange={this.onChange} value={this.lName} type="text" label="Last Name" style={{fontWeight: "bolder"}} defaultValue={fromServer["surname"]} />
+                                    
                                     
 
                                     {/* edit icon on click reveal textfields and hide label, change (or add another icon) to a save icon when clicked and it switch between them every time */}
@@ -363,70 +362,59 @@ class ProfileTemplate extends Component {
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <TextField id="username" label="Email Address" fullWidth 
+                                        <TextField id="username" label="Email Address" fullWidth deafultValue={fromServer["username"]} 
                                         />
-
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["username"]}  */}
-                                    </Grid>
-
-                                    <Grid item xs={12}>
-
-                                        <TextField error= {formErrors.address_1} helperText= {formErrors.address_1} name="address_1" id="addressOne" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" fullWidth/>
-
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["addressOne"]}  */}
-                                    </Grid>
-
-                                    <Grid item xs={12}>
-                                        <TextField error= {formErrors.address_2} helperText= {formErrors.address_2} name="address_2" id="addressTwo" onChange={this.onChange} value={this.address_2} type="text" label="Address Line 2" fullWidth/>
-
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["addressTwo"]}*/}
                                         
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.postcode} helperText= {formErrors.postcode} name="postcode" id="postcode" onChange={this.onChange} value={this.postcode} type="text" label="Postcode" fullWidth/>
+                                        <TextField error= {formErrors.address_1} helperText= {formErrors.address_1} name="address_1" id="addressOne" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" fullWidth deafultValue={fromServer["addressOne"]} />
 
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["postcode"]}*/}
+                                        
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <TextField error= {formErrors.address_2} helperText= {formErrors.address_2} name="address_2" id="addressTwo" onChange={this.onChange} value={this.address_2} type="text" label="Address Line 2" fullWidth deafultValue={fromServer["addressTwo"]}/>
+
+                                        
+                                        
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.city} helperText= {formErrors.city} name="city" id="city" onChange={this.onChange} value={this.city} type="text" label="City" fullWidth/>
-
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["city"]}*/}
+                                        <TextField error= {formErrors.postcode} helperText= {formErrors.postcode} name="postcode" id="postcode" onChange={this.onChange} value={this.postcode} type="text" label="Postcode" fullWidth deafultValue={fromServer["postcode"]}/>
+                                        
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.country} helperText= {formErrors.country} name="country" id="country" onChange={this.onChange} value={this.country} type="text" label="Country" fullWidth/>
+                                        <TextField error= {formErrors.city} helperText= {formErrors.city} name="city" id="city" onChange={this.onChange} value={this.city} type="text" label="City" fullWidth deafultValue={fromServer["city"]}/>
+                                        
+                                    </Grid>
 
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["country"]}*/}
+                                    <Grid item xs={12}>
+
+                                        <TextField error= {formErrors.country} helperText= {formErrors.country} name="country" id="country" onChange={this.onChange} value={this.country} type="text" label="Country" fullWidth deafultValue={fromServer["country"]}/>
+
+                                        
+                                        
                                     </Grid>
 
                                     <Grid item xs={12}>
 
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker fullWidth error= {formErrors.dob} helperText= {formErrors.dob} name="dob" id="dob" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date of Birth" format="dd/MM/yyyy"
-                                            value={this.state.dob} onChange={this.handleDOB} />
+                                            value={this.state.dob} onChange={this.handleDOB} deafultValue={fromServer["dob"]}/>
                                         </MuiPickersUtilsProvider>
-
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["dob"]}*/}
+                                        
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.phone} helperText= {formErrors.phone} name="phone" id="mobile" onChange={this.onChange} value={this.phone} type="text" label="Phone Number" fullWidth/>
+                                        <TextField error= {formErrors.phone} helperText= {formErrors.phone} name="phone" id="mobile" onChange={this.onChange} value={this.phone} type="text" label="Phone Number" fullWidth deafultValue={fromServer["mobile"]}/>
 
-                                        {/* oscar stuff */}
-                                        {/* deafultValue={fromServer["mobile"]}*/}
+                                        
                                     </Grid>
                                 </Grid>
                             </Paper>
@@ -443,10 +431,8 @@ class ProfileTemplate extends Component {
 
                                 <Grid item xs={12}>
                                     <TextField multiline name="bio" id="bio" onChange={this.onChange} value={this.bio} type="text"
-                                    label="Your bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" style={{marginTop: "8%"}}/>
-
-                                    {/* oscar stuff */}
-                                    {/* deafultValue={fromServer["bio"]}*/}
+                                    label="Your bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" style={{marginTop: "8%"}} deafultValue={fromServer["bio"]}/>
+                                    
                                 </Grid> 
                             </Paper>
                         </Grid>
@@ -455,15 +441,13 @@ class ProfileTemplate extends Component {
                         <Grid item container xs={12} style={{width:'40%', marginTop:'7.5%'}}>
                             <Paper style={{width:'100%', padding:'5%',marginBottom:'18.7%', "background-image" : `url(${board})`}}> 
 
-                                <TextField name="dietary" id="dietary" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%", marginTop:"20%"}}/>
-                                {/* oscar stuff */}
-                                {/* deafultValue={fromServer["dietary"]}*/}
+                                <TextField name="dietary" id="dietary" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%", marginTop:"20%"}} deafultValue={fromServer["dietary"]}/>
+                                
 
                                 <Grid item xs={12}>
 
-                                    <TextField multiline name="allergens" id="allergens" onChange={this.onChange} value={this.allergens} type="text" rows={3}label="Allergens" variant="outlined" fullWidth/>
-                                    {/* oscar stuff */}
-                                    {/* deafultValue={fromServer["allergens"]}*/}
+                                    <TextField multiline name="allergens" id="allergens" onChange={this.onChange} value={this.allergens} type="text" rows={3}label="Allergens" variant="outlined" fullWidth deafultValue={fromServer["allergens"]}/>
+                                    
                                 </Grid>
                             </Paper>
                         </Grid>
