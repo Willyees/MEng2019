@@ -20,6 +20,7 @@ import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
+import Switch from '@material-ui/core/Switch';
 
 import board from "../res/chopping_board_chopped.png"
 import bear from "../res/bear1.png";
@@ -33,7 +34,11 @@ const styles = ({
         'letter-spacing': '0.00938em',
         transform : 'scale(0.75)',
         'transform-origin' : 'top left',
+    },
+    padded : {
+        padding : '1rem'
     }
+
 })
 
 const dietary_requirements = ["Vegan", "Vegetarian", "None"];
@@ -47,12 +52,15 @@ class CreateMealTemplate extends Component {
             values : {
                 title : "",
                 description: "",
-                city : "",
+                
                 date : new Date().toLocaleDateString("en-US"),
                 time : new Date().toLocaleTimeString(),
                 proposed_meal : "",
                 expected_contribution : 0.0,
                 guest_limit : 0,
+                address_1 : "",
+                city : "",
+                post_code : ""
             },
             optional : {
                 suggested_theme : "",
@@ -64,8 +72,21 @@ class CreateMealTemplate extends Component {
                 suggested_theme_vis : false,
                 dietary_vis : false,
                 age_range_vis : false,
+                own_address_vis : true,
             }
         }
+        //ajax call to get the user address and set the values to it
+        //debug
+        let own_address = this.getOwnAddressAjax();
+        this.address_1_own = own_address[0];
+        this.city_own = own_address[1];
+        this.post_code_own = own_address[2];
+        //might use the setState which is a lazy f, i think works better with async ajax
+        this.state.values.address_1 = this.address_1_own;
+        this.state.values.city = this.city_own;
+        this.state.values.post_code = this.post_code_own;
+        console.log(this.state.values);
+        console.log(this.address_1_own);
         this.onChange = this.onChange.bind(this);
         this.onChangeOptional = this.onChangeOptional.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -73,10 +94,15 @@ class CreateMealTemplate extends Component {
         this.debugFillFields = this.debugFillFields.bind(this);
         this.handleVis = this.handleVis.bind(this);
         this.handleSlider = this.handleSlider.bind(this);
+        this.handleSwitchAddress = this.handleSwitchAddress.bind(this);
     }
 
     optional_inputs = ["dietary", "suggested_theme"];
-   
+    
+    getOwnAddressAjax(){
+        //return address1, city, post code
+        return ["West Bridge Street", "Falkirk", "FK1 5RS"];
+    }
     handleSlider(e, value){
         this.setState({...this.state, optional : { ...this.state.optional, age_range : value}}); //this will update for everytick. It can be laggy. Might consider to not use an handler and just get data after form is set up
     }
@@ -112,6 +138,22 @@ class CreateMealTemplate extends Component {
         this.setState({...this.state, visibility : {...this.state.visibility, [event.target.value] : event.target.checked }});
         //this.setState({...this.state, values : {...this.state.values, [stateName] : ""}}); //TODO: PUT THIS IN THE OTHER SET STATE
         console.log(this.state.visibility);
+    }
+
+    handleSwitchAddress(event){
+        var name = event.target.value;
+        var index = name.lastIndexOf("_");
+        var stateName = name.slice(0,index);
+        console.log(event.target.value +  " " + event.target.checked);
+        var s = {...this.state};
+        s.visibility[event.target.value] = event.target.checked
+        if(event.target.checked){
+            s.values.address_1 = this.address_1_own;
+            s.values.city = this.city_own;
+            s.values.post_code = this.post_code_own;
+        }
+        this.setState({s}, () => console.log(this.state));
+        //this.setState({...this.state, visibility : {...this.state.visibility, [event.target.value] : event.target.checked }});
     }
 
     onSubmit(event) {
@@ -178,7 +220,26 @@ class CreateMealTemplate extends Component {
             <div>
             <p />
             </div>
-            <Grid container justify="center">
+            <Grid container justify="center" spacing={2}>
+            <Grid item>
+            <Paper className={classes.padded} style={{"background-image" : `url(${board})`}}>
+                <Grid item>
+                    <Typography variant="h6">Profile Address stored</Typography>
+                </Grid>
+                <Grid item>
+                    <TextField name="address_1" id="address_1_cm" onChange={this.onChange} value={this.state.values.address_1} 
+                    type="text" label="Address 1" disabled={this.state.visibility.own_address_vis} />
+                </Grid>
+                <Grid item>
+                    <TextField name="city" id="city_cm" onChange={this.onChange} value={this.state.values.city}
+                    type="text" label="City" disabled={this.state.visibility.own_address_vis} />
+                </Grid>
+                <Grid item>
+                    <TextField name="post_code" id="post_code_cm" onChange={this.onChange} value={this.state.values.post_code}
+                type="text" label="Post Code" disabled={this.state.visibility.own_address_vis} />
+                </Grid>
+            </Paper>
+            </Grid>
             <Grid item>
             <Paper style={{"background-image" : `url(${board})`}}>
             <form onSubmit={this.onSubmit}> 
@@ -192,10 +253,10 @@ class CreateMealTemplate extends Component {
                     <TextField multiline name="description" id="description_cm" onChange={this.onChange} value={this.state.values.description} type="text"
                     label="Description" variant="outlined"/>
                 </Grid>
-                <Grid item>
-                    <TextField name="city" id="city_cm" onChange={this.onChange} value={this.state.values.city} type="text" label="City" 
-                    />
-                </Grid>
+                <FormLabel>Location</FormLabel>
+                <FormGroup>
+                    <FormControlLabel control={<Switch value="own_address_vis" checked={this.state.visibility.own_address_vis} onClick={this.handleSwitchAddress}/>} label="At the stored address" />
+                </FormGroup>
 
                 <Grid item>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
