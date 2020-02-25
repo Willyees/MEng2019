@@ -75,6 +75,7 @@ class SignUpTemplate extends Component {
             address_2: null,
             postcode: null,
             city: null,
+	    file:null,
             country: null,
             dob:  null, //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
             phone: null,
@@ -193,17 +194,23 @@ class SignUpTemplate extends Component {
         if(formValid(this.state.formErrors)){
             //add to this function the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
             const {fName, bio, city} = this.state;
+		    const fd = new FormData();
+    fd.append('image', this.state.file, this.state.file.name);
             //^dunno if other elements can be added to the line above (db) so i've just left it for now^
             $.ajax({ url: 'PHPF/signup.php',
                 type: 'post',
-                data: {"data" : this.state},
+		 enctype: 'multipart/form-data',
+                data: {"data" : this.state, "test" : fd},
                 success: function(output) {
+		    alert(output);
                     if(output == "DONE"){
                             window.location.href = "/" 
                     }
                     else if(output == 1){
                         alert("Username Already Exists");
-                    }
+                    }else{
+			alert(output);
+		    }
                 }
             });
         } else{
@@ -216,17 +223,18 @@ class SignUpTemplate extends Component {
     handleImageChange = event => {
         event.preventDefault();
     
-        let reader = new FileReader();
-        let file = event.target.files[0];
+      let reader = new FileReader();
+      let file = event.target.files[0];
     
         reader.onloadend = () => {
           this.setState({
-            file: file,
-            imagePreviewUrl: reader.result
+            imagePreviewUrl: reader.result,
+	    file: file,
           });
         }
 
-        if (event.target.files[0]) {reader.readAsDataURL(file);}
+       if (event.target.files[0]) {reader.readAsDataURL(file);}
+
       };
 
 
@@ -240,11 +248,11 @@ class SignUpTemplate extends Component {
         if (imagePreviewUrl) {
             $imagePreview = (
                 <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
-                    <img src={imagePreviewUrl} 
+                    <img src={imagePreviewUrl} id="uploadme"
                         className= {myStyle.image} style={{ contentFit:'contain',height: '100%', width:'100%', maxHeight:'100%', maxWidth:'100%',
                         border: "1px solid #ddd", borderRadius: "15px", 
                         }}
-                    />
+                   />
                 </div>
             );
 
@@ -252,7 +260,7 @@ class SignUpTemplate extends Component {
         else {
         $imagePreview = (
                 <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
-                    <img src={profile} height="100%" width="100%" className= {myStyle.image} style={{
+                    <img src={profile} id="uploadme" height="100%" width="100%" className= {myStyle.image} style={{
                         contentFit:'contain',border: "1px solid #ddd", borderRadius: "15px", 
                         }} 
                     />
@@ -265,7 +273,7 @@ class SignUpTemplate extends Component {
         return(
 
             <div className={classes.root}>
-                <form onSubmit={this.onSubmit}>
+                <form id="fm" onSubmit={this.onSubmit} enctype="multipart/form-data">
                 <Grid container style={{width:'75%', marginLeft:'19%'}}>
                     {/* first half of page */}
                     <Grid item container xs={6} style={{marginTop:'7.5%', maxWidth:'40%', marginBottom:'7.5%'}}>
@@ -320,7 +328,8 @@ class SignUpTemplate extends Component {
                                                     
                                                     <input className="fileInput" 
                                                     type="file"
-                                                    onChange={this.handleImageChange} />
+						    id="up2"
+                                                    onChange={this.handleImageChange}  />
                                                 </div>
 
                                             </div>
@@ -345,7 +354,7 @@ class SignUpTemplate extends Component {
                                     {/* </Grid> */}
 
                                     <Grid item xs={12}>
-                                        <TextField label="Email Address" fullWidth defaultValue="john@example.com" 
+                                        <TextField label="Email Address" fullWidth defaultValue="john@example.com" name="username" value={this.username} onChange={this.onChange}
                                         />
                                     </Grid>
                                     

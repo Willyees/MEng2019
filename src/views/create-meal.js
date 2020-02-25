@@ -101,7 +101,16 @@ class CreateMealTemplate extends Component {
     
     getOwnAddressAjax(){
         //return address1, city, post code
-        return ["West Bridge Street", "Falkirk", "FK1 5RS"];
+	let fromS;
+	$.ajax({ url: 'PHPF/getaddress.php',
+            type: 'post',
+	    async:false,
+            data: {"username" :getCookie("Username")},
+            success: function(output) {
+                fromS = JSON.parse(output); 
+            }
+        });
+        return [fromS["addressOne"], fromS["city"], fromS["postcode"]];
     }
     handleSlider(e, value){
         this.setState({...this.state, optional : { ...this.state.optional, age_range : value}}); //this will update for everytick. It can be laggy. Might consider to not use an handler and just get data after form is set up
