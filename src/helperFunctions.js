@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { FormHelperText } from '@material-ui/core';
-
+var md5 = require('md5');
 export function isUserLoggedIn(){
     console.log("userLoggedIN?");
     var un = getCookie("Username");
@@ -41,5 +41,5 @@ export function formatTime(time){
 }
 
 export function getProfilePicURL(username){
-    return "/prof/" + username.split('@')[0].replace(/[^\w]/g, "")
+    return "/prof/" + md5(username)
 }
