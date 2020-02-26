@@ -16,7 +16,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import 'date-fns';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import {getCookie} from '../helperFunctions';
+import {getCookie, getProfilePicURL} from '../helperFunctions';
 
 
 import IconButton from '@material-ui/core/IconButton';
@@ -69,6 +69,7 @@ const useStyles = makeStyles(theme => ({
 }));
 let fromServer;
 var copyInitial;
+let profilePicURL = getProfilePicURL(getCookie("Username"));
 class ProfileTemplate extends Component {
     constructor(props){
         super(props);
@@ -260,7 +261,7 @@ class ProfileTemplate extends Component {
         const classes = useStyles;
         
         let {imagePreviewUrl} = this.state;
-        let $imagePreview = null;
+        let $imagePreview = profilePicURL;
 
         $.ajax({ url: 'PHPF/getuserinfo.php',
             type: 'post',
@@ -275,7 +276,7 @@ class ProfileTemplate extends Component {
         if (imagePreviewUrl) {
             $imagePreview = (
                 <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
-                    <img src={imagePreviewUrl} 
+                    <img src={profilePicURL} 
                         className= {myStyle.image} id="profilePic" style={{ contentFit:'contain',height: '100%', width:'100%', maxHeight:'100%', maxWidth:'100%',
                         border: "1px solid #ddd", borderRadius: "15px", 
                         }}
@@ -287,15 +288,11 @@ class ProfileTemplate extends Component {
         else {
         $imagePreview = (
                 <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
-                    <img src={profile} height="100%" width="100%" className= {myStyle.image} id="profilePic" style={{
+                    <img src={profilePicURL} height="100%" width="100%" className= {myStyle.image} id="profilePic" style={{
                         contentFit:'contain',border: "1px solid #ddd", borderRadius: "15px", 
                         }} 
                     />
-                </div>
-
-                /* oscar stuff 
-                instead of src={profile} do this:
-                src={fromServer["profilePic"]}*/  
+                </div> 
             )
         }
 
@@ -362,20 +359,20 @@ class ProfileTemplate extends Component {
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <TextField id="username" label="Email Address" fullWidth deafultValue={fromServer["username"]} 
+                                        <TextField id="username" label="Email Address" fullWidth defaultValue={fromServer["username"]} 
                                         />
                                         
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.address_1} helperText= {formErrors.address_1} name="address_1" id="addressOne" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" fullWidth deafultValue={fromServer["addressOne"]} />
+                                        <TextField error= {formErrors.address_1} helperText= {formErrors.address_1} name="address_1" id="addressOne" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" fullWidth defaultValue={fromServer["addressOne"]} />
 
                                         
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <TextField error= {formErrors.address_2} helperText= {formErrors.address_2} name="address_2" id="addressTwo" onChange={this.onChange} value={this.address_2} type="text" label="Address Line 2" fullWidth deafultValue={fromServer["addressTwo"]}/>
+                                        <TextField error= {formErrors.address_2} helperText= {formErrors.address_2} name="address_2" id="addressTwo" onChange={this.onChange} value={this.address_2} type="text" label="Address Line 2" fullWidth defaultValue={fromServer["addressTwo"]}/>
 
                                         
                                         
@@ -383,19 +380,19 @@ class ProfileTemplate extends Component {
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.postcode} helperText= {formErrors.postcode} name="postcode" id="postcode" onChange={this.onChange} value={this.postcode} type="text" label="Postcode" fullWidth deafultValue={fromServer["postcode"]}/>
+                                        <TextField error= {formErrors.postcode} helperText= {formErrors.postcode} name="postcode" id="postcode" onChange={this.onChange} value={this.postcode} type="text" label="Postcode" fullWidth defaultValue={fromServer["postcode"]}/>
                                         
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.city} helperText= {formErrors.city} name="city" id="city" onChange={this.onChange} value={this.city} type="text" label="City" fullWidth deafultValue={fromServer["city"]}/>
+                                        <TextField error= {formErrors.city} helperText= {formErrors.city} name="city" id="city" onChange={this.onChange} value={this.city} type="text" label="City" fullWidth defaultValue={fromServer["city"]}/>
                                         
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.country} helperText= {formErrors.country} name="country" id="country" onChange={this.onChange} value={this.country} type="text" label="Country" fullWidth deafultValue={fromServer["country"]}/>
+                                        <TextField error= {formErrors.country} helperText= {formErrors.country} name="country" id="country" onChange={this.onChange} value={this.country} type="text" label="Country" fullWidth defaultValue={fromServer["country"]}/>
 
                                         
                                         
@@ -405,14 +402,14 @@ class ProfileTemplate extends Component {
 
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker fullWidth error= {formErrors.dob} helperText= {formErrors.dob} name="dob" id="dob" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date of Birth" format="dd/MM/yyyy"
-                                            value={this.state.dob} onChange={this.handleDOB} deafultValue={fromServer["dob"]}/>
+                                            value={this.state.dob} onChange={this.handleDOB} defaultValue={fromServer["dob"]}/>
                                         </MuiPickersUtilsProvider>
                                         
                                     </Grid>
 
                                     <Grid item xs={12}>
 
-                                        <TextField error= {formErrors.phone} helperText= {formErrors.phone} name="phone" id="mobile" onChange={this.onChange} value={this.phone} type="text" label="Phone Number" fullWidth deafultValue={fromServer["mobile"]}/>
+                                        <TextField error= {formErrors.phone} helperText= {formErrors.phone} name="phone" id="mobile" onChange={this.onChange} value={this.phone} type="text" label="Phone Number" fullWidth defaultValue={fromServer["mobile"]}/>
 
                                         
                                     </Grid>
@@ -431,7 +428,7 @@ class ProfileTemplate extends Component {
 
                                 <Grid item xs={12}>
                                     <TextField multiline name="bio" id="bio" onChange={this.onChange} value={this.bio} type="text"
-                                    label="Your bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" style={{marginTop: "8%"}} deafultValue={fromServer["bio"]}/>
+                                    label="Your bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" style={{marginTop: "8%"}} defaultValue={fromServer["bio"]}/>
                                     
                                 </Grid> 
                             </Paper>
@@ -441,12 +438,12 @@ class ProfileTemplate extends Component {
                         <Grid item container xs={12} style={{width:'40%', marginTop:'7.5%'}}>
                             <Paper style={{width:'100%', padding:'5%',marginBottom:'18.7%', "background-image" : `url(${board})`}}> 
 
-                                <TextField name="dietary" id="dietary" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%", marginTop:"20%"}} deafultValue={fromServer["dietary"]}/>
+                                <TextField name="dietary" id="dietary" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%", marginTop:"20%"}} defaultValue={fromServer["dietary"]}/>
                                 
 
                                 <Grid item xs={12}>
 
-                                    <TextField multiline name="allergens" id="allergens" onChange={this.onChange} value={this.allergens} type="text" rows={3}label="Allergens" variant="outlined" fullWidth deafultValue={fromServer["allergens"]}/>
+                                    <TextField multiline name="allergens" id="allergens" onChange={this.onChange} value={this.allergens} type="text" rows={3}label="Allergens" variant="outlined" fullWidth defaultValue={fromServer["allergens"]}/>
                                     
                                 </Grid>
                             </Paper>
