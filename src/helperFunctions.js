@@ -39,3 +39,7 @@ export function formatTime(time){
     hh = hh ? hh : 12; //in case hh is 0, then set it back to 12
     return hh + ":" + t_split[1] + " " + ampm; 
 }
+
+export function getProfilePicURL(username){
+    return "/prof/" + username.split('@')[0].replace(/[^\w]/g, "")
+}
