@@ -194,13 +194,11 @@ class SignUpTemplate extends Component {
         if(formValid(this.state.formErrors)){
             //add to this function the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
             const {fName, bio, city} = this.state;
-		    const fd = new FormData();
-    fd.append('image', this.state.file, this.state.file.name);
             //^dunno if other elements can be added to the line above (db) so i've just left it for now^
             $.ajax({ url: 'PHPF/signup.php',
                 type: 'post',
 		 enctype: 'multipart/form-data',
-                data: {"data" : this.state, "test" : fd},
+                data: {"data" : this.state},
                 success: function(output) {
 		    alert(output);
                     if(output == "DONE"){
@@ -225,11 +223,11 @@ class SignUpTemplate extends Component {
     
       let reader = new FileReader();
       let file = event.target.files[0];
-    
+      console.log("Image should be added"); 
         reader.onloadend = () => {
           this.setState({
-            imagePreviewUrl: reader.result,
-	    file: file,
+            imagePreviewUrl: reader.result
+	    //file: file,
           });
         }
 
