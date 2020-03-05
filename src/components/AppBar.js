@@ -14,6 +14,7 @@ import Link from '@material-ui/core/Link'
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExploreIcon from '@material-ui/icons/Explore';
+import LogOutIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -110,6 +111,9 @@ const useStyles = makeStyles(theme => ({
         </MenuItem>
         <MenuItem val="settings-menu" component={Link} href="#" color="inherit" onClick={handleClose}>
           <SettingsIcon/>Settings
+          </MenuItem>
+          <MenuItem val="log-out-menu" component={Link} href="#" color="inherit" onClick={handleClose}>
+            <LogOutIcon /> Log Out
           </MenuItem>
       </Menu>  
     </div>

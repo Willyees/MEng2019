@@ -402,7 +402,7 @@ class ProfileTemplate extends Component {
 
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker fullWidth error= {formErrors.dob} helperText= {formErrors.dob} name="dob" id="dob" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date of Birth" format="dd/MM/yyyy"
-                                            value={this.state.dob} onChange={this.handleDOB} defaultValue={fromServer["dob"]}/>
+                                            value={this.dob} onChange={this.handleDOB} defaultValue={fromServer["dob"]}/>
                                         </MuiPickersUtilsProvider>
                                         
                                     </Grid>
