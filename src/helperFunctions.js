@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { FormHelperText } from '@material-ui/core';
+import $ from 'jquery';
 var md5 = require('md5');
 export function isUserLoggedIn(){
     console.log("userLoggedIN?");
@@ -11,6 +12,21 @@ export function isUserLoggedIn(){
     }
     console.log("logged in");
     return true;
+}
+
+export function redirectIfNotLoggedIn(){
+    $.ajax({ url: 'PHPF/checklogin.php',
+        type: 'post',
+        data: {
+            "username" : getCookie("Username"),
+            "session" : getCookie("Session")
+        },
+        success: function(output) {
+	    if(output != "LOGIN"){
+		document.location.href = "/log-in";
+	    }
+	}
+    });
 }
 
 export function getCookie(cookieName) {

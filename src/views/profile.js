@@ -16,7 +16,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import 'date-fns';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import {getCookie, getProfilePicURL} from '../helperFunctions';
+import {getCookie, getProfilePicURL, isUserLoggedIn, redirectIfNotLoggedIn} from '../helperFunctions';
 
 
 import IconButton from '@material-ui/core/IconButton';
@@ -73,6 +73,7 @@ let profilePicURL = getProfilePicURL(getCookie("Username"));
 class ProfileTemplate extends Component {
     constructor(props){
         super(props);
+	redirectIfNotLoggedIn();
         this.state = {
             fName : null,
             lName: null,
