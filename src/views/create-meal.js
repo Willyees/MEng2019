@@ -39,6 +39,9 @@ const styles = ({
     },
     padded : {
         padding : '1rem'
+    },
+    board_background : {
+        "background-image" : `url(${board})`
     }
 
 })
@@ -325,9 +328,10 @@ class CreateMealTemplate extends Component {
             </div>
             <Grid container justify="center" spacing={2}>
             <Grid item>
-            <Paper className={classes.padded} style={{"background-image" : `url(${board})`}}>
+            <Paper className={`${classes.padded} ${classes.board_background}`}>
                 <Grid item>
                     <Typography variant="h6">Profile Address stored</Typography>
+                    <br/>
                 </Grid>
                 <Grid item>
                     <TextField name="address_1" id="address_1_cm" onChange={this.onChange} value={this.state.values.address_1} 
@@ -344,7 +348,7 @@ class CreateMealTemplate extends Component {
             </Paper>
             </Grid>
             <Grid item>
-            <Paper style={{"background-image" : `url(${board})`}}>
+            <Paper className={`${classes.padded} ${classes.board_background}`}>
             <form onSubmit={this.onSubmit}> 
                 <Grid item>
                     {/* id: <name_id>_cm; cm stands for create meal */}

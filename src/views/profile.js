@@ -257,7 +257,9 @@ class ProfileTemplate extends Component {
         if (event.target.files[0]) {reader.readAsDataURL(file);}
       };
       
+    ajaxGetUserInfo(output){
 
+    }
     render() {
         const { formErrors } = this.state;
         const classes = useStyles;
@@ -270,9 +272,14 @@ class ProfileTemplate extends Component {
             async: false,
              data: {"username" : getCookie("Username")},
                 success: function(output) {
-	            fromServer = JSON.parse(output);
+                fromServer = JSON.parse(output);
 	        }
         });
+        if(window.location.host == "localhost:3000") {
+            fromServer = JSON.parse('{"username":"harrypotter","name":"Harry","surname":"Potter","addressOne":"27 Union St","addressTwo":"","postcode":"G1 3RB","city":"Glasgow","country":"United Kingdom","dob":"Thu May 01 1991","mobile":"07826229468","dietary":"Only eat fresh haddock","bio":"I fucking love bears mate, dylans the man all bears love\\n\\nHere we see a bear worshipping dylan, a bear sad dylan isnt there, and dylans favourite bear - a good ol pola probably pacing the arctic in search of dylan himself","allergens":"Frozen Haddock"}');
+        }
+        
+    
 
         //problem with the image size, I want it to remain the same dimensions but it always grows with the page...
         if (imagePreviewUrl) {
