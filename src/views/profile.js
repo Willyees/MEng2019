@@ -115,12 +115,13 @@ class ProfileTemplate extends Component {
                     ? "dob can't be in current year"
                     : "";
         this.setState({formErrors, dob : date_}, () => console.log(this.state));
+        this.setState(date_);
     };
     
     componentDidMount() {
 	//Copy initial data to see what is changed
 	   // copyInitial = fromServer;
-	    copyInitial = Object.assign({}, fromServer);
+        copyInitial = Object.assign({}, fromServer);
     }
 
     onChange = event => {//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
@@ -403,7 +404,7 @@ class ProfileTemplate extends Component {
 
                                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                             <KeyboardDatePicker fullWidth error= {formErrors.dob} helperText= {formErrors.dob} name="dob" id="dob" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date of Birth" format="dd/MM/yyyy"
-                                            value={this.dob} onChange={this.handleDOB} defaultValue={fromServer["dob"]}/>
+                                            value={fromServer["dob"]} onChange={this.handleDOB} />
                                         </MuiPickersUtilsProvider>
                                         
                                     </Grid>
@@ -473,7 +474,6 @@ class ProfileTemplate extends Component {
                         Update
                     </Button>
                 </div>
-                
                 </form>
             </div>
         );

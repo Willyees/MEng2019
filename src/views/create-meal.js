@@ -25,6 +25,8 @@ import Switch from '@material-ui/core/Switch';
 import board from "../res/chopping_board_chopped.png"
 import bear from "../res/bear1.png";
 
+const postcodeRegex = RegExp(/^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z])))) [0-9][A-Za-z]{2})$/);
+
 
 const styles = ({
     age_range : {
@@ -73,6 +75,19 @@ class CreateMealTemplate extends Component {
                 dietary_vis : false,
                 age_range_vis : false,
                 own_address_vis : true,
+            },
+            //errors
+            formErrors: {
+                title : "",
+                description: "",
+                date : "",
+                time : "",
+                proposed_meal : "",
+                expected_contribution : "",
+                guest_limit : "",
+                address_1 : "",
+                city : "",
+                post_code : ""
             }
         }
         //ajax call to get the user address and set the values to it
@@ -117,6 +132,8 @@ class CreateMealTemplate extends Component {
     }
 
     handleDate(date_){ //date is handled differently (not like an event)
+    
+
 	var str = date_.toString();
         console.log("handle data");
         //console.log(this.state.values.date + "state");
@@ -124,12 +141,88 @@ class CreateMealTemplate extends Component {
 	  toLocaleString('en-us', {year: 'numeric', month: '2-digit', day: '2-digit'}).
 	  replace(/(\d+)\/(\d+)\/(\d+)/, '$3-$1-$2');
       this.setState({...this.state, values : { ...this.state.values, date : test}});
+
+      let formErrors = this.state.formErrors;
+    formErrors.date = 
+        date_.getDate < new Date()
+        ? "dob can't be in the past"
+        : "";
+        this.setState({formErrors, dob : date_}, () => console.log(this.state));
     }
 
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
+        event.preventDefault();
+        const {name, value} = event.target;
+        let formErrors = this.state.formErrors;
+
         console.log("on change");
         console.log(event.target.value);
         this.setState({...this.state, values : { ...this.state.values, [event.target.name] : event.target.value}}); //https://stackoverflow.com/questions/34072009/update-nested-object-with-es6-computed-property-name
+
+        switch(name) {
+            case 'title' : 
+                formErrors.title = 
+                    value.length < 3
+                    ? "minimum 3 characters required"
+                    : "";
+                break;
+
+            case 'description':
+                formErrors.description = 
+                    value.length < 5
+                    ? "minimum 5 characters required"
+                    : "";
+                break;
+            
+            //date handled in handleDate()
+
+            //not sure about the time check atm
+            
+            case 'proposed_meal' : 
+                formErrors.proposed_meal = 
+                    value.length < 3
+                    ? "minimum 3 characters required"
+                    : "";
+                break;
+            
+            case 'expected_contribution' : 
+                formErrors.expected_contribution = 
+                    value.length > 6
+                    ? "your contribution offer is too high"
+                    : "";
+                break;
+            
+            case 'guest_limit' : 
+                formErrors.guest_limit = 
+                    value > 20
+                    ? "too high a guest limit"
+                    : "";
+                break;
+            
+            case 'address_1' : 
+                formErrors.address_1 = 
+                    value.length < 5
+                    ? "minimum 5 characters required"
+                    : "";
+                break;
+            
+            case 'city' : 
+                formErrors.city = 
+                    value.length < 3
+                    ? "minimum 3 characters required"
+                    : "";
+                break;
+            
+            case 'post_code':
+            formErrors.post_code = 
+                postcodeRegex.test(value)
+                ? ""
+                : "postcode should be a uk postcode";
+                break;
+
+            default:
+            break;
+        }
     }
 
     onChangeOptional(event){
@@ -204,6 +297,7 @@ class CreateMealTemplate extends Component {
 
     render() {
         const {classes} = this.props;
+        const { formErrors } = this.state;
 
         var un = getCookie("Username");
         console.log(un);
@@ -254,12 +348,13 @@ class CreateMealTemplate extends Component {
             <form onSubmit={this.onSubmit}> 
                 <Grid item>
                     {/* id: <name_id>_cm; cm stands for create meal */}
-                    <TextField name="title" id="title_cm" onChange={this.onChange} value={this.state.values.title} type="text" 
+                    <TextField name="title" id="title_cm" error= {formErrors.title} helperText= {formErrors.title}
+                    onChange={this.onChange} value={this.state.values.title} type="text" 
                     label="Title"/>
                 </Grid>
                 <p />
                 <Grid item>
-                    <TextField multiline name="description" id="description_cm" onChange={this.onChange} value={this.state.values.description} type="text"
+                    <TextField multiline error= {formErrors.description} helperText= {formErrors.description} name="description" id="description_cm" onChange={this.onChange} value={this.state.values.description} type="text"
                     label="Description" variant="outlined"/>
                 </Grid>
                 <FormLabel>Location</FormLabel>
@@ -269,7 +364,8 @@ class CreateMealTemplate extends Component {
 
                 <Grid item>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker name="date" id="date_cm" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date picker" format="dd/MM/yyyy"
+                        <KeyboardDatePicker error= {formErrors.date} helperText= {formErrors.date}
+                        name="date" id="date_cm" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date picker" format="dd/MM/yyyy"
                         value={this.state.values.date} onChange={this.handleDate} />
                     </MuiPickersUtilsProvider>
                 </Grid>
@@ -277,15 +373,15 @@ class CreateMealTemplate extends Component {
                     <TextField name="time" id="time_cm" onChange={this.onChange} value={this.state.values.time} type="time" label="Time"/>
                 </Grid>
                 <Grid item>
-                    <TextField name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.values.proposed_meal} type="text" label="Proposed meal" />
+                    <TextField error= {formErrors.proposed_meal} helperText= {formErrors.proposed_meal} name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.values.proposed_meal} type="text" label="Proposed meal" />
                 </Grid>
                 <Grid item>
-                    <TextField name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" 
+                    <TextField error= {formErrors.expected_contribution} helperText= {formErrors.expected_contribution} name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" 
                     InputProps={{startAdornment: <InputAdornment position="start">£</InputAdornment>}}/>
                 </Grid>
                 <Grid container>
                     <Grid item xs>
-                        <TextField name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.values.guest_limit} type="number" label="Guest Limit" min="1"/>
+                        <TextField error= {formErrors.guest_limit} helperText= {formErrors.guest_limit} name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.values.guest_limit} type="number" label="Guest Limit" min="1"/>
                     </Grid>
                 </Grid>
                 <Grid item>
