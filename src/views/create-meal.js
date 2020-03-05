@@ -124,6 +124,10 @@ class CreateMealTemplate extends Component {
             type: 'post',
 	    async:false,
             data: {"username" :getCookie("Username")},
+            error : function(){
+                //fucntion called in case the ajax didnt work. Will harcode data for tests and localhost
+                fromS = JSON.parse('{"city":"Glasgow","postcode":"G1 3RB","addressOne":"27 Union St"}');
+            },
             success: function(output) {
                 fromS = JSON.parse(output); 
             }
