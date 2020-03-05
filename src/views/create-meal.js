@@ -423,14 +423,16 @@ class CreateMealTemplate extends Component {
             </Grid>
 
             <Grid item >
+            <Paper className={`${classes.padded} ${classes.board_background}`}>
                 <FormControl>
-                    <FormLabel style={{"color" : "white"}}>Extra fields</FormLabel>
+                    <FormLabel>Extra fields</FormLabel>
                     <FormGroup>
                         <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.visibility.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
                         <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.visibility.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>
                         <FormControlLabel control={<Checkbox value="age_range_vis" checked={this.state.visibility.age_range_vis} onClick={this.handleVis}></Checkbox>} label="Age range"></FormControlLabel>
                     </FormGroup>
                 </FormControl>
+            </Paper>
             </Grid>
             </Grid>
             </div>

@@ -59,3 +59,8 @@ export function formatTime(time){
 export function getProfilePicURL(username){
     return "/prof/" + md5(username)
 }
+
+//to do!
+export function isHost(username){
+    return true;
+}

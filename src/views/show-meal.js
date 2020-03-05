@@ -5,7 +5,9 @@ import Grid from '../components/ShowMealGrid.js';
 import ShowMealGrid from '../components/ShowMealGrid.js';
 import $ from 'jquery';
 import {formatTime} from '../helperFunctions.js';
-import {findDOMNode} from 'react-dom'
+import {findDOMNode} from 'react-dom';
+import UserMealRequests from '../components/UserMealRequests.js';
+import {isHost} from '../helperFunctions.js';
 
 
 const styles = makeStyles(theme => ({
@@ -91,6 +93,9 @@ class ShowMealTemplate extends Component {
                 </AppBar>
                 <ShowMealGrid date={this.state.date}>
                 </ShowMealGrid>
+                {isHost() && 
+                <UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} ></UserMealRequests>
+                }
             </div>
         );
     }
