@@ -11,6 +11,7 @@ import { blue } from '@material-ui/core/colors';
 import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
+import UserMealRequests from '../components/UserMealRequests.js';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -64,7 +65,6 @@ export default function ShowMealGrid(props) {
   const [ value, setValue] = React.useState(2);
   const [ hover, setHover] = React.useState(-1);
   //const [ date, setDate] = React.useState(props.date)
-  console.log("gay2" + props.date)
   return (
     
     <ThemeProvider theme={theme}>
@@ -135,29 +135,30 @@ export default function ShowMealGrid(props) {
 
                   
             <Grid id="proposed_meal_and_theme_grid" item container xs={12} style={{marginTop:"2%", marginBottom:"2%"}}>
-              <Grid id="proposed_meal_grid_label" item xs={3} style={{justifyContent:"right"}}>
-                <Typography id="proposed_meal_label" variant="h4" component="h4" >
-                  Proposed meal:
-                </Typography>
-              </Grid>
-                
-              <Grid id="get_proposed_meal" item xs={3} style={{justifyContent:"left"}}>
-                <Typography id="theme" variant="h4" component="h4" >
-                  "Proposed meal"
-                </Typography>
-              </Grid>
-                
+              <Grid id="proposed_meal_grid" container xs={6}>
+                <Grid item container justifyContent="left">
+                  <Typography id="proposed_meal_label" variant="h4" component="h4" >
+                    Proposed meal:
+                  </Typography>
+                </Grid>
+  
+                <Grid id="get_proposed_meal" item xs={12} style={{"text-align" : "left"}}>
+                  <Typography id="proposed_meal" variant="h4" component="h4" >a</Typography>
+                </Grid>
+              </Grid> 
 
-              <Grid id="theme_grid_label" item xs={3}>
-                <Typography id="theme_label" variant="h4" component="h4">
-                  Theme:
-                </Typography>
-              </Grid>
+              <Grid id="theme_grid" container xs={6}>
+                <Grid item xs style={{justifyContent:"left"}}>
+                  <Typography id="theme_label" variant="h4" component="h4">
+                    Theme:
+                  </Typography>
+                  </Grid>
 
-              <Grid id="get_theme_grid">
-                <Typography id="theme" variant="h4" component="h4">
-                  "Theme"
-                </Typography>
+                <Grid item xs id="get_theme_grid">
+                  <Typography id="theme" variant="h4" component="h4">
+                    "Theme"
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
                   
@@ -208,6 +209,17 @@ export default function ShowMealGrid(props) {
           </Paper>
         </Grid>    
           <Button >TEST</Button>
+
+        <Grid container>
+          <Paper className={classes.paper}>
+            <Grid container item>
+                <Typography variant="h2" component="h2" gutterBottom>
+                  Participants
+                </Typography>
+            </Grid>
+            <UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={false} />
+          </Paper>
+        </Grid>
 
         <Grid container xs={12}>
           <Paper className={classes.paper}>

@@ -10,7 +10,8 @@ import board from "../res/chopping_board_chopped.png";
 
 /**
  * middleman that will get the whole data and transform into a suitable data structure for child.
- * User usr is used as map key
+ * User usr is used as map key.
+ * Component used to both create functionality to accept users and to show participants (based on the 'accept' prop passed)
  */
 
 //todo have to pass meal id from parent
@@ -37,12 +38,14 @@ class UserMealRequests extends Component{
     render(){
         return(
             <Grid container>
+                {this.props.accept && 
                 <Grid item container>
                     Requests to join this meal
                 </Grid>
+                }
             <Grid container>
                 <Grid item xs>
-                    {this.props.data.map((v,k) => <UserRequest data={this.setUp(v)}/>)}
+                    {this.props.data.map((v,k) => <UserRequest data={this.setUp(v)} accept={this.props.accept}/>)}
                     
                 </Grid>
             </Grid>
@@ -67,6 +70,7 @@ class UserRequest extends Component{
             disabled : false,
             visible_accepted : true,
             visible_rejected : true,
+            can_accept : this.props.accept ? this.props.accept : false, //set it false if not passed accept property (false by default)
         }
         let it = props.data.keys()
         this.usr = it.next().value;
@@ -79,11 +83,24 @@ class UserRequest extends Component{
     
     handleUserAccepted(event){
         console.log(this.usr);
+
         //ajax call to add user usign 
+        //if success function set visibility rejectbutton = false and disabled accept = true
+        if(true){
+            this.setState({visible_rejected : false, disabled : true});
+        }
+        else{
+            console.log("error while setting user as partecipant to the meal");
+        }
     }
 
     handleUserRejected(event){
-        console.log(event.target.value);
+        if(true){//true is return of ajax function
+            this.setState({visible_accepted : false, disabled : true});
+        }
+        else{
+            console.log("error while setting user as partecipant to the meal");
+        }
     }
 
     output(){
@@ -101,6 +118,7 @@ class UserRequest extends Component{
         <Paper>
         <Grid container>
                 {this.output()}
+            {this.state.can_accept && 
             <Grid item xs>
                 {this.state.visible_accepted && <Button name="accepted_btn" value={this.usr} color="primary" disabled={this.state.disabled} onClick={this.handleUserAccepted}><DoneIcon/></Button>}
                 {this.state.visible_rejected && <Button name="rejected_btn" value={this.usr} color="secondary" disabled={this.state.disabled} onClick={this.handleUserRejected}><CloseIcon/></Button>}
@@ -110,6 +128,7 @@ class UserRequest extends Component{
                 */
                 }
             </Grid>
+            }
         </Grid>
         </Paper>
                 

@@ -48,7 +48,7 @@ class ShowMealTemplate extends Component {
             });
             //debug local host
             if(window.location.host == "localhost:3000"){
-                var output = '{"id":"101","host":"harrypotter","title":"NEW","time":"16:47:30","date":"2020-03-27","description":"this is an informal meal to get to know new people that would like to be eaten","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"","age_range":""}';
+                var output = '{"id":"101","host":"harrypotter","title":"NEW","time":"16:47:30","date":"2020-03-27","description":"this is an informal meal to get to know new people that would like to be eaten","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"LOTR and loads of other thins","age_range":""}';
                 this.ajaxGetMeal(output);
             }
         }
@@ -56,6 +56,7 @@ class ShowMealTemplate extends Component {
 
     ajaxGetMeal(output){
         var outParsed = JSON.parse(output);
+        console.log(output);
         //parse time
         if(outParsed.time != "")
             outParsed.time = formatTime(outParsed.time)
@@ -71,10 +72,10 @@ class ShowMealTemplate extends Component {
                 }
             }else{
                 if(id == "date"){//date handled differently
-                    this.setState({date : new Date(outParsed[id])}, () => console.log(this.state.date));
+                    this.setState({date : new Date(outParsed[id])});
                     continue;
                 }
-                let o = document.getElementById(id) //only setting the actual value. I think would be better to add a label before it with whatever the text is wanted to be shwon other than the value (xes: <label>Dietary:</label><label>{value_from_DB}</label>)
+                let o = document.getElementById(id) //only setting the actual value
                 if(o != null){
                     o.innerHTML = outParsed[id];
                 }
@@ -94,7 +95,7 @@ class ShowMealTemplate extends Component {
                 <ShowMealGrid date={this.state.date}>
                 </ShowMealGrid>
                 {isHost() && 
-                <UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} ></UserMealRequests>
+                <UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={true} ></UserMealRequests>
                 }
             </div>
         );

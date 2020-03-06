@@ -3,7 +3,6 @@ import { FormHelperText } from '@material-ui/core';
 import $ from 'jquery';
 var md5 = require('md5');
 export function isUserLoggedIn(){
-    console.log("userLoggedIN?");
     var un = getCookie("Username");
     if(typeof(un) === "undefined" || un === null || un.length < 3 
     && window.location.host != "localhost:3000"){ //localhost exception
