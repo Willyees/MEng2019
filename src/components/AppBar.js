@@ -84,6 +84,18 @@ const useStyles = makeStyles(theme => ({
       setAnchorEl(null);
       console.log(event.currentTarget.val);
     };
+
+    const handleLogOut = () => {
+      setAnchorEl(null);
+      console.log("Log out")
+      var decC = decodeURIComponent(document.cookie);
+      var tmp = decC.split(';');
+      for(var i = 0; i <tmp.length; i++) {
+        //find all the cookie names and then change the expiration time
+        document.cookie = tmp[i] + "= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+      }
+
+    }
     return (
       <div>
         <IconButton edge="end" className={classes.menuButton} onClick={handleMenu} color="inherit" aria-label="menu">
@@ -112,7 +124,7 @@ const useStyles = makeStyles(theme => ({
         <MenuItem val="settings-menu" component={Link} href="#" color="inherit" onClick={handleClose}>
           <SettingsIcon/>Settings
           </MenuItem>
-          <MenuItem val="log-out-menu" component={Link} href="#" color="inherit" onClick={handleClose}>
+          <MenuItem val="log-out-menu" component={Link} href="/" color="inherit" onClick={handleLogOut}>
             <LogOutIcon /> Log Out
           </MenuItem>
       </Menu>  
