@@ -105,6 +105,19 @@ class ProfileTemplate extends Component {
                 phone: "",
             }
         }
+        $.ajax({ url: 'PHPF/getuserinfo.php',
+        type: 'post',
+        async: false,
+        data: {"username" : getCookie("Username")},
+        error: function() {
+            //debug, harcoding for localhost and tests
+            console.log("not on server");
+            fromServer = JSON.parse('{"username":"harrypotter","name":"Harry","surname":"Potter","addressOne":"27 Union St","addressTwo":"","postcode":"G1 3RB","city":"Glasgow","country":"United Kingdom","dob":"Thu May 01 1991","mobile":"07826229468","dietary":"Only eat fresh haddock","bio":"I fucking love bears mate, dylans the man all bears love\\n\\nHere we see a bear worshipping dylan, a bear sad dylan isnt there, and dylans favourite bear - a good ol pola probably pacing the arctic in search of dylan himself","allergens":"Frozen Haddock"}');
+        },
+        success: function(output) {
+            fromServer = JSON.parse(output);
+        }
+    });
     }
     
     
@@ -120,7 +133,8 @@ class ProfileTemplate extends Component {
     
     componentDidMount() {
 	//Copy initial data to see what is changed
-	   // copyInitial = fromServer;
+       // copyInitial = fromServer;
+       console.log("component mount");
         copyInitial = Object.assign({}, fromServer);
     }
 
@@ -190,7 +204,11 @@ class ProfileTemplate extends Component {
         
         // if(typeof(event.target.value) !== undefined){
         //     console.log(fromServer);
+            console.log(event.target.id);
+            console.log(event.target.value);
+            console.log(fromServer[event.target.id]);
             fromServer[event.target.id] = event.target.value;
+            console.log(fromServer);
         // }
     };
 
@@ -204,8 +222,15 @@ class ProfileTemplate extends Component {
             let flag = 0;
             console.log("INITIAL");
             console.log(copyInitial);
+            console.log(fromServer);
+            console.log("--");
             $.each(fromServer, function(key, valueObj){
+                console.log(key);
+                console.log(valueObj);
+                console.log(copyInitial[key]);
                 if(valueObj != copyInitial[key]){ //DONT use !==
+                    
+
                 //Something has changed at it needs updating
                 //IMPORTANT: This working relies on the ID's of the textfields in GridProfile
                 //Been the same as the database ids kinda confusing
@@ -264,18 +289,8 @@ class ProfileTemplate extends Component {
         let {imagePreviewUrl} = this.state;
         let $imagePreview = profilePicURL;
 
-        $.ajax({ url: 'PHPF/getuserinfo.php',
-            type: 'post',
-            async: false,
-            data: {"username" : getCookie("Username")},
-            error: function() {
-                //debug, harcoding for localhost and tests
-                fromServer = JSON.parse('{"username":"harrypotter","name":"Harry","surname":"Potter","addressOne":"27 Union St","addressTwo":"","postcode":"G1 3RB","city":"Glasgow","country":"United Kingdom","dob":"Thu May 01 1991","mobile":"07826229468","dietary":"Only eat fresh haddock","bio":"I fucking love bears mate, dylans the man all bears love\\n\\nHere we see a bear worshipping dylan, a bear sad dylan isnt there, and dylans favourite bear - a good ol pola probably pacing the arctic in search of dylan himself","allergens":"Frozen Haddock"}');
-            },
-            success: function(output) {
-                fromServer = JSON.parse(output);
-	        }
-        });
+        console.log("render");
+
 
         //problem with the image size, I want it to remain the same dimensions but it always grows with the page...
         if (imagePreviewUrl) {

@@ -12,6 +12,7 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material
 import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
 import UserMealRequests from '../components/UserMealRequests.js';
+import {isHost} from '../helperFunctions'
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -58,12 +59,15 @@ const theme = createMuiTheme({
 function test(e){
   console.log(e);
   console.log("---------------")
+  
 }
+
 
 export default function ShowMealGrid(props) {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
   const [ hover, setHover] = React.useState(-1);
+  console.log(props)
   //const [ date, setDate] = React.useState(props.date)
   return (
     
@@ -73,10 +77,17 @@ export default function ShowMealGrid(props) {
           <Paper className={classes.paper}>
             
             {/* title grid */}
-            <Grid id="title_grid" item container xs={12} style={{justifyContent:"left", marginBottom:'3%'}}>
-              <Typography id="title" variant="h2" component="h2" gutterBottom>
-              "Title"
-              </Typography>
+            <Grid id="title_grid" container style={{justifyContent:"left", marginBottom:'3%'}}>
+              <Grid item xs={10}>
+                <Typography id="title" variant="h2" component="h2" gutterBottom>
+                "Title"
+                </Typography>
+              </Grid>
+              <Grid item xs={2}>
+                { /*!isHost() && /*todo should also not be a partecipant - if so change text and disable button*/
+                <Button variant="contained" color="secondary" startIcon={< AddCircleOutlineIcon/>} onClick={props.joinf}> JOIN </Button>
+                }
+              </Grid>
             </Grid>
 
             {/* meal picture and date/time/city grid*/}
@@ -208,7 +219,7 @@ export default function ShowMealGrid(props) {
             </Grid>
           </Paper>
         </Grid>    
-          <Button >TEST</Button>
+          <Button onClick={test()}>TEST</Button>
 
         <Grid container>
           <Paper className={classes.paper}>

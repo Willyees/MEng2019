@@ -7,8 +7,7 @@ import $ from 'jquery';
 import {formatTime} from '../helperFunctions.js';
 import {findDOMNode} from 'react-dom';
 import UserMealRequests from '../components/UserMealRequests.js';
-import {isHost} from '../helperFunctions.js';
-
+import {getCookie} from '../helperFunctions.js';
 
 const styles = makeStyles(theme => ({
     root:{
@@ -24,7 +23,29 @@ class ShowMealTemplate extends Component {
     constructor(props){
         super(props);
         const elementNames = ["id", "host", "title", "time", "date", "description", "guest_limit", "proposed_meal", "contribution", "city", "dietary", "theme", "age_range"];
-        this.state = {date : new Date()}//have to manage the date for the child component
+        this.state = {date : new Date(),
+                      mealId : -1,
+                      hostId : ""}//have to manage the date for the child component
+        this.joinMeal = this.joinMeal.bind(this)
+    }
+
+    isHost(){
+        //add function to check that the token username checks with the db one
+        var currUser = getCookie("Username")
+        return currUser == this.state.hostId
+    }
+
+    joinMeal(){//callback invoked from child upon join button clicked
+        console.log("JOIN MEAL invoked")
+        //call ajax with user id and meal id
+        var username = getCookie("Username")
+        $.ajax({
+            url: 'PHPF/joinmeal.php',
+            type: 'post',
+            data : {"meal_id" : this.state.mealId, "user_id" : username},
+            success: function(){console.log("Sent request to join this meal from user")},
+            error : function() {console.log("Error in sending the join request to DB")}
+        });
     }
 
     componentDidMount(){
@@ -44,23 +65,26 @@ class ShowMealTemplate extends Component {
                 $.ajax({ url: 'PHPF/getmeal.php',
             type: 'post',
             data: {"id" : param},
-            success: t.ajaxGetMeal
+            success: t.ajaxGetMeal,
+            context : t
             });
             //debug local host
             if(window.location.host == "localhost:3000"){
                 var output = '{"id":"101","host":"harrypotter","title":"NEW","time":"16:47:30","date":"2020-03-27","description":"this is an informal meal to get to know new people that would like to be eaten","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"LOTR and loads of other thins","age_range":""}';
-                this.ajaxGetMeal(output);
+            this.ajaxGetMeal(output);
             }
         }
     }
 
-    ajaxGetMeal(output){
+    ajaxGetMeal(output){//this whole functionality could be acheived by using react states on the html elements. cleaner
         var outParsed = JSON.parse(output);
-        console.log(output);
         //parse time
         if(outParsed.time != "")
             outParsed.time = formatTime(outParsed.time)
-    
+        //store in the state the variables needed to be passed to child or worked upon
+        console.log(this);
+        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"])})
+
         for(var id in outParsed){
             if(outParsed[id] == ""){
                 let c = document.getElementById(id + "_grid")
@@ -71,16 +95,12 @@ class ShowMealTemplate extends Component {
                 console.log("problem: null element " + id + "_grid");
                 }
             }else{
-                if(id == "date"){//date handled differently
-                    this.setState({date : new Date(outParsed[id])});
-                    continue;
-                }
                 let o = document.getElementById(id) //only setting the actual value
                 if(o != null){
                     o.innerHTML = outParsed[id];
                 }
                 else{
-                    console.log("problem: null element " + id);
+                    console.log("id element not present on the grids to be replaced: " + id);
                 }
             }
         }
@@ -92,9 +112,9 @@ class ShowMealTemplate extends Component {
             <div>     
                 <AppBar>
                 </AppBar>
-                <ShowMealGrid date={this.state.date}>
+                <ShowMealGrid joinf={this.joinMeal} date={this.state.date}>
                 </ShowMealGrid>
-                {isHost() && 
+                {this.isHost() && 
                 <UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={true} ></UserMealRequests>
                 }
             </div>

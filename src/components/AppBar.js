@@ -102,7 +102,7 @@ const useStyles = makeStyles(theme => ({
       >
         {/*todo: change href to correct ones using the map*/}
         <MenuItem val="profile-menu" component={Link} href="/profile" color="inherit" onClick={handleClose}>Profile</MenuItem>
-        <MenuItem val="meals-menu" component={Link} href="#"color="inherit" onClick={handleClose}>My Meals</MenuItem>
+        <MenuItem val="meals-menu" component={Link} href="/meals-user" color="inherit" onClick={handleClose}>My Meals</MenuItem>
         <MenuItem val="show-meals-menu" component={Link} href="/map" color="inherit" onClick={handleClose}>
           <ExploreIcon/>Show me meals
         </MenuItem>
