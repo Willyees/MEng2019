@@ -56,10 +56,10 @@ const theme = createMuiTheme({
     },
   });
 
-function test(e){
+function test(e, s){
   console.log(e);
   console.log("---------------")
-  
+  console.log(s)
 }
 
 
@@ -219,7 +219,7 @@ export default function ShowMealGrid(props) {
             </Grid>
           </Paper>
         </Grid>    
-          <Button onClick={test()}>TEST</Button>
+          <Button onClick={(e) => test(e, true)}>TEST</Button>
 
         <Grid container>
           <Paper className={classes.paper}>

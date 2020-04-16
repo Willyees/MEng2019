@@ -28,12 +28,12 @@ class UserMealRequests extends Component{
         this.handlerAcceptUser = this.handlerAcceptUser.bind(this);
     }
 
-    handlerAcceptUser(usr, name){
+    handlerAcceptUser(usr, name, accepted){
         var success = false
         $.ajax({
             url: 'PHPF/acceptrequest.php',
             type: 'post',
-            data : {"host_usr" : this.host, "username" : usr, "meal_id" : this.mealId, "name" : name},
+            data : {"host_usr" : this.host, "username" : usr, "meal_id" : this.mealId, "name" : name, accepted : String(accepted)},
             success: function(){console.log("Sent request to join this meal from user"); this.success = true;},
             error : function() {console.log("Error in sending the join request to DB"); this.success = false;},
             context : this
@@ -97,9 +97,10 @@ class UserRequest extends Component{
         this.handleUserRejected = this.handleUserRejected.bind(this);
     }
     
-    handleUserAccepted(event){
+    handleUserAccepted(event, accepted){
+        console.log("accepted", accepted);
         console.log(event.target);//value is not under the target. - todo check why
-        var success = this.props.acceptf(this.usr, this.name)//could use the value from taget when it works
+        var success = this.props.acceptf(this.usr, this.name, accepted)//could use the value from taget when it works
         //if success function set visibility rejectbutton = false and disabled accept = true
         if(success){
             this.setState({visible_rejected : false, disabled : true});
@@ -110,14 +111,14 @@ class UserRequest extends Component{
         }
     }
 
-    handleUserRejected(event){
-        if(true){//true is return of ajax function
-            this.setState({visible_accepted : false, disabled : true});
-        }
-        else{
-            console.log("error while setting user as partecipant to the meal");
-        }
-    }
+    // handleUserRejected(event){
+    //     if(true){//true is return of ajax function
+    //         this.setState({visible_accepted : false, disabled : true});
+    //     }
+    //     else{
+    //         console.log("error while setting user as partecipant to the meal");
+    //     }
+    // }
 
     output(){
         //used to output the grid because foreach is only looping, not returning as it does the .map()
@@ -136,8 +137,8 @@ class UserRequest extends Component{
                 {this.output()}
             {this.state.can_accept && 
             <Grid item xs>
-                {this.state.visible_accepted && <Button name="accepted_btn" value={this.usr} color="primary" disabled={this.state.disabled} onClick={this.handleUserAccepted}><DoneIcon/></Button>}
-                {this.state.visible_rejected && <Button name="rejected_btn" value={this.usr} color="secondary" disabled={this.state.disabled} onClick={this.handleUserRejected}><CloseIcon/></Button>}
+                {this.state.visible_accepted && <Button name="accepted_btn" value={this.usr} color="primary" disabled={this.state.disabled} onClick={(e) => this.handleUserAccepted(e, true)}><DoneIcon/></Button>}
+                {this.state.visible_rejected && <Button name="rejected_btn" value={this.usr} color="secondary" disabled={this.state.disabled} onClick={(e) => this.handleUserAccepted(e, false)}><CloseIcon/></Button>}
                 {/*or can use FAB buttons. Dylan you have better taste, have a look!
                 <Fab color="primary" size="small"><DoneIcon/></Fab>
                 }<Fab color="secondary" size="small"><CloseIcon/></Fab>

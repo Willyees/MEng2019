@@ -129,10 +129,8 @@ class ShowMealTemplate extends Component {
                 </AppBar>
                 <ShowMealGrid joinf={this.joinMeal} date={this.state.date}>
                 </ShowMealGrid>
-                {this.isHost() && 
-                //<UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={true} ></UserMealRequests>
+                {/* {this.isHost() &&  */}
                 <UserMealRequests data={data} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
-                }
             </div>
         );
     }
