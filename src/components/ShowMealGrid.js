@@ -228,7 +228,7 @@ export default function ShowMealGrid(props) {
                   Participants
                 </Typography>
             </Grid>
-            <UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={false} />
+            <UserMealRequests data={props.participants} accept={false} />
           </Paper>
         </Grid>
 

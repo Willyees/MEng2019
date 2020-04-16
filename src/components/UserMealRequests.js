@@ -22,22 +22,23 @@ class UserMealRequests extends Component{
         //props: data
         super(props.data);
         this.data = new Map();
-        this.host = props.host
-        this.mealId = props.mealId
         console.log(props);
         this.handlerAcceptUser = this.handlerAcceptUser.bind(this);
     }
 
     handlerAcceptUser(usr, name, accepted){
         var success = false
+        console.log(this.props.host, this.props.mealId)
         $.ajax({
             url: 'PHPF/acceptrequest.php',
             type: 'post',
-            data : {"host_usr" : this.host, "username" : usr, "meal_id" : this.mealId, "name" : name, accepted : String(accepted)},
-            success: function(){console.log("Sent request to join this meal from user"); this.success = true;},
-            error : function() {console.log("Error in sending the join request to DB"); this.success = false;},
+            data : {"host_usr" : this.props.host, "username" : usr, "meal_id" : this.props.mealId, "name" : name, "accepted" : String(accepted)},
+            async : false,
+            success: function(){console.log("Successfully Accepted/Removed participant request"); success = true;},
+            error : function() {console.log("Error in accepting/removing participant request"); success = false;},
             context : this
         });
+        console.log("Success", success)
         return success
     }
 
@@ -94,7 +95,6 @@ class UserRequest extends Component{
             console.log("Error - passed to the list of requests, 2 same user ids");
 
         this.handleUserAccepted = this.handleUserAccepted.bind(this);
-        this.handleUserRejected = this.handleUserRejected.bind(this);
     }
     
     handleUserAccepted(event, accepted){
