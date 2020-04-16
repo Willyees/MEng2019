@@ -7,6 +7,8 @@ import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/styles';
 import board from "../res/chopping_board_chopped.png";
+import $ from 'jquery';
+
 
 /**
  * middleman that will get the whole data and transform into a suitable data structure for child.
@@ -20,11 +22,23 @@ class UserMealRequests extends Component{
         //props: data
         super(props.data);
         this.data = new Map();
+        this.host = props.host
+        this.mealId = props.mealId
         console.log(props);
+        this.handlerAcceptUser = this.handlerAcceptUser.bind(this);
     }
 
-    handlerAcceptUser(event){
-
+    handlerAcceptUser(usr, name){
+        var success = false
+        $.ajax({
+            url: 'PHPF/acceptrequest.php',
+            type: 'post',
+            data : {"host_usr" : this.host, "username" : usr, "meal_id" : this.mealId, "name" : name},
+            success: function(){console.log("Sent request to join this meal from user"); this.success = true;},
+            error : function() {console.log("Error in sending the join request to DB"); this.success = false;},
+            context : this
+        });
+        return success
     }
 
     setUp(v){
@@ -45,7 +59,7 @@ class UserMealRequests extends Component{
                 }
             <Grid container>
                 <Grid item xs>
-                    {this.props.data.map((v,k) => <UserRequest data={this.setUp(v)} accept={this.props.accept}/>)}
+                    {this.props.data.map((v,k) => <UserRequest data={this.setUp(v)} accept={this.props.accept} acceptf={this.handlerAcceptUser}/>)}
                     
                 </Grid>
             </Grid>
@@ -74,6 +88,8 @@ class UserRequest extends Component{
         }
         let it = props.data.keys()
         this.usr = it.next().value;
+        this.name = props.data.get(this.usr).n;
+        console.log(this.name);
         if(!it.next().done)
             console.log("Error - passed to the list of requests, 2 same user ids");
 
@@ -82,14 +98,14 @@ class UserRequest extends Component{
     }
     
     handleUserAccepted(event){
-        console.log(this.usr);
-
-        //ajax call to add user usign 
+        console.log(event.target);//value is not under the target. - todo check why
+        var success = this.props.acceptf(this.usr, this.name)//could use the value from taget when it works
         //if success function set visibility rejectbutton = false and disabled accept = true
-        if(true){
+        if(success){
             this.setState({visible_rejected : false, disabled : true});
         }
         else{
+            alert("error while setting user as partecipant to the meal")
             console.log("error while setting user as partecipant to the meal");
         }
     }
@@ -133,6 +149,6 @@ class UserRequest extends Component{
         </Paper>
                 
         )       
-}
+    }
     
 }

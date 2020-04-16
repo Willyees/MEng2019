@@ -131,7 +131,7 @@ class ShowMealTemplate extends Component {
                 </ShowMealGrid>
                 {this.isHost() && 
                 //<UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={true} ></UserMealRequests>
-                <UserMealRequests data={data} accept={true} ></UserMealRequests>
+                <UserMealRequests data={data} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
                 }
             </div>
         );
