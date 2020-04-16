@@ -18,7 +18,7 @@ const styles = makeStyles(theme => ({
 }));
 
 const useStyles = makeStyles(styles);
-
+let data = [];
 class ShowMealTemplate extends Component {
     constructor(props){
         super(props);
@@ -27,6 +27,23 @@ class ShowMealTemplate extends Component {
                       mealId : -1,
                       hostId : ""}//have to manage the date for the child component
         this.joinMeal = this.joinMeal.bind(this)
+	    //Get join meal requests
+            var url = new URL(window.location.href);
+	    var param = url.searchParams.get("meal");
+	    
+	    $.ajax({ url: 'PHPF/getmealrequests.php',
+		    type: 'post',
+		    data: {"id" : param},
+		    async:false,
+		    success: function(out){
+         	       let d1 = JSON.parse(out);
+			d1.forEach(function(entry) {
+			    data.push(JSON.parse(entry))
+			});
+		console.log("BELOW")
+		console.log(data);
+     	            }
+	    });
     }
 
     isHost(){
@@ -105,8 +122,6 @@ class ShowMealTemplate extends Component {
             }
         }
     }
-
-    
     render() {
         return(
             <div>     
@@ -115,11 +130,11 @@ class ShowMealTemplate extends Component {
                 <ShowMealGrid joinf={this.joinMeal} date={this.state.date}>
                 </ShowMealGrid>
                 {this.isHost() && 
-                <UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={true} ></UserMealRequests>
+                //<UserMealRequests data={[{n : 'alessio', s : 'williams', usr : 'harrypotter'}, {n:'michael', s: 'matano', usr: 'napier'}]} accept={true} ></UserMealRequests>
+                <UserMealRequests data={data} accept={true} ></UserMealRequests>
                 }
             </div>
         );
     }
 }
-
 export default ShowMealTemplate;
