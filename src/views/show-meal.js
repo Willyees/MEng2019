@@ -26,28 +26,35 @@ const styles = makeStyles(theme => ({
 }));
 
 function getParticipants(mealId){
-    let data = [];
+    var data1 = [];
+    var names = [];
+    var usr = [];
     $.ajax({url: 'PHPF/getparticipants.php',
             type : 'post',
             data : {"id" : mealId},
             async : false,
             success : function(out){
-                let d1 = JSON.parse(out);
+                var d1 = JSON.parse(out);
                 console.log(d1)
                 d1.forEach(function(entry) {
-                    console.log(entry);
-                    var parsed = JSON.parse(entry)
-                    data.push(parsed)
-                    console.log(JSON.parse(entry))
-                    console.log(data)
-                    console.log(typeof(JSON.parse(entry)))
-                    console.log(typeof(data));
+                    var parsed = JSON.parse(entry);
+		    usr.push(parsed.usr);	
+		    names.push(parsed.n);	
                 });
-                console.log(data);
             },
             error : () => {console.log("Error in getting the participants")}
             })
-    return data;    
+    for(var i = 0; i < names.length; i++) {
+	var obj = {};
+	obj["n"] = names[i];
+	obj["u"] = usr[i];
+	console.log("OBJECT IS");
+	console.log(obj);
+	data1.push(obj);
+    }
+    console.log("FIN");
+    console.log(data1);
+    return data1;    
 }
 
 const useStyles = makeStyles(styles);
