@@ -9,6 +9,14 @@ import {findDOMNode} from 'react-dom';
 import UserMealRequests from '../components/UserMealRequests.js';
 import {getCookie} from '../helperFunctions.js';
 
+
+export const joinTypeEnum = {
+    HOST : 0,
+    PARTICIPANT : 1,
+    REQUESTEE : 2, 
+    USER : 3
+}
+
 const styles = makeStyles(theme => ({
     root:{
         display: "flex",
@@ -37,13 +45,13 @@ function getParticipants(mealId){
                 });
                 console.log(data);
             },
-            error : () => {console.log("Error in getting teh participants")}
+            error : () => {console.log("Error in getting the participants")}
             })
     return data;    
 }
 
 const useStyles = makeStyles(styles);
-let data = [];
+let requests = [];
 class ShowMealTemplate extends Component {
     constructor(props){
         super(props);
@@ -53,6 +61,7 @@ class ShowMealTemplate extends Component {
                       hostId : ""
                       }//have to manage the date for the child component
         this.joinMeal = this.joinMeal.bind(this)
+        this.getJoinType = this.getJoinType.bind(this)
 	    //Get join meal requests
             var url = new URL(window.location.href);
 	    var param = url.searchParams.get("meal");
@@ -67,10 +76,10 @@ class ShowMealTemplate extends Component {
 		    success: function(out){
          	       let d1 = JSON.parse(out);
 			d1.forEach(function(entry) {
-			    data.push(JSON.parse(entry))
+			    requests.push(JSON.parse(entry))
 			});
 		console.log("BELOW")
-		console.log(data);
+		console.log(requests);
      	            }
 	    });
     }
@@ -123,6 +132,56 @@ class ShowMealTemplate extends Component {
         }
     }
 
+    isParticipant(username){
+        //check if curr user is the host
+        for(var index = 0; index < this.participants.length; index++){
+          if(this.participants[index].usr == username){
+            return true;
+          }
+        }
+        return false;
+    }
+
+    /**
+     * function used to check if the user is amongst the requestees
+     */
+    isRequest(username){
+        for(var index = 0; index < requests.length; index++){
+            if(requests[index].usr == username){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * used to find out what type of user is viewing the page. The child component show meal grid will use this information to show diffefrent type of join button
+     */
+    getJoinType(){
+        var username = getCookie("Username")
+        console.log(username, this.state.hostId, requests, this.participants)
+        if(this.isHost()){
+            console.log("Returned H")
+            return joinTypeEnum.HOST;
+          }
+          else if (this.isParticipant(username)) {
+            console.log("Returned P")
+
+            return joinTypeEnum.PARTICIPANT;
+          } 
+          else if(this.isRequest(username)) {
+            console.log("Returned R")
+
+            return joinTypeEnum.REQUESTEE;
+          }
+          else {
+            console.log("Returned U")
+
+              return joinTypeEnum.USER;
+          }
+            
+    }
+
     ajaxGetMeal(output){//this whole functionality could be acheived by using react states on the html elements. cleaner
         var outParsed = JSON.parse(output);
         //parse time
@@ -157,10 +216,10 @@ class ShowMealTemplate extends Component {
             <div>     
                 <AppBar>
                 </AppBar>
-                <ShowMealGrid joinf={this.joinMeal} date={this.state.date} participants={this.participants}>
+                <ShowMealGrid joinf={this.joinMeal} date={this.state.date} participants={this.participants} jointype={this.getJoinType()}>
                 </ShowMealGrid>
                 {/* {this.isHost() &&  */}
-                <UserMealRequests data={data} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
+                <UserMealRequests data={requests} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
             </div>
         );
     }

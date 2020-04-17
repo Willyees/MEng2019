@@ -12,8 +12,8 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material
 import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
 import UserMealRequests from '../components/UserMealRequests.js';
-import {isHost} from '../helperFunctions'
-
+import {getCookie} from '../helperFunctions'
+import {joinTypeEnum } from '../views/show-meal'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -67,7 +67,49 @@ export default function ShowMealGrid(props) {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
   const [ hover, setHover] = React.useState(-1);
+  const [ joinDisabled, setJoinDisabled] = React.useState(false);
+  const [ joinText, setJoinText] = React.useState("JOIN");
   console.log(props)
+  //set join visibility
+  React.useEffect(() =>{
+  switch (props.jointype) {
+    case joinTypeEnum.HOST:
+      console.log("host")
+      setJoinText("JOIN")
+      setJoinDisabled(true)
+      break;
+
+    case joinTypeEnum.PARTICIPANT:
+      console.log("participant")
+
+      setJoinDisabled(true)
+      setJoinText("PARTICIPATING")
+      break;
+
+    case joinTypeEnum.REQUESTEE:
+      console.log("requestee")
+
+      setJoinDisabled(true)
+      setJoinText("AWAITING")
+      break;
+
+    case joinTypeEnum.USER:
+      console.log("user")
+
+      setJoinDisabled(false)
+      setJoinText("JOIN")
+
+    break;
+
+    default:
+      console.log("Error - join type user not recognized")
+      setJoinDisabled(true)
+      setJoinText("ERROR")
+      break;
+  }
+}, [props.jointype])
+  
+
   //const [ date, setDate] = React.useState(props.date)
   return (
     
@@ -85,7 +127,7 @@ export default function ShowMealGrid(props) {
               </Grid>
               <Grid item xs={2}>
                 { /*!isHost() && /*todo should also not be a partecipant - if so change text and disable button*/
-                <Button variant="contained" color="secondary" startIcon={< AddCircleOutlineIcon/>} onClick={props.joinf}> JOIN </Button>
+                <Button variant="contained" color="secondary" startIcon={< AddCircleOutlineIcon/>} onClick={props.joinf} disabled={joinDisabled}> {joinText} </Button>
                 }
               </Grid>
             </Grid>
