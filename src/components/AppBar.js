@@ -8,13 +8,17 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button';
-import {isUserLoggedIn} from '../helperFunctions';
+import {isUserLoggedIn, getCookie} from '../helperFunctions';
 import EmojiFoodBeverageSharpIcon from '@material-ui/icons/EmojiFoodBeverageSharp';
 import Link from '@material-ui/core/Link'
 import AddIcon from '@material-ui/icons/Add';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExploreIcon from '@material-ui/icons/Explore';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import Divider from '@material-ui/core/Divider'
+import $ from 'jquery';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
   export default function ButtonAppBar() {
     const classes = useStyles();
-
+    var notifications = getNotifications()
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
@@ -49,11 +53,35 @@ const useStyles = makeStyles(theme => ({
                 MealTime
             </a> 
             </Typography>
+            {isUserLoggedIn() &&
+            <NotificationBanner requests={notifications}/>}
             {isUserLoggedIn() ? <MenuBanner /> : <Logged />}
           </Toolbar>
         </AppBar>
       </div>
     );
+  }
+
+  function getNotifications(){
+    if(!isUserLoggedIn)
+      return [];
+    var notifications = [];
+    var username = getCookie("Username");
+    $.ajax({ url: 'PHPF/checkrequestnumber.php',
+		    type: 'post',
+		    data: {"host" : username},
+		    success: function(out){
+          console.log(out, "success");
+          let d1 = JSON.parse(out)
+          d1.forEach((entity)=> {
+            notifications.push(JSON.parse(entity));
+          })
+          console.log("notifications: ", notifications);
+        }
+        
+    })
+
+    return notifications;
   }
 
   function Logged() {
@@ -63,6 +91,37 @@ const useStyles = makeStyles(theme => ({
         <Button color="inherit" href="/sign-up">Sign-up</Button>
       </div>
     );
+  }
+
+  function NotificationBanner(props){
+    const [auth, setAuth] = React.useState(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleMenu = event => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = event => {
+      setAnchorEl(null);
+    };
+
+    return(
+      <div>
+        <IconButton onClick={handleMenu} color="inherit">
+          {props.requests.length > 0 ? <NotificationsActiveIcon/> : <NotificationsIcon/>}
+        </IconButton>
+        <Menu id="notification-banner" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
+          <Typography>{props.requests.length} Requests to join your meals:</Typography>
+          {props.requests.map((elem)=> (
+            <MenuItem component={Link} href={`/show-meal?meal=${elem.meal_id}`} onClick={handleClose}>{elem.num} requests</MenuItem>
+          ))}
+          
+
+          <Divider/>
+          <Typography>Your recent accepted requests:</Typography>
+        </Menu>
+      </div>
+    )
   }
 
   function MenuBanner() {
@@ -91,7 +150,7 @@ const useStyles = makeStyles(theme => ({
       var decC = decodeURIComponent(document.cookie);
       var tmp = decC.split(';');
       for(var i = 0; i <tmp.length; i++) {
-        //find all the cookie names and then change the expiration time
+        //find all the cookie names and then change the expiration date
         document.cookie = tmp[i] + "= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
       }
 

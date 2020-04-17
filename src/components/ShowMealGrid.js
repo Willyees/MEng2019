@@ -107,7 +107,7 @@ export default function ShowMealGrid(props) {
       setJoinText("ERROR")
       break;
   }
-}, [props.jointype])
+}, [props.jointype])//only run this when the join type from the props is changed - in this way it can be avoided endless loop
   
 
   //const [ date, setDate] = React.useState(props.date)
