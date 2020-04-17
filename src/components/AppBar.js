@@ -180,7 +180,7 @@ const useStyles = makeStyles(theme => ({
         <MenuItem val="create-meal-menu" component={Link} href="/create-meal" color="inherit" onClick={handleClose}>
           <AddIcon/>Create Meal
         </MenuItem>
-        <MenuItem val="settings-menu" component={Link} href="#" color="inherit" onClick={handleClose}>
+        <MenuItem val="settings-menu" component={Link} href="/settings" color="inherit" onClick={handleClose}>
           <SettingsIcon/>Settings
           </MenuItem>
           <MenuItem val="log-out-menu" component={Link} href="/" color="inherit" onClick={handleLogOut}>
