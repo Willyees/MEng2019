@@ -77,7 +77,19 @@ class SettingsTemplate extends Component {
 
     onSubmit = event => {
         event.preventDefault(); //stop page reload
-
+        //If they are only changing email, or only changing password - just pass the thing they arent changing as an empty string, password must be >4 chars at leastr
+        $.ajax({ url: 'PHPF/settings.php',
+            type: 'post',
+            async: false,
+            data: {"username" : getCookie("Username"), "email": "NewEMailHereDylan", "password": "newpasswordheredylan"},
+            success: function(output){
+                alert("Record Updated");
+            },
+            error: function(){
+                //Something on the backend failed, maybe add a meaningful message?
+            }
+        });
+        	
         //checking errors
         // if(formValid(this.state.formErrors)){
         //     //Loop through fromServer array, see if anything has changed
