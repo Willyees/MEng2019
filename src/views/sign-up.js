@@ -200,15 +200,18 @@ class SignUpTemplate extends Component {
 		 enctype: 'multipart/form-data',
                 data: {"data" : this.state},
                 success: function(output) {
-		    alert(output);
-                    if(output == "DONE"){
+		            if(output == "DONE"){
                             window.location.href = "/" 
+                            alert(output, "Successfully registered");
                     }
                     else if(output == 1){
                         alert("Username Already Exists");
                     }else{
-			alert(output);
+			alert(output, "Some problem occurred");
 		    }
+                },
+                error: function() {
+                    alert("There was a problem creating your account")
                 }
             });
         } else{

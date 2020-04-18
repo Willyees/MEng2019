@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import AppBar from '../components/AppBar.js';
 import Grid from '../components/ShowMealGrid.js';
 import ShowMealGrid from '../components/ShowMealGrid.js';
@@ -8,6 +9,8 @@ import {formatTime} from '../helperFunctions.js';
 import {findDOMNode} from 'react-dom';
 import UserMealRequests from '../components/UserMealRequests.js';
 import {getCookie} from '../helperFunctions.js';
+import Paper from '@material-ui/core/Paper'
+import board from "../res/chopping_board_chopped.png";
 
 
 export const joinTypeEnum = {
@@ -22,13 +25,20 @@ const styles = makeStyles(theme => ({
         display: "flex",
         justifyContent: "space-between",
     },
-    
+    paper: {
+        padding: theme.spacing(8),
+        color: theme.palette.secondary.main,
+        marginLeft: "12%",
+        marginRight: "12%",
+        marginTop: "4.5%",
+        width:'75%',
+        "background-image" : `url(${board})`,
+        "background-size" : `contain`,
+      }
 }));
 
 function getParticipants(mealId){
     var data1 = [];
-    var names = [];
-    var usr = [];
     $.ajax({url: 'PHPF/getparticipants.php',
             type : 'post',
             data : {"id" : mealId},
@@ -38,20 +48,13 @@ function getParticipants(mealId){
                 console.log(d1)
                 d1.forEach(function(entry) {
                     var parsed = JSON.parse(entry);
-		    usr.push(parsed.usr);	
-		    names.push(parsed.n);	
+                    parsed.usr = parsed.u;//add additional usr field that will be shown graphically next to the name
+                    data1.push(parsed)
+                    console.log(data1)
                 });
             },
             error : () => {console.log("Error in getting the participants")}
             })
-    for(var i = 0; i < usr.length; i++) {
-	var obj = {};
-	obj["n"] = names[i];
-	obj["u"] = usr[i];
-	console.log("OBJECT IS");
-	console.log(obj);
-	data1.push(obj);
-    }
     console.log("FIN");
     console.log(data1);
     return data1;    
@@ -81,14 +84,14 @@ class ShowMealTemplate extends Component {
 		    data: {"id" : param},
 		    async:false,
 		    success: function(out){
-         	       let d1 = JSON.parse(out);
-			d1.forEach(function(entry) {
-			    requests.push(JSON.parse(entry))
-			});
-		console.log("BELOW")
-		console.log(requests);
-     	            }
-	    });
+                let d1 = JSON.parse(out);
+			    d1.forEach(function(entry) {
+                    var parsed = JSON.parse(entry);
+                    parsed.usr = parsed.u;
+                    requests.push(parsed)
+                });
+            }
+	    })
     }
 
     isHost(){
@@ -142,7 +145,7 @@ class ShowMealTemplate extends Component {
     isParticipant(username){
         //check if curr user is the host
         for(var index = 0; index < this.participants.length; index++){
-          if(this.participants[index].usr == username){
+          if(this.participants[index].u == username){
             return true;
           }
         }
@@ -154,7 +157,7 @@ class ShowMealTemplate extends Component {
      */
     isRequest(username){
         for(var index = 0; index < requests.length; index++){
-            if(requests[index].usr == username){
+            if(requests[index].u == username){
                 return true;
             }
         }
@@ -225,10 +228,12 @@ class ShowMealTemplate extends Component {
                 </AppBar>
                 <ShowMealGrid joinf={this.joinMeal} date={this.state.date} participants={this.participants} jointype={this.getJoinType()}>
                 </ShowMealGrid>
-                {/* {this.isHost() &&  */}
-                <UserMealRequests data={requests} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
+                {this.isHost() && 
+                <Paper className={"classes.paper"}>
+                    <UserMealRequests data={requests} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
+                </Paper>}
             </div>
         );
     }
 }
-export default ShowMealTemplate;
+export default withStyles(styles)(ShowMealTemplate);

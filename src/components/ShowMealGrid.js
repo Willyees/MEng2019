@@ -62,7 +62,11 @@ function test(e, s){
   console.log(s)
 }
 
-
+function joinMeal(joinf, f) {
+  joinf();
+  f(true);
+  //window.location.reload()
+}
 export default function ShowMealGrid(props) {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
@@ -127,7 +131,7 @@ export default function ShowMealGrid(props) {
               </Grid>
               <Grid item xs={2}>
                 { /*!isHost() && /*todo should also not be a partecipant - if so change text and disable button*/
-                <Button variant="contained" color="secondary" startIcon={< AddCircleOutlineIcon/>} onClick={props.joinf} disabled={joinDisabled}> {joinText} </Button>
+                <Button variant="contained" color="secondary" startIcon={< AddCircleOutlineIcon/>} onClick={() => {props.joinf(); window.location.reload() }} disabled={joinDisabled}> {joinText} </Button>
                 }
               </Grid>
             </Grid>

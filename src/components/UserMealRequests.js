@@ -44,11 +44,15 @@ class UserMealRequests extends Component{
 
     setUp(v){
         var data = new Map();
-        let usr = v.usr;
-        delete v.usr;
-        data.set(usr, v);
+        var v_copy = {...v} //have to copy, or it will modify the inputted object. passed by ref
+        console.log("copy: ", v_copy)
+        let usr = v_copy.u;
+        delete v_copy.u;
+        console.log("original", v)
+        console.log("copy: ", v_copy)
+        data.set(usr, v_copy);
+        console.log("data", data)
         return data;
-        
     }
     render(){
         return(
@@ -128,8 +132,7 @@ class UserRequest extends Component{
 	    console.log("OUT IS: k, v");
 	    console.log(v);
 	    console.log(k);
-	    var urlll = v.u;
-            out.push(Object.values(v).map((v) => <Grid item xs><a href={`/view-profile?usr=${urlll}`}>{v}</a></Grid> ));
+            out.push(Object.values(v).map((v) => <Grid item xs><a href={`/view-profile?usr=${k}`}>{v}</a></Grid> ));
         });
         return out;
     }
