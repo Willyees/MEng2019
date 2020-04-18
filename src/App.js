@@ -9,6 +9,7 @@ import ShowMealTemplate from './views/show-meal.js';
 import MessagesTemplate from './views/messages.js';
 import ViewProfileTemplate from './views/view-profile.js';
 import SettingsTemplate from './views/settings.js';
+import ReviewTemplate from './views/review.js';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
@@ -61,6 +62,9 @@ function App() {
             </Route>
             <Route exact path='/settings'>
               <SettingsTemplate/>
+            </Route>
+            <Route exact path='/review'>
+              <ReviewTemplate/>
             </Route>
 
             <Route exact path="/">
