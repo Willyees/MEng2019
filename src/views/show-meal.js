@@ -44,7 +44,7 @@ function getParticipants(mealId){
             },
             error : () => {console.log("Error in getting the participants")}
             })
-    for(var i = 0; i < names.length; i++) {
+    for(var i = 0; i < usr.length; i++) {
 	var obj = {};
 	obj["n"] = names[i];
 	obj["u"] = usr[i];

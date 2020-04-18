@@ -125,7 +125,11 @@ class UserRequest extends Component{
         var out = [];
         this.props.data.forEach((v,k) => 
         {
-            out.push(Object.values(v).map((v) => <Grid item xs><a href={`/view-profile?usr=${k}`}>{v}</a></Grid> ));
+	    console.log("OUT IS: k, v");
+	    console.log(v);
+	    console.log(k);
+	    var urlll = v.u;
+            out.push(Object.values(v).map((v) => <Grid item xs><a href={`/view-profile?usr=${urlll}`}>{v}</a></Grid> ));
         });
         return out;
     }
