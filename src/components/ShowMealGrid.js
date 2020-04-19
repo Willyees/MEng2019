@@ -67,20 +67,30 @@ function joinMeal(joinf, f) {
   f(true);
   //window.location.reload()
 }
+function isMealInThePast(meal_date){
+  let now = new Date();
+  return meal_date < now;
+}
+
 export default function ShowMealGrid(props) {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
   const [ hover, setHover] = React.useState(-1);
+  //join btn properties
   const [ joinDisabled, setJoinDisabled] = React.useState(false);
   const [ joinText, setJoinText] = React.useState("JOIN");
+  //add review btn properties
+  const [ reviewDisabled, setReviewDisabled] = React.useState(true);
+
   console.log(props)
-  //set join visibility
-  React.useEffect(() =>{
+  //set join visibility & review
+  React.useEffect(() =>{//todo: add check that current user is not amongst the reviews users. Cannot review it twice
   switch (props.jointype) {
     case joinTypeEnum.HOST:
       console.log("host")
       setJoinText("JOIN")
       setJoinDisabled(true)
+      setReviewDisabled(true)
       break;
 
     case joinTypeEnum.PARTICIPANT:
@@ -88,6 +98,7 @@ export default function ShowMealGrid(props) {
 
       setJoinDisabled(true)
       setJoinText("PARTICIPATING")
+      setReviewDisabled(!isMealInThePast(props.date))
       break;
 
     case joinTypeEnum.REQUESTEE:
@@ -95,13 +106,15 @@ export default function ShowMealGrid(props) {
 
       setJoinDisabled(true)
       setJoinText("AWAITING")
+      setReviewDisabled(true)
       break;
 
     case joinTypeEnum.USER:
       console.log("user")
 
-      setJoinDisabled(false)
+      setJoinDisabled(isMealInThePast(props.date))
       setJoinText("JOIN")
+      setReviewDisabled(true)
 
     break;
 
@@ -288,7 +301,9 @@ export default function ShowMealGrid(props) {
                 </Typography>
               </Grid>
               {/* addItem button */}
+              {!reviewDisabled && 
               <Grid item container xs={2} style={{"justify-content":"flex-end"}}>
+                
                 <Button
                   size="big"
                   startIcon={< AddCircleOutlineIcon/>}
@@ -297,7 +312,7 @@ export default function ShowMealGrid(props) {
                 >
                   Add review
                 </Button>
-              </Grid>
+              </Grid>}
             </Grid> 
 
             <Grid id="review_list_grid" item container xs={12}>   

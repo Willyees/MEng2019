@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/styles';
 import AppBar from '../components/AppBar.js';
 import Grid from '../components/ShowMealGrid.js';
 import ShowMealGrid from '../components/ShowMealGrid.js';
@@ -11,6 +9,7 @@ import UserMealRequests from '../components/UserMealRequests.js';
 import {getCookie} from '../helperFunctions.js';
 import Paper from '@material-ui/core/Paper'
 import board from "../res/chopping_board_chopped.png";
+import { withStyles } from '@material-ui/core';
 
 
 export const joinTypeEnum = {
@@ -20,7 +19,7 @@ export const joinTypeEnum = {
     USER : 3
 }
 
-const styles = makeStyles(theme => ({
+const styles = theme => ({
     root:{
         display: "flex",
         justifyContent: "space-between",
@@ -35,7 +34,7 @@ const styles = makeStyles(theme => ({
         "background-image" : `url(${board})`,
         "background-size" : `contain`,
       }
-}));
+});
 
 function getParticipants(mealId){
     var data1 = [];
@@ -59,8 +58,6 @@ function getParticipants(mealId){
     console.log(data1);
     return data1;    
 }
-
-const useStyles = makeStyles(styles);
 let requests = [];
 class ShowMealTemplate extends Component {
     constructor(props){
@@ -222,6 +219,7 @@ class ShowMealTemplate extends Component {
         }
     }
     render() {
+        const {classes} = this.props;
         return(
             <div>     
                 <AppBar>
@@ -229,9 +227,12 @@ class ShowMealTemplate extends Component {
                 <ShowMealGrid joinf={this.joinMeal} date={this.state.date} participants={this.participants} jointype={this.getJoinType()}>
                 </ShowMealGrid>
                 {this.isHost() && 
-                <Paper className={"classes.paper"}>
-                    <UserMealRequests data={requests} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
-                </Paper>}
+                <div className={classes.root}>
+                    <Paper className={classes.paper}>
+                        <UserMealRequests data={requests} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
+                    </Paper>
+                </div>}
+                
             </div>
         );
     }

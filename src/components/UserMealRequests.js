@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import Fab from '@material-ui/core/Fab';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
-import { withStyles } from '@material-ui/styles';
 import board from "../res/chopping_board_chopped.png";
 import $ from 'jquery';
 
