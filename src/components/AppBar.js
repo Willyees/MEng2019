@@ -40,7 +40,9 @@ const useStyles = makeStyles(theme => ({
 
   export default function ButtonAppBar() {
     const classes = useStyles();
-    var notifications = getNotifications()
+    const [notifications, setNotifications ] = React.useState(getNotifications())
+    console.log("notifications", notifications.length)
+
     return (
       <div className={classes.root}>
         <AppBar position="fixed">
@@ -69,7 +71,8 @@ const useStyles = makeStyles(theme => ({
     var username = getCookie("Username");
     $.ajax({ url: 'PHPF/checkrequestnumber.php',
 		    type: 'post',
-		    data: {"host" : username},
+        data: {"host" : username},
+        async:false,
 		    success: function(out){
           console.log(out, "success");
           let d1 = JSON.parse(out)
@@ -97,6 +100,7 @@ const useStyles = makeStyles(theme => ({
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    console.log("requests", props.requests.length)
     const handleMenu = event => {
       setAnchorEl(event.currentTarget);
     };

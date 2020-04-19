@@ -20,6 +20,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Rating from '@material-ui/lab/Rating';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ReviewList from './ReviewList';
+import $ from 'jquery';
 
 import mealPic from "../res/mealPic.jpg";
 import board from "../res/chopping_board_chopped.png";
@@ -60,6 +62,37 @@ function test(e, s){
   console.log(e);
   console.log("---------------")
   console.log(s)
+}
+
+function getReviewsAjax(host){
+  var reviews = []
+  $.ajax({ url: 'PHPF/getreviews.php',
+    type: 'post',
+    data: {
+      "username" : host
+    },
+    success: function(output) {
+      var d1 = JSON.parse(output);
+      d1.forEach(entity => {
+        var parsed = JSON.parse(entity);
+        reviews.push(parsed);
+      })
+      console.log("Reviews: ", reviews)
+    },
+    error : function() {console.log("problem with receving the reviews");},
+    async: false
+  });
+  /*if(window.location.host == "localhost:3000"){
+    var s = '[{"username":"Basil","reviewed":"Oscar","title":"Appaling","date":"now","star_rating":"1","body":"nooo ihas diuas iu bamsnd iuwqdk jbasjd audkjasmdbdkjadh n asdasdad asds dsad asd fewfsa s feass fsef"},{"username":"Tumeric","reviewed":"Oscar","title":"He was Ace","date":"today","star_rating":"1","body":"testttttt"}]'
+    var d1 = JSON.parse(s);
+    console.log(d1)
+      d1.forEach(entity => {
+        //var parsed = JSON.parse(entity);
+        reviews.push(entity);
+      })
+      console.log("Reviews: ", reviews)
+  }*/
+  return reviews;
 }
 
 function joinMeal(joinf, f) {
@@ -290,61 +323,10 @@ export default function ShowMealGrid(props) {
             <UserMealRequests data={props.participants} accept={false} />
           </Paper>
         </Grid>
-
+        
         <Grid container xs={12}>
           <Paper className={classes.paper}>
-            <Grid item container xs={12}>
-              {/* review title grid */}
-              <Grid id="review_title_grid" item container xs={10} style={{justifyContent:"left", marginBottom:'3%'}}>
-                <Typography id="review_title" variant="h2" component="h2" gutterBottom>
-                  Reviews
-                </Typography>
-              </Grid>
-              {/* addItem button */}
-              {!reviewDisabled && 
-              <Grid item container xs={2} style={{"justify-content":"flex-end"}}>
-                
-                <Button
-                  size="big"
-                  startIcon={< AddCircleOutlineIcon/>}
-                  type="submit"
-                  style={{contentFit:"contain", maxHeight:"50%", bottom:0}}
-                >
-                  Add review
-                </Button>
-              </Grid>}
-            </Grid> 
-
-            <Grid id="review_list_grid" item container xs={12}>   
-              <Card variant="outlined" height="100%">
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                      R
-                    </Avatar>
-                  }
-                  title="'Username'"
-                  subheader="'Time and date when review posted'" style={{textAlign:"left"}}
-
-                  action={
-                    <Rating
-                      name="read-only"
-                      value={5}
-                      //the 5 should be set to a variable "value" that will be read from db
-                      precision={1}
-                      readOnly
-                    />
-                  }
-                />
-                <CardContent>
-                  <Typography variant="body2" component="p">
-                    review comments. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
-                    unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
-                    dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <ReviewList reviews={getReviewsAjax(props.host)} reviewDisabled={reviewDisabled}/>
           </Paper>
         </Grid>
       </div>

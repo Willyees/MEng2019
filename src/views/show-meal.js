@@ -224,7 +224,7 @@ class ShowMealTemplate extends Component {
             <div>     
                 <AppBar>
                 </AppBar>
-                <ShowMealGrid joinf={this.joinMeal} date={this.state.date} participants={this.participants} jointype={this.getJoinType()}>
+                <ShowMealGrid joinf={this.joinMeal} date={this.state.date} host={this.state.hostId} participants={this.participants} jointype={this.getJoinType()}>
                 </ShowMealGrid>
                 {this.isHost() && 
                 <div className={classes.root}>
