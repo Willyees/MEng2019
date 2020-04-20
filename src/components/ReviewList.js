@@ -11,7 +11,6 @@ import Button from '@material-ui/core/Button';
 
 
 function redirectAddReview(e){
-  console.log(e.currentTarget.value)
   if(e.currentTarget.value != "")
     window.location.href = `/review?username=${e.currentTarget.value}`
   else
@@ -21,11 +20,8 @@ function redirectAddReview(e){
 class ReviewList extends Component{//have to pass reviews from the parent
     constructor(props){
       super(props);
-      console.log(props)
     }
     render(){
-      console.log("rerender rviewlist")
-      console.log("props", this.props)
         return(
         <div>
             <Grid item container xs={12}>
@@ -59,7 +55,6 @@ class ReviewList extends Component{//have to pass reviews from the parent
 export default ReviewList;
 
 function Review(props){
-    console.log(props.data)
     return(
         <Grid id="review_list_grid" item container xs={12} style={{padding: 5}}>   
               <Card variant="outlined" height="100%" style={{"width" : "100%"}}>

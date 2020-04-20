@@ -44,18 +44,14 @@ function getParticipants(mealId){
             async : false,
             success : function(out){
                 var d1 = JSON.parse(out);
-                console.log(d1)
                 d1.forEach(function(entry) {
                     var parsed = JSON.parse(entry);
                     parsed.usr = parsed.u;//add additional usr field that will be shown graphically next to the name
                     data1.push(parsed)
-                    console.log(data1)
                 });
             },
             error : () => {console.log("Error in getting the participants")}
             })
-    console.log("FIN");
-    console.log(data1);
     return data1;    
 }
 let requests = [];
@@ -195,8 +191,7 @@ class ShowMealTemplate extends Component {
         if(outParsed.time != "")
             outParsed.time = formatTime(outParsed.time)
         //store in the state the variables needed to be passed to child or worked upon
-        console.log(this);
-        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"])}, ()=> {console.log(this.state)})
+        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"])})
 
         for(var id in outParsed){
             if(outParsed[id] == ""){

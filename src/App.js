@@ -16,8 +16,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import AppBar from './components/AppBar';
 import ShowUserMealsTemplate from './views/show-user-meals.js'
 
-var oldM =[{title:"old1", id:"101", img:"bear1.png", date:"02.02.2020"},{title:"old2", id:"102", img:"bear1.png", date:"01.01.2020"}];
-var newM = [{title:"new1", id:"103", img:"bear1.png", date:"03.02.2020"}, {title:"new2", id:"104", img:"bear1.png", date:"04.04.2020"}];
+var meals =[{title:"old1", id:"101", img:"bear1.png", date:"02.02.2020"},{title:"old2", id:"102", img:"bear1.png", date:"01.01.2020"}, {title:"new1", id:"103", img:"bear1.png", date:"03.02.2020"}, {title:"new2", id:"104", img:"bear1.png", date:"04.04.2020"}];
 
 function App() {
   return (
@@ -28,7 +27,7 @@ function App() {
           <Switch>
 
             <Route exact path='/meals-user'>
-              <ShowUserMealsTemplate oldmeals={oldM} newmeals={newM}/>{/*just for debug. it should not have direct route, but call the component when link clicked*/}
+              <ShowUserMealsTemplate meals={meals}/>{/*just for debug. it should not have direct route, but call the component when link clicked*/}
             </Route>
 
             <Route exact path="/sign-up">
