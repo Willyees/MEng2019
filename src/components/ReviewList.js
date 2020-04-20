@@ -9,13 +9,23 @@ import Typography from '@material-ui/core/Typography';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@material-ui/core/Button';
 
+
+function redirectAddReview(e){
+  console.log(e.currentTarget.value)
+  if(e.currentTarget.value != "")
+    window.location.href = `/review?username=${e.currentTarget.value}`
+  else
+    console.log("user being reviewed is empty. error in add review button");
+}
+
 class ReviewList extends Component{//have to pass reviews from the parent
     constructor(props){
-        super(props);
-
-
+      super(props);
+      console.log(props)
     }
     render(){
+      console.log("rerender rviewlist")
+      console.log("props", this.props)
         return(
         <div>
             <Grid item container xs={12}>
@@ -34,7 +44,8 @@ class ReviewList extends Component{//have to pass reviews from the parent
                 startIcon={< AddCircleOutlineIcon/>}
                 type="submit"
                 style={{contentFit:"contain", maxHeight:"50%", bottom:0}}
-            >
+                value={this.props.host}
+                onClick={redirectAddReview}>
                 Add review
             </Button>
             </Grid>}
@@ -54,7 +65,7 @@ function Review(props){
               <Card variant="outlined" height="100%" style={{"width" : "100%"}}>
                 <CardHeader
                   avatar={
-                    <Avatar aria-label="recipe">
+                    <Avatar aria-label="recipe" id="reviewer">
                       {props.data.username.charAt(0)}
                     </Avatar>
                   }

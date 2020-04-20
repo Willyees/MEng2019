@@ -82,7 +82,7 @@ function getReviewsAjax(host){
     error : function() {console.log("problem with receving the reviews");},
     async: false
   });
-  /*if(window.location.host == "localhost:3000"){
+  if(window.location.host == "localhost:3000"){
     var s = '[{"username":"Basil","reviewed":"Oscar","title":"Appaling","date":"now","star_rating":"1","body":"nooo ihas diuas iu bamsnd iuwqdk jbasjd audkjasmdbdkjadh n asdasdad asds dsad asd fewfsa s feass fsef"},{"username":"Tumeric","reviewed":"Oscar","title":"He was Ace","date":"today","star_rating":"1","body":"testttttt"}]'
     var d1 = JSON.parse(s);
     console.log(d1)
@@ -91,7 +91,7 @@ function getReviewsAjax(host){
         reviews.push(entity);
       })
       console.log("Reviews: ", reviews)
-  }*/
+  }
   return reviews;
 }
 
@@ -326,7 +326,7 @@ export default function ShowMealGrid(props) {
         
         <Grid container xs={12}>
           <Paper className={classes.paper}>
-            <ReviewList reviews={getReviewsAjax(props.host)} reviewDisabled={reviewDisabled}/>
+            <ReviewList reviews={getReviewsAjax(props.host)} reviewDisabled={reviewDisabled} host={props.host}/>
           </Paper>
         </Grid>
       </div>
