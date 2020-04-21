@@ -27,7 +27,7 @@ function App() {
           <Switch>
 
             <Route exact path='/meals-user'>
-              <ShowUserMealsTemplate meals={meals}/>{/*just for debug. it should not have direct route, but call the component when link clicked*/}
+              <ShowUserMealsTemplate limit={false}/>{/*just for debug. it should not have direct route, but call the component when link clicked*/}
             </Route>
 
             <Route exact path="/sign-up">

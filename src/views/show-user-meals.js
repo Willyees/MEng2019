@@ -4,13 +4,62 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper'
 import {getCookie} from '../helperFunctions.js'
+import $ from 'jquery';
 
 
 function getMealsUser(user){
     //add ajax call here
     //return data
 }
+
 class ShowUserMealsTemplate extends Component {
+    constructor(props){
+        super(props);
+        this.state = {user : this.getCurrUser(), data : []}
+        this.getMealsAjax();
+    }
+
+    getCurrUser(){
+        return getCookie("Username")
+    }
+
+    getMealsAjax(){
+        $.ajax({ url: 'PHPF/getmealsuser.php',
+            type: 'post',
+            data: {
+                "username" : String(this.state.user),
+                "limit" : String(this.props.limit)
+            },
+            success: function(output) {
+                console.log(output);
+                let d = []
+                let d1 = JSON.parse(output);
+                d1.forEach((entity)=> {
+                    var parsed = JSON.parse(entity);
+                    d.push(parsed)
+                    console.log(parsed)
+                })
+                console.log(d)
+                this.setState({data : d})
+               
+            }, 
+            context : this
+        });
+    }
+
+    render(){
+        return(
+        <div className="main-body">
+            <Typography variant="h2">User's List of Meals</Typography>
+            <ShowUserMeals user={this.state.user} meals={this.state.data}/>
+        </div>  
+        
+        )
+    }
+}
+export default ShowUserMealsTemplate
+
+export class ShowUserMeals extends Component {
     constructor(props){//expecting meal with: title, host, date, image, id
         super(props);
         this.oldmeals = [];
@@ -19,11 +68,11 @@ class ShowUserMealsTemplate extends Component {
     }
 
     orderMeals(meals){
+        console.log(meals);
         var now = new Date();
-        var curruser = getCookie("Username");
         console.log(now);
         meals.forEach((v) =>{
-            if(curruser == v.host){
+            if(this.props.user == v.host){
                 this.hostmeals.push(v)
             }
             if(new Date(v.date) < now)
@@ -36,8 +85,7 @@ class ShowUserMealsTemplate extends Component {
         this.orderMeals(this.props.meals);//reorder everytime is rerendered. Take into account ajax call is asyncronous
         
         return(
-        <div className="main-body">
-            <Typography variant="h2">User's List of Meals</Typography>
+            <div>
             <Paper style={{"background-color" : "grey"}}>
                 <Typography variant="h5">Past Meals</Typography>
             </Paper>
@@ -72,9 +120,8 @@ class ShowUserMealsTemplate extends Component {
                 <Grid item xs={3}><MealBox title="new title" img="bear1.png" date="02.02.2020" /></Grid>
 
         </Grid>*/}
+        </div>
             
-        </div>  
         )
     }
 }
-export default ShowUserMealsTemplate;

@@ -11,8 +11,10 @@ import {formatTime} from '../helperFunctions'
  */
 export function MealBox(props){
     //import pic from `../res/${props.img}`;
-    var pic = require(`../res/${props.img}`);
     console.log(props.date)
+    //var pic = require(`../res/${props.img}`); //todo add the image into the meal info
+    var pic = require('../res/bear1.png')
+    
     var old = new Date(props.date) < new Date();
     return(
         <a className={"link-clean"} href={`/show-meal?id=${props.id}`}>
@@ -23,7 +25,6 @@ export function MealBox(props){
                     <Paper elevation={0}>
                         <Typography>{props.title}</Typography>
                     </Paper>
-                    
                 </Grid>
             </Grid>
             
