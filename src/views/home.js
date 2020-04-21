@@ -32,18 +32,22 @@ class HomeTemplate extends Component {
             <div>
                 <AppBar/>
             </div>
-                <Grid container className="main-body">
-                    <Grid item xs={6}>
-                        <MapWrapper meals={this.meals} mapCenter={}></MapWrapper>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <Typography variant={'h5'}>
+                <Grid container className="main-body" alignItems="center" justify="center">
+                <Grid item xs={6}>
+                    <Paper className="paper-board">
+                        <Typography variant={'h5'} color={"textPrimary"}>
                         Meal Time is a place where people can organise their meals and share information. <p />
                         Our goal is to create a platform that would enable people to cook together and to socialize, may be learning new recipes!
                         </Typography>
+                    </Paper>
                     </Grid>
                     <Grid item xs={12}>
+                        <MapTemplate mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={false} endnode={"getmeals.php"}/>
+                    </Grid>
+
+                    
+                    <Grid item xs={12}>
+                        
                         <Typography variant={'h6'}>
                         <br/>
                         To be able to interact, you have to create a profile

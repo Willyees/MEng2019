@@ -38,7 +38,7 @@ function App() {
               < LogInTemplate />
             </Route>
             <Route exact path="/map">
-              < MapTemplate />
+              < MapTemplate mapWidth={100} sliderVisib={true} filterVisib={true} boxesVisib={true} endnode={"getmeals.php"}/>
             </Route>
 
             <Route exact path="/create-meal">  {/* might have to modify the path, because each meal will have a different URL. Set up atm as work in progress*/}

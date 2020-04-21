@@ -127,22 +127,19 @@ export function getMeals(dbEndNode){
 
 class MapTemplate extends Component {
 	constructor(props) {
-        super(props);
+		super(props);
 		this.state = {
 			filtered : false,
 			dataMeals : new Map(),
 			mapCenter : {},
 			sliderBtnChosen : "map-view",
-			sliderVisib : props.slider,
-			filterVisib : props.filter,
-			boxesVisib : prop.boxes,
-			mapWidth : prop.mapWidth,
 		  }
+		 const endnode = props.endnode;
 		 this.handlerFiltered = this.handlerFiltered.bind(this);
 		 this.test = this.test.bind(this);
 		 this.handleToggleBtnChange = this.handleToggleBtnChange.bind(this);
 		
-		 getMeals(props.endnode);//get the meals and load them into the external arrays
+		 getMeals(endnode);//get the meals and load them into the external arrays
 		 sortMealsByDate(storeDetails);
 		 this.state.dataMeals = objSorted;
 		 this.state.mapCenter = (objSorted.values().next().done ? this.state.mapCenter : objSorted.values().next().value[0].pos)
@@ -186,7 +183,9 @@ class MapTemplate extends Component {
 		this.setState({sliderBtnChosen : v});
 	}
 
-	
+	componentDidMount(){
+        console.log(this.props)
+    }
 	/*getName(tempo){
 	    for (var i = 0; i < storeDetails.length; i++) { 
 			if(storeDetails[i].pos == tempo){
@@ -203,12 +202,12 @@ render() {
     return (
 	<Grid class="main-body" container>
 		
-		{this.state.filterVisib &&
+		{this.props.filterVisib &&
 		<Grid container item xs={12} justify="center">
 			<SearchBar handlerFiltered={this.handlerFiltered}/>
 		</Grid>}
 
-		{this.state.sliderVisib &&
+		{this.props.sliderVisib &&
 		<Grid container item xs justify="flex-end">
 				<ToggleButtonGroup value={this.state.sliderBtnChosen} style={{margin : "10px"}} onChange={this.handleToggleBtnChange} exclusive>
 					<ToggleButton value="map-view" aligned >
@@ -222,7 +221,7 @@ render() {
 		</Grid>}
 		{ this.state.sliderBtnChosen == "map-view" &&
 		<Grid id="mapM" container item xs={12}>
-			{<MapWrapper meals={this.state.dataMeals} mapCenter={this.state.mapCenter} mapWidth={this.state.mapWidth} infoWindowVisib={this.state.boxesVisib}/>}
+			{<MapWrapper meals={this.state.dataMeals} mapCenter={this.state.mapCenter} mapWidth={this.props.mapWidth} infoWindowVisib={this.props.boxesVisib}/>}
 		</Grid>
 		}
 			{ this.state.sliderBtnChosen == "list-view" &&
@@ -239,7 +238,7 @@ render() {
 	);
   }
 }
-export default (MapTemplate)
+export default MapTemplate
 
 //export default MapTemplate;
 
