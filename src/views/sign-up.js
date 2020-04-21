@@ -273,42 +273,35 @@ class SignUpTemplate extends Component {
         // const [ hover, setHover] = React.useState(-1);
         return(
 
-            <div className={classes.root}>
+            <div className={classes.root} style={{height:'100%', width:'100%', posistion:'absolute'}}>
                 <form id="fm" onSubmit={this.onSubmit} enctype="multipart/form-data">
-                <Grid container style={{width:'75%', marginLeft:'19%'}}>
+                    <Grid container style={{width:'100%', maxHeight:'70%', marginLeft:'20%', marginRight:'20%'}}>
                     {/* first half of page */}
-                    <Grid item container xs={6} style={{marginTop:'7.5%', maxWidth:'40%', marginBottom:'7.5%'}}>
+                        <Grid item container xs={6} style={{maxHeight:'70%',marginTop:'6%', maxWidth:'30%', marginBottom:'5%'}}>
                         {/* profile paper */}
                         
-                            <Paper className={classes.profilePaper} style={{padding:'5%', "background-image" : `url(${board})`}}>
-                                <Grid item container xs={12} style={{justifyContent: "center"}}>
-                                    {/* these textfields should be hidden until edit button clicked */}
-                                    {/* <TextField label="First Name" style={{fontWeight: "bolder", marginTop: "-8%"}} 
-                                    /> */}
+                            <Paper className={classes.profilePaper} style={{ maxHeight:'100%',padding:'5%', "background-image" : `url(${board})`}}>
+                                <Grid item container xs={12} style={{justifyContent: "center"}}>                
 
-                                    <TextField error= {formErrors.fName} helperText= {formErrors.fName} name="fName" id="first-name-tb" onChange={this.onChange} value={this.fName} type="text" label="First Name" style={{fontWeight: "bolder", color: 'red'}} />
+                                    <TextField error= {formErrors.fName} helperText= {formErrors.fName} name="fName" id="first-name-tb" onChange={this.onChange} value={this.fName} type="text" label="First Name" style={{width:'45%',fontWeight: "bolder", color: 'red'}} />
 
                                     {/* <TextField label="Last Name" style={{fontWeight: "bolder", marginTop: "-8%"}}/> */}
 
-                                    <TextField error= {formErrors.lName} helperText= {formErrors.lName} name="lName" id="last-name-tb" onChange={this.onChange} value={this.lName} type="text" label="Last Name" style={{fontWeight: "bolder"}} />
-
-                                    {/* edit icon on click reveal textfields and hide label, change (or add another icon) to a save icon when clicked and it switch between them every time */}
-                                    {/* <EditIcon onClick>
-                                    </EditIcon> */}
+                                    <TextField error= {formErrors.lName} helperText= {formErrors.lName} name="lName" id="last-name-tb" onChange={this.onChange} value={this.lName} type="text" label="Last Name" style={{marginLeft: '2.5%',width:'45%', fontWeight: "bolder"}} />
                                     
                                 </Grid>
 
                                 <Grid item container xs={12} >
                                     <Grid item xs={12} style={{justifyContent:"left", display: "flex"}} >
                                         <div className={ myStyle.container }>
-                                         {/* style={{width:"100%", position: 'relative'}} */}
+                                            {/* style={{width:"100%", position: 'relative'}} */}
                                             {$imagePreview}
                                                 {/* // opacity: 1,
                                                 // display: 'block',
                                                 // transition: '.5s ease',
                                                 // backfaceVisibility: 'hidden', */}
                                             
-                                             <div className= {myStyle.middle}>
+                                                <div className= {myStyle.middle}>
                                             {/*style={{
                                                 transition: '.5s ease',
                                                 opacity: 0,
@@ -319,7 +312,7 @@ class SignUpTemplate extends Component {
                                                 MsTransform: 'translate(-50%, -50%)',
                                                 textAlign: 'center'}} */}
                                             
-                                                 <div className= {myStyle.text} >
+                                                    <div className= {myStyle.text} >
                                                 {/*style={{
                                                     backgroundColor: '#4CAF50',
                                                     color: 'white',
@@ -329,39 +322,20 @@ class SignUpTemplate extends Component {
                                                     
                                                     <input className="fileInput" 
                                                     type="file"
-						    id="up2"
+                                                    id="up2"
                                                     onChange={this.handleImageChange}  />
                                                 </div>
 
                                             </div>
                                         </div>
-                                    </Grid>
-
-                                    {/* <Grid item xs={12}>
-                                        <Rating
-                                            name="hover-feedback"
-                                            value={value}
-                                            precision={1}
-                                            //this code should be put on the view meal page for other users rating the main user's meal event
-                                            onChange={(event, newValue) => {
-                                            setValue(newValue);
-                                            }}
-                                            onChangeActive={(event, newHover) => {
-                                            setHover(newHover);
-                                            }}
-                                        />
-                                        {/*this explains the rating if we need that... */}
-                                        {/* {value !== null && <Box ml={2}>{labels[hover !== -1 ? hover : value]}</Box>} */}
-                                    {/* </Grid> */}
+                                    </Grid>                        
 
                                     <Grid item xs={12}>
                                         <TextField label="Email Address" fullWidth defaultValue="john@example.com" name="username" value={this.username} onChange={this.onChange}
                                         />
                                     </Grid>
                                     
-                                    <Grid item xs={12}>
-                                        {/* <TextField label="password" fullWidth defaultValue="Password" 
-                                        /> */}
+                                    <Grid item xs={12}>                                    
 
                                         <TextField error= {formErrors.password} helperText= {formErrors.password} name="password" type={this.state.isPasswordVis ? "password" : "text"} id="password-tb" onChange={this.onChange} value={this.password} label="Password" fullWidth
                                         InputProps={{
@@ -380,9 +354,7 @@ class SignUpTemplate extends Component {
                                         </TextField>
                                     </Grid>
 
-                                    <Grid item xs={12}>
-                                        {/* <TextField label="Address" fullWidth defaultValue="1 old kent road"
-                                        /> */}
+                                    <Grid item xs={12}>                                        
 
                                         <TextField error= {formErrors.address_1} helperText= {formErrors.address_1} name="address_1" id="address_1-tb" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" fullWidth/>
                                     </Grid>
@@ -390,27 +362,47 @@ class SignUpTemplate extends Component {
                                     <Grid item xs={12}>
                                         <TextField error= {formErrors.address_2} helperText= {formErrors.address_2} name="address_2" id="address_2-tb" onChange={this.onChange} value={this.address_2} type="text" label="Address Line 2" fullWidth/>
                                     </Grid>
+                                  
+                                </Grid>
+                            </Paper>
+                    </Grid>
 
-                                    <Grid item xs={12}>
-                                        {/* <TextField label="Postcode" fullWidth defaultValue="LN1 OKR"
-                                        /> */}
+                    {/* second half of page */}
+                    <Grid container xs={6} style={{maxHeight:'70%',marginTop:'6%', width:'30%', maxWidth:'30%', marginLeft:'2%',  marginBottom:'5%'}}>
+                        {/*bio paper*/}
+                        <Grid item container xs={12} style={{}}>
+                            <Paper className={classes.recentMealsPaper} style={{width:'100%',padding:'5%',"background-image" : `url(${board})`, height: '100%',maxHeight: '100%'}}>
+                                {/* <Grid item container xs={12}>
+                                    <GridList />
+                                </Grid> */}
+
+                                    <Grid item xs={12}>                                       
 
                                         <TextField error= {formErrors.postcode} helperText= {formErrors.postcode} name="postcode" id="postcode-tb" onChange={this.onChange} value={this.postcode} type="text" label="Postcode" fullWidth/>
-                                    </Grid>
-
-                                    <Grid item xs={12}>
-                                        {/* <TextField label="City" fullWidth defaultValue="London"
-                                        /> */}
-
+                                    </Grid> 
+                                    <Grid item xs={12}>                                        
                                         <TextField error= {formErrors.city} helperText= {formErrors.city} name="city" id="city-tb" onChange={this.onChange} value={this.city} type="text" label="City" fullWidth/>
                                     </Grid>
 
-                                    <Grid item xs={12}>
-                                        {/* <TextField label="Country" fullWidth defaultValue="United Kingdom"
-                                        /> */}
+                                    <Grid item xs={12}>                                        
 
                                         <TextField error= {formErrors.country} helperText= {formErrors.country} name="country" id="country-tb" onChange={this.onChange} value={this.country} type="text" label="Country" fullWidth/>
+                                    </Grid> 
+                                    
+
+                                    <Grid item xs={12}>
+                                        {/* <TextField label="Mobile Number" fullWidth defaultValue="07123 456789"
+                                        /> */}
+
+                                        <TextField error= {formErrors.phone} helperText= {formErrors.phone} name="phone" id="phone-tb" onChange={this.onChange} value={this.phone} type="text" label="Phone Number" fullWidth/>
                                     </Grid>
+                                    {/* <Grid item xs={12}>
+                                        
+
+                                            <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit">
+                                            Sign Up
+                                        </Button>
+                                    </Grid> */}
 
                                     <Grid item xs={12}>
                                         {/* <TextField label="DOB" fullWidth defaultValue="1/1/0000"
@@ -422,47 +414,23 @@ class SignUpTemplate extends Component {
                                         </MuiPickersUtilsProvider>
                                     </Grid>
 
-                                    <Grid item xs={12}>
-                                        {/* <TextField label="Mobile Number" fullWidth defaultValue="07123 456789"
-                                        /> */}
-
-                                        <TextField error= {formErrors.phone} helperText= {formErrors.phone} name="phone" id="phone-tb" onChange={this.onChange} value={this.phone} type="text" label="Phone Number" fullWidth/>
-                                    </Grid>
-                                    {/* <Grid item xs={12}>
-                                        
-
-                                         <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit">
-                                            Sign Up
-                                        </Button>
-                                    </Grid> */}
-                                </Grid>
-                            </Paper>
-                    </Grid>
-
-                    {/* second half of page */}
-                    <Grid item container xs={6} style={{marginTop:'7.5%', marginLeft:'2.5%', maxWidth:'40%'}}>
-                        {/* recent meals paper */}
-                        <Grid item container xs={12} style={{maxHeight:'40%'}}>
-                            <Paper className={classes.recentMealsPaper} style={{padding:'5%',"background-image" : `url(${board})`, height: '100%',maxHeight: '100%',maxWidth:'90%'}}>
-                                <Grid item container xs={12}>
-                                    <GridList />
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    {/* <TextField label="Bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" defaultValue="I like dinner!" style={{marginTop: "8%"}}
-                                    /> */}
-
-                                    <TextField multiline name="bio" id="bio-mltb" onChange={this.onChange} value={this.bio} type="text"
-                                    label="Your bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" style={{marginTop: "8%"}}/>
-                                </Grid> 
+                                 
                             </Paper>
                         </Grid>
                         
                         {/* preferences paper */}
-                        <Grid item container xs={12} style={{width:'40%', marginTop:'7.5%'}}>
-                            <Paper style={{width:'100%', padding:'5%',marginBottom:'18.7%', "background-image" : `url(${board})`}}>
+                        <Grid item container xs={12} style={{}}>
+                            <Paper style={{width:'100%', padding:'5%', marginTop:'15%',"background-image" : `url(${board})`}}>
+
+                            <Grid item xs={12}>
+                                    {/* <TextField label="Bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" defaultValue="I like dinner!" style={{marginTop: "8%"}}
+                                    /> */}
+
+                                    <TextField multiline name="bio" id="bio-mltb" onChange={this.onChange} value={this.bio} type="text"
+                                    label="Your bio" fullWidth multiline rows={5} rowsMax={5} variant="outlined" style={{marginBottom:'5%'}}/>
+                                </Grid>
                                     
-                                <TextField name="dietary" id="dietary-ddmenu" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%", marginTop:"20%"}}/>
+                                <TextField name="dietary" id="dietary-ddmenu" onChange={this.onChange} value={this.dietary} label="Dietary requirements" fullWidth variant="outlined" multiline rows={3} style={{marginBottom:"5%"}}/>
 
                                 <Grid item xs={12}>
 
@@ -497,90 +465,6 @@ class SignUpTemplate extends Component {
                 
                 </form>
             </div>
-            
-            // <div className="main-body">
-            //     SignUp page
-            //     <div>
-            //         <p />
-            //     </div>
-            //     <Grid container justify="center">
-            //         <Grid item>
-            //     <form onSubmit={this.onSubmit}> 
-            //     <Paper>
-            //         <div>
-            //             <TextField error= {formErrors.fName} helperText= {formErrors.fName} name="fName" id="first-name-tb" onChange={this.onChange} value={this.fName} type="text" label="First Name"/>
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.lName} helperText= {formErrors.lName} name="lName" id="last-name-tb" onChange={this.onChange} value={this.lName} type="text" label="Last Name"/>
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.username} helperText= {formErrors.username} name="username" id="username-tb" onChange={this.onChange} value={this.username} type="text" label="Username" />
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.password} helperText= {formErrors.password} name="password" type={this.state.isPasswordVis ? "password" : "text"} id="password-tb" onChange={this.onChange} value={this.password} label="Password" 
-            //             InputProps={{
-            //                 endAdornment:<InputAdornment position="end">
-            //                     <IconButton onClick={this.setVisibilityPass}>{this.state.isPasswordVis ? <VisibilityOff /> : <Visibility />}</IconButton>
-            //                 </InputAdornment>}}>
-            //             </TextField>
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.password_c} helperText= {formErrors.password_c} name="password_c" type={this.state.isPasswordCVis ? "password" : "text"} id="password_c-tb" onChange={this.onChange} value={this.password_c} label="Confirm Password"                         
-            //             InputProps={{
-            //                 endAdornment:<InputAdornment position="end">
-            //                     <IconButton onClick={this.setVisibilityPassC}>{this.state.isPasswordCVis ? <VisibilityOff /> : <Visibility />}</IconButton>
-            //                 </InputAdornment>}}>
-            //             </TextField>
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.address_1} helperText= {formErrors.address_1} name="address_1" id="address_1-tb" onChange={this.onChange} value={this.address_1} type="text" label="Address Line 1" />
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.address_2} helperText= {formErrors.address_2} name="address_2" id="address_2-tb" onChange={this.onChange} value={this.address_2} type="text" label="Address Line 2" />
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.postcode} helperText= {formErrors.postcode} name="postcode" id="postcode-tb" onChange={this.onChange} value={this.postcode} type="text" label="Postcode" />
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.city} helperText= {formErrors.city} name="city" id="city-tb" onChange={this.onChange} value={this.city} type="text" label="City" />
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.country} helperText= {formErrors.country} name="country" id="country-tb" onChange={this.onChange} value={this.country} type="text" label="Country" />
-            //         </div>
-            //         <div>
-            //             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            //                 <KeyboardDatePicker error= {formErrors.dob} helperText= {formErrors.dob} name="dob" id="dobdate" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date of Birth" format="dd/MM/yyyy"
-            //                 value={this.state.dob} onChange={this.handleDOB} />
-            //             </MuiPickersUtilsProvider>
-            //         </div>
-            //         <div>
-            //             <TextField error= {formErrors.phone} helperText= {formErrors.phone} name="phone" id="phone-tb" onChange={this.onChange} value={this.phone} type="text" label="Phone Number" />
-            //         </div>
-            //         <div>
-            //             <TextField name="dietary" id="dietary-ddmenu" onChange={this.onChange} value={this.dietary} label="Dietary requirements"/> {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
-            //         </div>
-            //         <div>
-            //             <TextField multiline name="bio" id="bio-mltb" onChange={this.onChange} value={this.bio} type="text"
-            //             label="Your bio" variant="outlined"/>
-            //         </div>
-                    
-            //         <div>
-            //             <TextField name="profilepic" id="profilePic" onChange={this.onChange} value={this.profilePic} type="text" label="Where a pic should go" />
-            //         </div>
-            //         <div>
-            //             <TextField multiline name="allergens" id="allergens-mltb" onChange={this.onChange} value={this.allergens} type="text" label="Allergens" variant="outlined"/>
-            //         </div>
-            //         <div>
-
-            //         </div>
-            //         <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit">
-            //             Sign Up
-            //         </Button>
-            //         </Paper>
-            //     </form>
-            //     </Grid>
-            //     </Grid>
-            // </div>
         );
     }
 }

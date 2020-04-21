@@ -8,13 +8,14 @@ import Typography from '@material-ui/core/Typography';
 
 import TextField from '@material-ui/core/TextField';
 import Rating from '@material-ui/lab/Rating';
+import ReviewParticipant from '../components/ReviewParticipant.js';
+import Form from '../components/ReviewParticipant.js';
 
 import 'date-fns';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import {getCookie, getProfilePicURL, isUserLoggedIn, redirectIfNotLoggedIn} from '../helperFunctions';
 
-import SaveIcon from '@material-ui/icons/Save';
 import { withStyles,makeStyles, rgbToHex } from '@material-ui/core/styles';
 
 import board from "../res/repeatable_chop_board.png";
@@ -72,7 +73,14 @@ class ReviewTemplate extends Component {
                 title: "",
                 rating: "",
                 review: ""
-            }
+            },
+            questions: [
+                { id: 'fdsd', title: 'Why is the sky blue?' },
+                { id: 'adsf', title: 'Who invented pizza?' },
+                { id: 'afdsf', title: 'Is green tea overrated?' },
+             ],
+            questionCounter:0,    
+           
         }
     }
 
@@ -153,87 +161,22 @@ class ReviewTemplate extends Component {
         }
     };
 
+    displayQuestion = () => {
+        this.setState({
+            displayQuestions: !this.state.displayQuestions
+        })
+    }
+
     render() {
         const classes = useStyles;
-        const {formErrors} = this.state;
-
-        console.log("render");
-
+        // const {formErrors} = this.state;
+        // let showQuestion = null;
+        
         return(
-            
-             <div className={classes.root} style={{height:'100%', width:'100%', position:'absolute'}}>
-                <form onSubmit={this.onSubmit} style={{height:'100%', width:'100%'}}>
-                    <Grid container style={{width:'100%', height:'100%'}}>
-                        <Grid container style={{marginTop:'10%', marginRight:'20%', marginLeft:'20%'}}>                            
-                            <Paper className={classes.profilePaper} style={{height:'80%',padding:'2.5%',width:'100%', "background-image" : `url(${board})`}}>
-                                <Grid item xs={3}>
-                                    Add Review
-                                </Grid>
-                                <Grid item xs={9} style={{marginTop:'2%', marginBottom:'8%', height:'88%', maxWidth:'100%'}}>                                
-                                    <Grid item xs={3} style={{width:'20%', marginLeft:'7%'}}>
-                                        <Typography style={{marginLeft:'-12.5%'}}component="legend">Meal Rating</Typography>                                                                                
-                                        <StyledRating                                            
-                                            name="rating" 
-                                            precision={1}
-                                            id="rating"
-                                            error={formErrors.rating}
-                                            helperText={formErrors.rating}
-                                            value={this.rating}
-                                            onChange={this.onChange}
-                                            
-                                        />                                                                                                               
-                                    </Grid>
-                                    <Grid item xs={12} style={{marginTop:'2%'}}>
-                                        <TextField 
-                                        name="title"
-                                        style={{width:'25%', marginRight:"55%"}}
-                                        variant="outlined"            
-                                        error={formErrors.title}
-                                        align="left"
-                                        helperText={formErrors.title}
-                                        value={this.title}
-                                        onChange={this.onChange}
-                                        label= "Review Title"
-                                        />                                                                                                                                
-                                    </Grid>
-
-                                    <Grid item xs={12} style={{marginTop:'2%'}}>
-                                        <TextField 
-                                        name="review"
-                                        style={{width:'70%', marginRight:'10%'}}
-                                        variant="outlined"
-                                        multiline
-                                        rows={8}
-                                        rowsMax={8}
-                                        error={formErrors.review}
-                                        helperText={formErrors.review}
-                                        value={this.review}
-                                        onChange={this.onChange}
-                                        label= "Add Review"
-                                        />                                                                                                                                
-                                    </Grid>
-
-                                    <Grid item xs={12} style={{marginTop:'2%'}}>
-                                        <Button
-                                            variant="contained"
-                                            size="medium"
-                                            color= 'primary'
-                                            className={classes.button}                                            
-                                            type="submit"
-                                            style={{margin:'0.5%'}}
-                                        >
-                                            Submit
-                                        </Button>
-                                    </Grid>
-
-                                </Grid>                            
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </form>
-             </div>
+            <Form />
         );
     }
 }
 
 export default ReviewTemplate;
+
