@@ -54,8 +54,6 @@ const useStyles = makeStyles(theme => ({
       },
     
 }));
-//let fromServer;
-//var copyInitial;
 class SettingsTemplate extends Component {
     constructor(props){
         super(props);
