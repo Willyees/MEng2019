@@ -104,21 +104,25 @@ export function ajaxCall(output){
 		stores.push(tmpDetails.id);
 	}
 }
-$.ajax({ url: 'PHPF/getmeals.php',
-	type: 'post',
-	dataType : "json",
-	async: false,
-	success: ajaxCall
-});
+/**
+ * used to get the meals from the db. It can be used differernt endnodes based on the prop "endnode" passed to the component
+ */
+export function getMeals(dbEndNode){
+		$.ajax({ url: 'PHPF/' + dbEndNode,
+		type: 'post',
+		dataType : "json",
+		async: false,
+		success: ajaxCall
+	});
 
-//DEBUG fields to be used on local project
-if(window.location.host == "localhost:3000"){
-	console.log("debug local host");
-	var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101,Edinburgh","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102,Glasgow","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104,Edinburgh"];
-	ajaxCall(s);
+	//DEBUG fields to be used on local project
+	if(window.location.host == "localhost:3000"){
+		console.log("debug local host");
+		var s = ["harrypotter,NEW,2020-03-27,55.933056521037,-3.2131411830015,16:47:30,101,Edinburgh","harrypotter,Mexican,2020-03-27,55.932200701316,-3.2121732994174,21:41:05,102,Glasgow","harrypotter,vALENTINES DINNER,2020-02-11,55.931446508097,-3.2169805625238,13:14:45,104,Edinburgh"];
+		ajaxCall(s);
 
+	}
 }
-
 //End Debug
 
 class MapTemplate extends Component {
@@ -128,12 +132,17 @@ class MapTemplate extends Component {
 			filtered : false,
 			dataMeals : new Map(),
 			mapCenter : {},
-			sliderBtnChosen : "map-view"
+			sliderBtnChosen : "map-view",
+			sliderVisib : props.slider,
+			filterVisib : props.filter,
+			boxesVisib : prop.boxes,
+			mapWidth : prop.mapWidth,
 		  }
 		 this.handlerFiltered = this.handlerFiltered.bind(this);
 		 this.test = this.test.bind(this);
 		 this.handleToggleBtnChange = this.handleToggleBtnChange.bind(this);
-
+		
+		 getMeals(props.endnode);//get the meals and load them into the external arrays
 		 sortMealsByDate(storeDetails);
 		 this.state.dataMeals = objSorted;
 		 this.state.mapCenter = (objSorted.values().next().done ? this.state.mapCenter : objSorted.values().next().value[0].pos)
@@ -193,9 +202,13 @@ render() {
 	console.log("render")
     return (
 	<Grid class="main-body" container>
+		
+		{this.state.filterVisib &&
 		<Grid container item xs={12} justify="center">
 			<SearchBar handlerFiltered={this.handlerFiltered}/>
-		</Grid>
+		</Grid>}
+
+		{this.state.sliderVisib &&
 		<Grid container item xs justify="flex-end">
 				<ToggleButtonGroup value={this.state.sliderBtnChosen} style={{margin : "10px"}} onChange={this.handleToggleBtnChange} exclusive>
 					<ToggleButton value="map-view" aligned >
@@ -206,10 +219,10 @@ render() {
 					</ToggleButton>
 				</ToggleButtonGroup>
 			
-		</Grid>
+		</Grid>}
 		{ this.state.sliderBtnChosen == "map-view" &&
 		<Grid id="mapM" container item xs={12}>
-			{<MapWrapper meals={this.state.dataMeals} mapCenter={this.state.mapCenter}/>}
+			{<MapWrapper meals={this.state.dataMeals} mapCenter={this.state.mapCenter} mapWidth={this.state.mapWidth} infoWindowVisib={this.state.boxesVisib}/>}
 		</Grid>
 		}
 			{ this.state.sliderBtnChosen == "list-view" &&

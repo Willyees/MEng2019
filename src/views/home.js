@@ -8,6 +8,9 @@ import Paper from '@material-ui/core/Paper'
 import img_map from '../res/map_meal_time.png'
 import { Typography } from '@material-ui/core';
 
+import MapWrapper from '../components/MapWrapper'
+import MapTemplate , {getMeals} from './map'
+
 class HomeTemplate extends Component {
     
     constructor(props){
@@ -29,8 +32,12 @@ class HomeTemplate extends Component {
             <div>
                 <AppBar/>
             </div>
-                <Grid container style={{marginTop:"3.5%"}}>
-                    <Grid item xs={12}>
+                <Grid container className="main-body">
+                    <Grid item xs={6}>
+                        <MapWrapper meals={this.meals} mapCenter={}></MapWrapper>
+                    </Grid>
+
+                    <Grid item xs={6}>
                         <Typography variant={'h5'}>
                         Meal Time is a place where people can organise their meals and share information. <p />
                         Our goal is to create a platform that would enable people to cook together and to socialize, may be learning new recipes!
@@ -44,18 +51,7 @@ class HomeTemplate extends Component {
                     </Grid>
                     
                 </Grid>
-                <Grid container >
-                    <Grid item xs={12}>
-                        <img src={img_map} alt="Example map meal image" style={{width : '100%'}}/> {/*using inline style for testing. WIll have to use Highorder component API https://stackoverflow.com/questions/56432167/how-to-style-components-using-makestyles-and-still-have-lifecycle-methods-in-mat*/}
 
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography color={'textPrimary'}>
-                            This is part of a MEng project made by Dylan, Oscar and Alessio
-                        </Typography>
-                    </Grid>
-
-                </Grid>
 	    </div>
         );
     }

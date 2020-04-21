@@ -14,7 +14,10 @@ class MapWrapper extends Component{
             showingInfoWindow: false,
 		    activeMarker: {},
             selectedPlace: {},
+            mapWidth : props.mapWidth,
+            infoWindowVisib : props.infoWindowVisib
         }
+        mapStyles.width = props.mapWidth + "%";
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
         this.renderMarkers = this.renderMarkers.bind(this);
