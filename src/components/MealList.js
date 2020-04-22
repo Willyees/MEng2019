@@ -22,14 +22,17 @@ export default class MealList extends Component{
 
     }
     setUp(){
-        var output = [];
+        
+        var container = []
         this.props.meals.forEach((v,k) => {
+        var output = [];
         output.push(<MealListHeaderDate date={k} />);
         v.forEach(element => {
             output.push(<MealListSingle title={element.nm} city={element.city} time={element.tm} id={element.id}/>);
         })
+        container.push(<Paper className="paper-board">{output}</Paper>)
     });
-    return output;
+    return container;
     }
     render(){
         return(
