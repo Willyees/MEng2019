@@ -13,11 +13,13 @@ import DateFnsUtils from '@date-io/date-fns'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Checkbox from '@material-ui/core/Checkbox'
+import Slider from '@material-ui/core/Slider'
 import $ from 'jquery';
 
 const styles = ({
     root:{
         display: 'flex',
+        "margin-bottom": "1%"
         
     },
     paper:{
@@ -57,6 +59,7 @@ class SearchBar extends Component {
                 date : null,
                 time : [],
                 dietary : "",
+                age_range : []
             },
             vis : {
                filter_vis : false, 
@@ -80,8 +83,12 @@ class SearchBar extends Component {
         this.handleOnChange = this.handleOnChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
         this.handleErrorDate = this.handleErrorDate.bind(this);
+        this.handleSlider = this.handleSlider.bind(this);
     }
     
+    handleSlider(e, value){
+        this.setState({...this.state, values : { ...this.state.values, age_range : value }}, () =>{console.log(this.state.values.age_range)});
+    }
     //debug method because cant use a ajax locally
     handleResponseAjax(data){
         console.log(this);//used to check why server version is not finding the fucntion handlerfiltered
@@ -92,6 +99,7 @@ class SearchBar extends Component {
         if(window.location.host == "localhost:3000"){
             //fetch wont work because missing CORS from php header. will hardcode data for quick debug purposes
             //fetch('http://3.94.4.155/PHPF/filter.php', {mode : 'no-cors'}).then((response) => {return response.json();}).then((a) =>{console.log(a);});
+            console.log(obj);
             var data = '["104", "101"]';
             this.handleResponseAjax(data);
             var f = this;
@@ -269,6 +277,10 @@ class SearchBar extends Component {
                 </Select>
             </Paper>
 
+            <Paper style={{width : 150, "padding-left":5, "padding-right":5}}>
+                <Typography variant="caption" display="block" align="left" >Age range</Typography>
+                <Slider  onChangeCommitted={this.handleSlider} defaultValue={[0,99]} min={0} max={99} valueLabelDisplay="auto" aria-labelledby="range-slider" />
+            </Paper>
             {/*<Button id="filter-button" className={classes.submitButton} variant="contained" color="primary">FILTER</Button> need filter button? */}
         </div>}
     </div>
