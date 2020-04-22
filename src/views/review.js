@@ -19,6 +19,7 @@ import {getCookie, getProfilePicURL, isUserLoggedIn, redirectIfNotLoggedIn} from
 import { withStyles,makeStyles, rgbToHex } from '@material-ui/core/styles';
 
 import board from "../res/repeatable_chop_board.png";
+import ReviewInputs from '../components/ReviewParticipant.js';
 
 //will check to see if everythings valid before sending data to db
 const formValid = formErrors => {
@@ -30,16 +31,6 @@ const formValid = formErrors => {
     
     return valid;
 };
-
-//used for the colour of selected and deselected rating
-const StyledRating = withStyles({
-    iconFilled: {
-      color: '#40E0D0',
-    },
-    iconHover: {
-      color: '#00CED1',
-    },
-  })(Rating);
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -170,13 +161,76 @@ class ReviewTemplate extends Component {
     render() {
         const classes = useStyles;
         // const {formErrors} = this.state;
-        // let showQuestion = null;
-        
         return(
-            <Form />
+            <Form/>
         );
     }
 }
 
 export default ReviewTemplate;
+
+{/* <div className={classes.root} style={{height:'100%', width:'100%', position:'absolute'}}>
+                <form onSubmit={this.onSubmit} style={{height:'100%', width:'100%'}}>
+                    <Grid container style={{width:'100%', height:'100%'}}> */}
+                        {/* first half of page */}
+                        // <Grid container style={{marginTop:'10%', marginBottom:'10%', marginRight:'20%', marginLeft:'20%'}}>
+                        //     {/* profile paper */}
+                        //         <Paper className={classes.profilePaper} style={{height:'90%',padding:'2.5%',width:'100%', "background-image" : `url(${board})`}}>
+                        //             <Grid item xs={3}>
+                        //                 Add Review
+                        //             </Grid>
+                        //             <Grid item xs={9} style={{marginTop:'1%', marginBottom:'8%', height:'88%', maxWidth:'100%'}}>                                
+                        //                 <Grid item xs={3} style={{width:'20%', marginLeft:'7%'}}>
+                        //                     <Typography style={{marginLeft:'-12.5%'}}component="legend">Meal Rating</Typography>                                                                                
+                        //                     <StyledRating                                            
+                        //                         name="read-rating"                                                                           
+                        //                         precision={1}
+                        //                         id="rating"
+
+                        //                         value={this.rating}
+                        //                         onChange={(event, newValue) => {
+                        //                             // setValue(newValue);
+                        //                             this.rating = newValue;
+                        //                         }}
+
+                        //                     />                                                                                                               
+                        //                 </Grid>
+                        //                 <Grid item xs={12} style={{marginTop:'0%'}}>
+                        //                     <TextField 
+                        //                     style={{width:'40%', marginLeft:'10%', marginRight:'50%'}}
+                        //                     variant="outlined"                                    
+                        //                     label= "Review Title"
+                        //                     />                                                                                                                                
+                        //                 </Grid>
+
+                        //                 <Grid item xs={12} style={{marginTop:'1%'}}>
+                        //                     <TextField 
+                        //                     style={{width:'80%', marginLeft:'10%', marginRight:'10%'}}
+                        //                     variant="outlined"
+                        //                     multiline
+                        //                     rows={8}
+                        //                     rowsMax={8}                                    
+                        //                     label= "Add Review"
+                        //                     />                                                                                                                                
+                        //                 </Grid>
+
+                        //                 <Grid item xs={12}>
+                        //                     <Button
+                        //                         variant="contained"
+                        //                         size="medium"
+                        //                         color= 'primary'
+                        //                         className={classes.button}                                            
+                        //                         type="submit"
+                        //                         style={{margin:'0.5%'}}
+                        //                     >
+                        //                         Submit
+                        //                     </Button>
+                        //                 </Grid>
+
+                        //             </Grid>                            
+                        //         </Paper>
+                        // </Grid>
+            //         </Grid>
+            //     </form>
+            //  </div>
 
