@@ -10,6 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import image1 from '../res/burger.jfif';
 import image2 from '../res/spaghetti.jfif';
 import image3 from '../res/group_meal.webp';
+import { datePickerDefaultProps } from '@material-ui/pickers/constants/prop-types';
 
 // import recentMeals from '../views/alessiosmealpage';
 
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 //   recentMeals.sort((a,b) => a.date > b.date );
 // }
 
-export default function SingleLineGridList() {
+export default function SingleLineGridList(props) {
   const classes = useStyles();
   
   //sortRecentMeals;
@@ -113,21 +114,21 @@ export default function SingleLineGridList() {
   ];
 
 
-  return (
+  return (//images hardcoded because we dont ahve them yet. todo: add images names to db
     <div className={classes.root}>
       <GridList className={classes.gridList} cols={2.5}>
-        {tileData.map(tile => (
-          <GridListTile key={tile.img} cols={2} >
-            <img src={tile.img} alt={tile.title} />
+        {props.recentMeals.map(tile => (
+          <GridListTile key={tile.id} cols={2} >
+            <img src={image2} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
-              subtitle={<span>by: {tile.author}</span>}
+              subtitle={<span>by: {tile.host}</span>}
               classes={{
                 root: classes.titleBar,
                 title: classes.title,
               }}
               actionIcon={
-                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
+                <IconButton aria-label={`info about ${tile.title}`} className={classes.icon} href={`show-meal?meal=${tile.id}`}>
                   <InfoIcon />
                 </IconButton>
               }

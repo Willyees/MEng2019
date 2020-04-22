@@ -48,6 +48,39 @@ const formValid = formErrors => {
     
     return valid;
 };
+/**
+ * ajax call to server. not async to retreive the latest meal info of the current user
+ */
+function getLatestMeals(){
+    var data = []
+    console.log("getmleas")
+    $.ajax({ url: 'PHPF/getmealsuser.php',
+    type: 'post',
+    async: false,
+    data: {"username" : getCookie("Username"),
+            "limit" : "true"
+        },
+        success: function(output) {
+            var d1 = JSON.parse(output);
+            d1.forEach((elem) => {
+                var parsed = JSON.parse(elem);
+                data.push(parsed);
+                console.log(parsed)
+            })
+        },
+        error: function(){
+            console.log("Problem in retreiving the latest meals from db")
+            return []
+        }
+    });
+    //debug localhost
+    if(window.location.host == "localhost:3000"){
+        console.log("in")
+        data = [{id: 122, img: '../res/spaghetti.jfif', title: 'meal1', host: 'Alessio',},{id: 128, img: '../res/burger.jfif',title: 'meal2',host: 'Dylan',},{id: 130, img: '../res/group_meal.webp',title: 'meal3',host: 'Oscar',},];
+    }
+    console.log(data);
+    return data;
+}
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -103,7 +136,8 @@ class ProfileTemplate extends Component {
                 city: "",
                 country: "",
                 phone: "",
-            }
+            },
+            recentMeals:[]
         }
         $.ajax({ url: 'PHPF/getuserinfo.php',
         type: 'post',
@@ -136,6 +170,7 @@ class ProfileTemplate extends Component {
        // copyInitial = fromServer;
        console.log("component mount");
         copyInitial = Object.assign({}, fromServer);
+        this.setState({recentMeals : getLatestMeals()})
     }
 
     onChange = event => {//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
@@ -443,7 +478,7 @@ class ProfileTemplate extends Component {
                         <Grid item container xs={12} style={{maxHeight:'40%'}}>
                             <Paper className={classes.recentMealsPaper} style={{padding:'5%',"background-image" : `url(${board})`, height: '100%',maxHeight: '100%',maxWidth:'90%'}}>
                                 <Grid item container xs={12}>
-                                    <GridList />
+                                    <GridList recentMeals={this.state.recentMeals}/>
                                 </Grid>
 
                                 <Grid item xs={12}>

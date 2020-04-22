@@ -46,6 +46,36 @@ const labels = {
     5: 'Excellent',
   };
 
+function getLatestMeals(){
+    var data = []
+    console.log("getmleas")
+    $.ajax({ url: 'PHPF/getmealsuser.php',
+    type: 'post',
+    async: false,
+    data: {"username" : getCookie("Username"),
+            "limit" : "true"
+        },
+        success: function(output) {
+            var d1 = JSON.parse(output);
+            d1.forEach((elem) => {
+                var parsed = JSON.parse(elem);
+                data.push(parsed);
+                console.log(parsed)
+            })
+        },
+        error: function(){
+            console.log("Problem in retreiving the latest meals from db")
+        }
+    });
+    //debug localhost
+    if(window.location.host == "localhost:3000"){
+        console.log("in")
+        data = [{id : 130, img: '../res/spaghetti.jfif', title: 'meal1', author: 'Alessio',},{id: 129, img: '../res/burger.jfif',title: 'meal2',author: 'Dylan',},{id: 128, img: '../res/group_meal.webp',title: 'meal3',author: 'Oscar',},];
+    }
+    console.log(data);
+    return data;
+}
+
 export let fromServer;
   function onChange(event){ //every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
         console.log("on change");
@@ -57,15 +87,7 @@ export default function ProfileGrid() {
   const classes = useStyles();
   const [ value, setValue] = React.useState(2);
   const [ hover, setHover] = React.useState(-1);
-  $.ajax({ url: 'PHPF/getuserinfo.php',
-      type: 'post',
-      async: false,
-      data: {"username" : getCookie("Username")},
-          success: function(output) {
-	      fromServer = JSON.parse(output);
-	  }
-  });
-
+  const [recentMeals, setRecentMeals] = React.useState(getLatestMeals())
 
   return (
     <div className={classes.root} >
@@ -165,7 +187,7 @@ export default function ProfileGrid() {
                 <Grid item container xs={12}>
                     <Paper className={classes.recentMealsPaper}>
                         <Grid item container xs={12}>
-                            <GridList />
+                            <GridList recentMeals={recentMeals}/>
                         </Grid>
 
                         <Grid item xs={12}>

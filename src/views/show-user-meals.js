@@ -50,7 +50,7 @@ class ShowUserMealsTemplate extends Component {
     render(){
         return(
         <div className="main-body">
-            <Typography variant="h2">User's List of Meals</Typography>
+            <Typography variant="h2">{this.state.user}'s List of Meals</Typography>
             <ShowUserMeals user={this.state.user} meals={this.state.data}/>
         </div>  
         
