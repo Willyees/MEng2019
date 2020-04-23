@@ -10,6 +10,7 @@ import {getCookie} from '../helperFunctions.js';
 import Paper from '@material-ui/core/Paper'
 import board from "../res/chopping_board_chopped.png";
 import { withStyles } from '@material-ui/core';
+import {MapTemplateSingle} from './map'
 
 
 export const joinTypeEnum = {
@@ -227,6 +228,7 @@ class ShowMealTemplate extends Component {
                         <UserMealRequests data={requests} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
                     </Paper>
                 </div>}
+                <MapTemplateSingle precise={this.getJoinType() == joinTypeEnum.PARTICIPANT || this.getJoinType() == joinTypeEnum.HOST} mealId={this.state.mealId}/>
                 
             </div>
         );

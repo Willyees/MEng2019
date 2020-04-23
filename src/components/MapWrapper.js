@@ -54,8 +54,16 @@ class MapWrapper extends Component{
         var output = [];
         this.props.meals.forEach((v,k) => {
             v.forEach(element => {
-                output.push(<Marker name={element.usr + "," + element.nm + "," + element.dt + "," + element.tm + "," + element.id}//todo dont use the variable names
-                position={element.pos} onClick={this.onMarkerClick}/>)
+                console.log(element)
+                if(this.props.mealInfoType == mealInfoEnum.DATE){
+                    let pos = {lat: element.lat, lng: element.lon};
+                    output.push(<Marker name={element.host + "," + element.title + "," + element.date + "," + element.time + "," + element.id}//todo dont use the variable names
+                    lat={element.lat} lng={element.lon} onClick={this.onMarkerClick}/>)
+                }
+                else if(this.props.mealInfoType == mealInfoEnum.ADDRESS){
+                    output.push(<Marker name={element.usr + "," + element.nm + "," + element.dt + "," + element.tm + "," + element.id}
+                    lat={element.lat} lng={element.lon} onClick={this.onMarkerClick}/>)
+                }
             })
         
             
@@ -109,7 +117,7 @@ class MapWrapper extends Component{
 					marker={this.state.activeMarker}
 					visible={this.state.showingInfoWindow}>
 					<div style={{color:"black"}}>
-					{info.map((v)=>{return v})}
+					{info}
 					</div>
 				</InfoWindow>}
 			</Map>

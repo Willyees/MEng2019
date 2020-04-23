@@ -3,7 +3,7 @@ import SignInTemplate from './views/sign-up.js';
 import LogInTemplate from './views/log-in.js';
 import CreateMealTemplate from './views/create-meal.js';
 import HomeTemplate from './views/home.js';
-import MapTemplate from './views/map.js';
+import {MapTemplateMulti} from './views/map.js';
 import ProfileTemplate from './views/profile.js';
 import ShowMealTemplate from './views/show-meal.js';
 import MessagesTemplate from './views/messages.js';
@@ -38,7 +38,7 @@ function App() {
               < LogInTemplate />
             </Route>
             <Route exact path="/map">
-              < MapTemplate mapWidth={100} sliderVisib={true} filterVisib={true} boxesVisib={true} endnode={"getmeals.php"}/>
+              < MapTemplateMulti mapWidth={100} sliderVisib={true} filterVisib={true} boxesVisib={true}/>
             </Route>
 
             <Route exact path="/create-meal">  {/* might have to modify the path, because each meal will have a different URL. Set up atm as work in progress*/}

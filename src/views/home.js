@@ -9,7 +9,7 @@ import img_map from '../res/map_meal_time.png'
 import { Typography } from '@material-ui/core';
 
 import MapWrapper from '../components/MapWrapper'
-import MapTemplate , {getMeals} from './map'
+import  {MapTemplateMulti ,getMeals} from './map'
 
 class HomeTemplate extends Component {
     
@@ -42,7 +42,7 @@ class HomeTemplate extends Component {
                     </Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <MapTemplate mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={false} endnode={"getmeals.php"}/>
+                        <MapTemplateMulti mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={false}/>
                     </Grid>
 
                     
