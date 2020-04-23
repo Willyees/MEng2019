@@ -267,10 +267,20 @@ class CreateMealTemplate extends Component {
 
     onSubmit(event) {
         console.log("on submit");
+        
         //add to this fucntion the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
         const {title, description, city} = this.state.values;
         var objmerged = {...this.state.values, ...this.state.optional}; //have to merge the optional and not optional object together
-	console.log("state ");
+        
+        for(var k in objmerged){
+            if(typeof(objmerged[k]) != "string")
+                objmerged[k] = JSON.stringify(objmerged[k]);
+            
+        }
+        console.log(objmerged)
+        
+        
+        console.log("state ");
         console.log(this.state);
         event.preventDefault();
 	console.log("state mereg");

@@ -61,7 +61,8 @@ class ShowMealTemplate extends Component {
         const elementNames = ["id", "host", "title", "time", "date", "description", "guest_limit", "proposed_meal", "contribution", "city", "dietary", "theme", "age_range"];
         this.state = {date : new Date(),
                       mealId : -1,
-                      hostId : ""
+                      hostId : "",
+                      participantMax : 0
                       }//have to manage the date for the child component
         this.joinMeal = this.joinMeal.bind(this)
         this.getJoinType = this.getJoinType.bind(this)
@@ -185,14 +186,15 @@ class ShowMealTemplate extends Component {
             
     }
 
+    
     ajaxGetMeal(output){//this whole functionality could be acheived by using react states on the html elements. cleaner
         var outParsed = JSON.parse(output);
         //parse time
         if(outParsed.time != "")
             outParsed.time = formatTime(outParsed.time)
         //store in the state the variables needed to be passed to child or worked upon
-        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"])})
-
+        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"]), participantMax : outParsed["guest_limit"]})
+        console.log(outParsed["guest_limit"]);
         for(var id in outParsed){
             if(outParsed[id] == ""){
                 let c = document.getElementById(id + "_grid")
@@ -219,7 +221,7 @@ class ShowMealTemplate extends Component {
             <div>     
                 <AppBar>
                 </AppBar>
-                <ShowMealGrid joinf={this.joinMeal} date={this.state.date} host={this.state.hostId} participants={this.participants} jointype={this.getJoinType()}>
+                <ShowMealGrid joinf={this.joinMeal} date={this.state.date} host={this.state.hostId} participants={this.participants} participantMax={this.state.participantMax} jointype={this.getJoinType()}>
                 </ShowMealGrid>
                 {this.isHost() && 
                 <div className={classes.root}>

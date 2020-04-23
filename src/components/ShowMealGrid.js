@@ -156,8 +156,15 @@ export default function ShowMealGrid(props) {
       setJoinDisabled(true)
       setJoinText("ERROR")
       break;
+  };
+  console.log("RERENDER!", props.participants.length, props.participantMax)
+  //set not joinable in any cases if the number of max participants is more than maximum
+  if(props.participants.length == props.participantMax){
+    setJoinDisabled(true)
+    setJoinText("FULL")
+    console.log("cannot join this meal: maximum numebr of participants", props.participants.length, props.participantMax);
   }
-}, [props.jointype])//only run this when the join type from the props is changed - in this way it can be avoided endless loop
+}, [props.jointype, props.participants, props.participantMax])//only run this when the join type from the props is changed - in this way it can be avoided endless loop
   
 
   //const [ date, setDate] = React.useState(props.date)
@@ -315,10 +322,15 @@ export default function ShowMealGrid(props) {
 
         <Grid container>
           <Paper className={classes.paper}>
-            <Grid container item>
+            <Grid container item alignItems="center">
+              <Grid item>
                 <Typography variant="h2" component="h2" gutterBottom>
                   Participants
                 </Typography>
+              </Grid>
+              <Grid item xs>
+                <Typography variant="h4" component="h2"gutterBottom >{props.participants.length}/{props.participantMax}</Typography>
+              </Grid>
             </Grid>
             <UserMealRequests data={props.participants} accept={false} />
           </Paper>

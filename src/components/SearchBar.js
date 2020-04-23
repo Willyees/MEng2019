@@ -165,6 +165,9 @@ class SearchBar extends Component {
                 if(v=="time"){
                     obj[v] = this.getTimeArrayRange(this.state.values[v]); 
                 }
+                else if(typeof(this.state.values[v]) != "string"){
+                    obj[v] = JSON.stringify(this.state.values[v]);
+                }
                 else{
                     obj[v] = this.state.values[v];
                 }

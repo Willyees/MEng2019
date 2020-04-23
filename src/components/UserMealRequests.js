@@ -2,11 +2,14 @@ import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography'
 import Fab from '@material-ui/core/Fab';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
+
 import board from "../res/chopping_board_chopped.png";
 import $ from 'jquery';
+
 
 
 /**
@@ -58,7 +61,9 @@ class UserMealRequests extends Component{
             <Grid container>
                 {this.props.accept && 
                 <Grid item container>
-                    Requests to join this meal
+                    <Typography variant="h2" component="h2" gutterBottom>
+                        Requests to join this meal
+                    </Typography>
                 </Grid>
                 }
             <Grid container>
