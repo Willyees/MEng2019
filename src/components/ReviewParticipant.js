@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,18 +11,30 @@ import Button from '@material-ui/core/Button';
 import {isUserLoggedIn, getCookie} from '../helperFunctions';
 import Link from '@material-ui/core/Link'
 import AddIcon from '@material-ui/icons/Add';
+import Rating from '@material-ui/lab/Rating';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExploreIcon from '@material-ui/icons/Explore';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import Paper from '@material-ui/core/Paper';
+import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import SaveIcon from '@material-ui/icons/Save';
 import $ from 'jquery';
 import bear from '../res/bear1.png';
+import clsx from 'clsx';
 
 import board from "../res/repeatable_chop_board.png";
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: '#40E0D0',
+  },
+  iconHover: {
+    color: '#00CED1',
+  },
+})(Rating);
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -37,108 +49,519 @@ const useStyles = makeStyles(theme => ({
       },
   }));
 
+  // const getNewState = (state, fieldType, index, name, value) => {
+  //   if (["name", "age"].includes(fieldType)) {
+  //     const newCats = [...state.cats];
+  //     newCats[index][fieldType] = value;
+  //     return { ...state, cats: newCats };
+  //   }
+  //   return { ...state, [name]: value };
+  // };
+  
 
-const Form = () => {
-    const [ownerState, setOwnerState] = useState({
-        owner: '',
-        description: '',
-    });
+//   const ReviewInputs = ({ idx, reviewState, handleRatingChange }) => {
+//     const participantId = `participant-${idx}`;
+//     const titleId = `title-${idx}`;
+//     const ratingId = `rating-${idx}`;
+//     const bodyId = `body-${idx}`;
+//     return (
+//         <div key={`review-${idx}`}>
+//           <Paper style={{marginLeft:'25%',marginBottom:'2%',padding:'2.5%',width:'50%', height:'50%', "background-image" : `url(${board})`}}>
+//             <Grid container>
+//               <Grid item xs={12}>
+//                 <label 
+//                   htmlFor={participantId}
+//                   name={participantId}
+//                   data-idx={idx}
+//                   className="participant"
+//                   id={participantId}
+//                 >{state.reviews[idx].participant} 
+//                 </label>                              
+//               </Grid>
+//               <Grid item xs={6}>
+//                 <TextField
+//                   type="text"
+//                   name= {titleId}
+//                   value={reviewState[idx].title}
+//                   id={titleId}
+//                   className="title"
+//                   data-idx={idx}
+//                   inputProps={{ "data-idx": idx, "data-field-type": "title" }}
+//                   // error={formErrors.username}
+//                   // helperText={formErrors.username}
+//                   // style={{width:'80%', marginLeft:'10%', marginRight:'10%'}}
+//                   variant="outlined"
+//                   label= "Review title"                                                     
+//                 />                                      
+//               </Grid>  
 
-    const handleOwnerChange = (e) => setOwnerState({
-        ...ownerState,
-        [e.target.name]: [e.target.value],
-    });
+//               <Grid item xs={6}>                                  
+//                 <Typography style={{marginLeft:'-10%'}}component="legend">Participant Rating</Typography>                                                                                                                  
+//                 <StyledRating                                            
+//                   name={ratingId}                                                                           
+//                   precision={1}                                
+//                   value={reviewState[idx].rating}
+//                   onChange={handleRatingChange(idx, "rating")}
+//                   id={ratingId}
+//                   data-idx={idx} 
+//                   inputProps={{
+//                     name: "customName"
+//                   }}                                                
+//                   // inputProps={{ "data-idx": idx, "data-field-type": "rating" }}                                  
+//                   // onChange={(event, newValue) => {
+//                   //     // setValue(newValue);
+//                   //     this.rating = newValue;
+//                   // }}
+//                 />
+//               </Grid>  
 
-    const blankCat = { name: '', age: '' };
-    const [catState, setCatState] = useState([
-        { ...blankCat },
-    ]);
+//               <Grid item xs={12}>
+//                 <TextField
+//                   type="text"
+//                   name={bodyId}              
+//                   id={bodyId}
+//                   inputProps={{ "data-idx": idx, "data-field-type": "body" }}
+//                   value={reviewState[idx].bodyId}
+//                   variant="outlined"
+//                   label= "Participant review" 
+//                   fullWidth
+//                   multiline
+//                   rows={4}
+//                   rowsMax={4}
+//                   style={{marginTop:'2%'}}              
+//                 />
+//               </Grid>
+//             </Grid>
+//           </Paper>
+//         </div>
+//     );
+// };
 
-    const addCat = () => {
-        setCatState([...catState, { ...blankCat }]);
-    };
+// ReviewInputs.propTypes = {
+//     idx: PropTypes.number,
+//     catState: PropTypes.array,
+//     handleReviewChange: PropTypes.func,
+// };
 
-    const removeCat = () =>{
-        setCatState(catState.splice(0, catState.length-1));
-    };
 
-    const handleCatChange = (e) => {
-        const updatedCats = [...catState];
-        updatedCats[e.target.dataset.idx][e.target.className] = e.target.value;
-        setCatState(updatedCats);
-    };
+// const Form = () => {
+//   const [state, setState] = React.useState({
+//     reviews: [{ participant: 'gary',title: '', rating: '', body: '' }],
+//   });
+//   const handleFormChange = e => {
+//     const newState = getNewState(
+//       state,
+//       e.target.dataset.fieldType,
+//       e.target.dataset.id,
+//       e.target.name,
+//       e.target.value
+//     );
+//     setState(newState);
+//   };
 
-    return (
-        <form>
-            <div style={{marginTop:'4%'}}>
-                {/* <label htmlFor="owner">Owner</label>
-                <input
-                    type="text"
-                    name="owner"
-                    id="owner"
-                    value={ownerState.owner}
-                    onChange={handleOwnerChange}
-                />
-                <label htmlFor="description">Description</label>
-                <input
-                    type="text"
-                    name="description"
-                    id="description"
-                    value={ownerState.description}
-                    onChange={handleOwnerChange}
-                /> */}
-                <input
-                    type="button"
-                    value="Hello Bear"
-                    onClick={addCat}
-                />
-                <input
-                    type="button"
-                    value="bye bear"
-                    onClick={removeCat}
-                />            
-            </div>
-            {
-                catState.map((val, idx) => {
-                    const catId = `name-${idx}`;
-                    const ageId = `age-${idx}`;
-                    return (
-                        <div key={`cat-${idx}`}>
-                            <label htmlFor={catId}>{`Bear #${idx + 1}`}</label>
-                            {/* <input
-                                type="text"
-                                name={catId}
-                                data-idx={idx}
-                                id={catId}
-                                className="name"
-                                value={catState[idx].name}
-                                onChange={handleCatChange}
-                            />
-                            <label htmlFor={ageId}>Age</label>
-                            <input
-                                type="text"
-                                name={ageId}
-                                data-idx={idx}
-                                id={ageId}
-                                className="age"
-                                value={catState[idx].age}
-                                onChange={handleCatChange}
-                            /> */}
-                            <img 
-                                src={bear}
-                                height='25%'
-                                width='25%'
-                            />
-                        </div>
-                    );
-                })
-            }
-            <input type="submit" value="Submit" />
-        </form>
-    );
+//   const handleRatingChange = (index, fieldType) => e => {
+//     const newState = getNewState(
+//       state,
+//       fieldType,
+//       index,
+//       e.target.name,
+//       e.target.value
+//     );
+//     setState(newState);
+//   };
+
+//   const addReview = e => {
+//     setState({ ...state, reviews: [...state.reviews, { participant: "gary",title: "", rating: "", body: ""}] });
+//   };
+
+//   const handleSubmit = e => {
+//     console.log("state", JSON.stringify(state));
+//     e.preventDefault();
+//   };
+
+
+
+
+
+
+    
+//     // const blankReview = { participant: participant,title: '', rating: '', body: ''};
+//     // const [reviewState, setReviewState] = useState([
+//     //     { ...blankReview },
+//     // ]);
+
+//     // const addReview = () => {
+//     //     setReviewState([...reviewState, { ...blankReview }]);
+//     // };
+
+//     // const handleReviewChange = (e) => {
+//     //     const updatedReviews = [...reviewState];
+//     //     updatedReviews[e.target.dataset.idx][e.target.dataset.fieldType] = e.target.value;
+//     //     setReviewState(updatedReviews);
+//     // };
+
+//     // const handleRatingChange = (index, fieldType) => e => {
+//     //   const updatedReviews = [...reviewState];
+//     //   updatedReviews[index][fieldType][] = e.target.value;
+//     //   setReviewState(updatedReviews);
+//     //   // getNewState(
+//     //   //   state,
+//     //   //   fieldType,
+//     //   //   index,
+//     //   //   e.target.name,
+//     //   //   e.target.value
+//     //   // );
+//     //   // setState(newState);
+//     // };
+
+//     return (
+//         <form style={{marginTop:'10%'}} onChange={handleFormChange}>
+//             <input
+//                 type="button"
+//                 value="Add New Review"
+//                 onClick={addReview}
+//             />
+//             {
+//                 state.reviews.map((val, idx) => (
+//                     <ReviewInputs
+//                         key={`review-${idx}`}
+//                         idx={idx}
+//                         reviewState={state}
+//                         handleRatingChange={handleRatingChange}
+//                     />
+//                 ))
+//             }
+//             <input type="submit" value="Submit" />
+//         </form>
+//     );
+// };
+
+// export default Form;
+
+
+
+
+
+
+
+
+
+
+const getNewState = (state, fieldType, idx, name, value) => {
+  if (["participant","title", "rating", "body"].includes(fieldType)) {
+    //console.log("id", e.target.dataset.id);
+    //console.log("fieldType", e.target.dataset.fieldType);
+    //console.log("dataset", e.target.dataset);
+    const newReviews = [...state.reviews];
+    newReviews[idx][fieldType] = value;
+    return { ...state, reviews: newReviews };
+  }
+  return { ...state, [name]: value };
 };
 
+function Form() {
+  
+  const [state, setState] = React.useState({
+    reviews: [{ participant: "gary", title: "", rating: "", body:"" }],
+  });
+  const handleFormChange = e => {
+    const newState = getNewState(
+      state,
+      e.target.dataset.fieldType,
+      e.target.dataset.id,
+      e.target.name,
+      e.target.value
+    );
+    setState(newState);
+  };
+
+  const handleSelectChange = (index, fieldType) => e => {
+    const newState = getNewState(
+      state,
+      fieldType,
+      index,
+      e.target.name,
+      e.target.value
+    );
+    setState(newState);
+  };
+
+  const addReview = e => {
+    setState({ ...state, reviews: [...state.reviews, { participant: "", title: "", rating: "", body:"" }] });
+  };
+
+  const handleSubmit = e => {
+    console.log("state", JSON.stringify(state));
+    e.preventDefault();
+  };
+  // const participantId = `participant-${idx}`;
+  //   const titleId = `title-${idx}`;
+  //   const ratingId = `rating-${idx}`;
+  //   const bodyId = `body-${idx}`;
+  
+  return (
+    <form onChange={handleFormChange} onSubmit={handleSubmit}>
+      
+      {state.reviews.map((review, idx) => {
+        return (
+            <div key={`review-${idx}`} style={{marginTop:'10%'}}>
+           <Paper style={{marginLeft:'25%',marginBottom:'2%',padding:'2.5%',width:'50%', height:'50%', "background-image" : `url(${board})`}}>
+             <Grid container>
+               <Grid item xs={12}>
+                 <label 
+                  // htmlFor={participantId}
+                  // name={participantId}                  
+                  // id={participantId}
+                  // inputProps={{ "data-id": idx, "data-field-type": "participant" }}
+                >{state.reviews[idx].participant} 
+                </label>                              
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  type="text"
+                  // name= {titleId}
+                  value={state.reviews[idx].title}
+                  // id={titleId}
+                  className="title"
+                  // data-idx={idx}
+                  inputProps={{ "data-id": idx, "data-field-type": "title" }}
+                  // error={formErrors.username}
+                  // helperText={formErrors.username}
+                  // style={{width:'80%', marginLeft:'10%', marginRight:'10%'}}
+                  variant="outlined"
+                  label= "Review title"                                                     
+                />                                      
+              </Grid>  
+
+              <Grid item xs={6}>                                  
+                <Typography style={{marginLeft:'-10%'}}component="legend">Participant Rating</Typography>                                                                                                                  
+                <StyledRating                                            
+                  // name={ratingId}                                                                           
+                  precision={1}                                
+                  value={state.reviews[idx].rating}
+                  onChange={handleSelectChange(idx, "rating")}
+                  // id={ratingId}
+                  data-idx={idx} 
+                  inputProps={{
+                    name: "customName"
+                  }}                                                
+                  // inputProps={{ "data-idx": idx, "data-field-type": "rating" }}                                  
+                  // onChange={(event, newValue) => {
+                  //     // setValue(newValue);
+                  //     this.rating = newValue;
+                  // }}
+                />
+              </Grid>  
+
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  // name={bodyId}              
+                  // id={bodyId}
+                  inputProps={{ "data-id": idx, "data-field-type": "body" }}
+                  value={state.reviews[idx].bodyId}
+                  variant="outlined"
+                  label= "Participant review" 
+                  fullWidth
+                  multiline
+                  rows={4}
+                  rowsMax={4}
+                  style={{marginTop:'2%'}}              
+                />
+              </Grid>
+            </Grid>
+          </Paper>
+        </div>
+        );
+      })}
+      <button onClick={addReview}>Add new Review</button>
+    </form>
+  );
+}
+
 export default Form;
+
+
+
+
+
+
+// const Form = () => {
+//     // const [ownerState, setOwnerState] = useState({
+//     //     owner: '',
+//     //     description: '',
+//     // });
+
+//     // const handleOwnerChange = (e) => setOwnerState({
+//     //     ...ownerState,
+//     //     [e.target.name]: [e.target.value],
+//     // });
+
+//     const blankReview = {participant: '', title: '', rating:'', body: ''};
+//     const [reviewState, setReviewState] = useState([
+//         { ...blankReview },
+//     ]);
+
+//     const addReview = () => {
+//         setReviewState([...reviewState, { ...blankReview }]);
+//     };
+
+//     const removeReview = () =>{
+//         setReviewState(reviewState.splice(0, reviewState.length-1));
+//     };
+
+//     const handleReviewChange = (e) => {
+//         const updatedReviews = [...reviewState];
+//         console.log("target value: "+ e.target.value + " dataset index: " + e.target.dataset.idx + " classname: " + e.target.className);
+//         updatedReviews[e.target.dataset.idx][e.target.className] = e.target.value;
+//         setReviewState(updatedReviews);
+        
+//     };
+
+//     return (
+//         <form>
+//             <div style={{marginTop:'4%'}}>
+//                 {/* <label htmlFor="owner">Owner</label>
+//                 <input
+//                     type="text"
+//                     name="owner"
+//                     id="owner"
+//                     value={ownerState.owner}
+//                     onChange={handleOwnerChange}
+//                 />
+//                 <label htmlFor="description">Description</label>
+//                 <input
+//                     type="text"
+//                     name="description"
+//                     id="description"
+//                     value={ownerState.description}
+//                     onChange={handleOwnerChange}
+//                 /> */}
+//                 <input
+//                     type="button"
+//                     value="Hello Bear"
+//                     onClick={addReview}
+//                 />
+//                 <input
+//                     type="button"
+//                     value="bye bear"
+//                     onClick={removeReview}
+//                 />            
+//             </div>
+//             {
+//                 reviewState.map((val, idx) => {
+//                     //const participantId = `participant-${idx}`; 
+//                     const titleId = `title-${idx}`;
+//                     const ratingId = `rating-${idx}`;
+//                     const bodyId = `body-${idx}`;                
+//                     return (
+//                         <div key={`review-${idx}`}>
+//                           <Paper style={{marginLeft:'25%',marginBottom:'2%',padding:'2.5%',width:'50%', height:'50%', "background-image" : `url(${board})`}}>
+//                               <Grid container>
+//                                 {/* <Grid item xs={12}>
+//                                   <label htmlFor={participantId}>{reviewState[idx].participant} </label>                              
+//                                 </Grid> */}
+//                                 <label htmlFor={}></label>
+//                                 <Grid item xs={6}>
+//                                   <TextField
+//                                     name= {titleId}
+//                                     value={reviewState[idx].title}
+//                                     id={titleId}
+//                                     className="title"
+//                                     data-idx={idx}
+//                                     onChange={handleReviewChange}
+//                                     // error={formErrors.username}
+//                                     // helperText={formErrors.username}
+//                                     // style={{width:'80%', marginLeft:'10%', marginRight:'10%'}}
+//                                     variant="outlined"
+//                                     label= "Review title" 
+                                                                                               
+//                                   />                                      
+//                                 </Grid>  
+
+//                                 <Grid item xs={6}>                                  
+//                                   <Typography style={{marginLeft:'-10%'}}component="legend">Participant Rating</Typography>                                                                                                                  
+//                                   <StyledRating                                            
+//                                     name={ratingId}                                                                           
+//                                     precision={1}                                
+//                                     value={reviewState[idx].rating}
+//                                     id={ratingId}
+//                                     className="rating"
+//                                     data-idx={idx}
+//                                     onChange={handleReviewChange}
+                                    
+//                                     // onChange={(event, newValue) => {
+//                                     //     // setValue(newValue);
+//                                     //     this.rating = newValue;
+//                                     // }}
+//                                   />
+//                                 </Grid>
+//                                 <Grid item xs={12}>
+//                                 <TextField
+//                                     name= {bodyId}
+//                                     value={reviewState[idx].body}
+//                                     data-idx={idx}
+//                                     onChange={handleReviewChange}                                          
+//                                     id={bodyId}
+//                                     className="body"                                    
+//                                     // error={formErrors.username}
+//                                     // helperText={formErrors.username}
+//                                     // style={{width:'80%', marginLeft:'10%', marginRight:'10%'}}
+//                                     variant="outlined"
+//                                     label= "Participant review" 
+//                                     fullWidth
+//                                     multiline
+//                                     rows={4}
+//                                     rowsMax={4}
+//                                     style={{marginTop:'2%'}}                           
+//                                   /> 
+//                                 </Grid>
+
+//                             </Grid>               
+//                             {/* <img 
+//                                   src={bear}
+//                                   height='25%'
+//                                   width='25%'
+//                               /> */}
+
+//                           </Paper>
+//                             {/* <label htmlFor={catId}>{`Bear #${idx + 1}`}</label> */}
+//                             {/* <input
+//                                 type="text"
+//                                 name={catId}
+//                                 data-idx={idx}
+//                                 id={catId}
+//                                 className="name"
+//                                 value={catState[idx].name}
+//                                 onChange={handleCatChange}
+//                             />
+//                             <label htmlFor={ageId}>Age</label>
+//                             <input
+//                                 type="text"
+//                                 name={ageId}
+//                                 data-idx={idx}
+//                                 id={ageId}
+//                                 className="age"
+//                                 value={catState[idx].age}
+//                                 onChange={handleCatChange}
+//                             /> */}
+                            
+//                         </div>
+//                     );
+//                 })
+//             }
+//             <input type="submit" value="Submit" />
+//         </form>
+//     );
+// };
+
+// Form.propTypes = {
+//   idx: PropTypes.number,
+//   reviewState: PropTypes.array,
+//   rating: PropTypes.number,
+//   handleReviewChange: PropTypes.func,
+// };
+
 
 //     const ReviewParticipant= () =>{
 
