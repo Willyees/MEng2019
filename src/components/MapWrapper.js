@@ -57,12 +57,16 @@ class MapWrapper extends Component{
                 console.log(element)
                 if(this.props.mealInfoType == mealInfoEnum.DATE){
                     let pos = {lat: element.lat, lng: element.lon};
+                    console.log(pos)
                     output.push(<Marker name={element.host + "," + element.title + "," + element.date + "," + element.time + "," + element.id}//todo dont use the variable names
-                    lat={element.lat} lng={element.lon} onClick={this.onMarkerClick}/>)
+                    position={pos} onClick={this.onMarkerClick}/>)
                 }
                 else if(this.props.mealInfoType == mealInfoEnum.ADDRESS){
-                    output.push(<Marker name={element.usr + "," + element.nm + "," + element.dt + "," + element.tm + "," + element.id}
-                    lat={element.lat} lng={element.lon} onClick={this.onMarkerClick}/>)
+                    let pos = {lat: element.lat, lng: element.lon};
+                    console.log(pos)
+
+                    output.push(<Marker name={element.title + "," + element.address + "," + element.city}//post code needed
+                    position={pos} onClick={this.onMarkerClick}/>)
                 }
             })
         
@@ -90,8 +94,9 @@ class MapWrapper extends Component{
             }
             else if(this.props.mealInfoType == mealInfoEnum.ADDRESS){
                 x = this.state.selectedPlace.name.split(",");
-                let dateInfoLabels = ["Address 1:", "Address 2:", "City:", "PostCode :", "Contry:"]//coudl pass them as parameters
-                for(var i = 0; i < x.length; i++){
+                info.push(<h1>{x[0]}</h1>)
+                let dateInfoLabels = ["Title:", "Address:", "City:"]//, "PostCode :", "Contry:"]//coudl pass them as parameters
+                for(var i = 1; i < x.length; i++){
                     info.push(<p>{dateInfoLabels[i]} {x[i]}</p>);
                 }
             }

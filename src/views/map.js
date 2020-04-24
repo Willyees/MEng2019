@@ -281,7 +281,9 @@ export function MapTemplateMulti(props){
 
 export function MapTemplateSingle(props){
 	var data = [];
+	console.log(props)
 	if(props.precise){
+		console.log("precise")
 		$.ajax({ url: 'PHPF/getinfomeal.php',
 			type: 'post',
 			async: false,
@@ -289,45 +291,68 @@ export function MapTemplateSingle(props){
 			success: function(output){
 				console.log(output)
 				console.log(typeof(output))
-				var d1 = JSON.parse(output)
-				console.log(d1)
-				d1.forEach((e) =>{
+				if(output == ""){ //have to check that the call was successful
+					console.log("no meal retreived")
+					return;
+				}
+				var parsed = JSON.parse(output)
+				data.push(parsed);
+
+				console.log(parsed)
+				/*d1.forEach((e) =>{
 					var parsed = JSON.parse(e);
 					data.push(parsed);
-				})
+				})*/
+			},
+			error: function(){
+				console.log("problem in retreiving the specific meal with address")
 			}
 		});
 	}
 	else{
+		console.log("public")
 		$.ajax({ url: 'PHPF/getpublicmeal.php',
 			type: 'post',
 			async: false,
-			data : {"id" : props.mealId},
+			data : {"id" : String(props.mealId)},
 			success: function(output){
-				console.log(output)
+				console.log("a" + output + "b")
 				console.log(typeof(output))
-				var d1 = JSON.parse(output)
-				console.log(d1)
-				d1.forEach((e) =>{
+				if(output == ""){
+					console.log("no meal retreived")
+					return;
+				}
+				var parsed = JSON.parse(output)
+				data.push(parsed);
+
+				console.log(parsed)
+				/*d1.forEach((e) =>{
 					var parsed = JSON.parse(e);
 					data.push(parsed);
-				})
+				})*/
+			},
+			error: function(){
+				console.log("problem in retreiving the specific meal with general info")
 			}
 		});
 	}
 	//debug local
 	if(window.location.host == "localhost:3000"){
-		var s = '{"id":"145","host":"harrypotter","title":"British Roast","time":"16:17:01","date":"2021-01-21","description":"ROAST EM","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"","age_range":"[]","address":"27 Union St","lat":-0.0013890540182005,"lon":-0.0021765845481588}'
+		var s = '{"id":"145","host":"harrypotter","title":"British Roast","time":"16:17:01","date":"2021-01-21","description":"ROAST EM","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"","age_range":"[]","address":"27 Union St","lat":55.950926774582,"lon":-3.2200511488097}'
 		var data = JSON.parse(s);
 		console.log(data)
 	}
-	if(data.lat == null || data.lon == null){
-		console.log("lat/lon null", data.lat, data.lon)
+	if(data.length == 0){
+		console.log(data)
+		return null;
+	}
+	if(data[0].lat == null || data[0].lon == null){
+		console.log("lat/lon null", data[0].lat, data[0].lon)
 		return null;
 	}
 	if(props.precise)
-		return <MapTemplate data={[data]} mapWidth={100} sliderVisib={true} filterVisib={true} boxesVisib={true} mealInfoType={mealInfoEnum.ADDRESS} />
+		return <MapTemplate data={data} mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={true} mealInfoType={mealInfoEnum.ADDRESS} />
 	else 
-		return <MapTemplate data={[data]} mapWidth={100} sliderVisib={true} filterVisib={true} boxesVisib={true} mealInfoType={mealInfoEnum.DATE} />
+		return <MapTemplate data={data} mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={true} mealInfoType={mealInfoEnum.DATE} />
 
 }

@@ -4,7 +4,6 @@ import Grid from '../components/ShowMealGrid.js';
 import ShowMealGrid from '../components/ShowMealGrid.js';
 import $ from 'jquery';
 import {formatTime} from '../helperFunctions.js';
-import {findDOMNode} from 'react-dom';
 import UserMealRequests from '../components/UserMealRequests.js';
 import {getCookie} from '../helperFunctions.js';
 import Paper from '@material-ui/core/Paper'
@@ -124,6 +123,7 @@ class ShowMealTemplate extends Component {
                 $.ajax({ url: 'PHPF/getmeal.php',
             type: 'post',
             data: {"id" : param},
+            async: false,
             success: t.ajaxGetMeal,
             context : t
             });
@@ -229,7 +229,6 @@ class ShowMealTemplate extends Component {
                     </Paper>
                 </div>}
                 <MapTemplateSingle precise={this.getJoinType() == joinTypeEnum.PARTICIPANT || this.getJoinType() == joinTypeEnum.HOST} mealId={this.state.mealId}/>
-                
             </div>
         );
     }
