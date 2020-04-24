@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexgrow: 1,
         width: '100%', 
-        appBarSpacer : theme.mixins.toolbar
+        appBarSpacer : theme.mixins.toolbar,
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
     console.log("notifications", notifications.length)
 
     return (
+
       <div className={classes.root}>
         <AppBar position="fixed">
           <Toolbar>
@@ -61,6 +62,7 @@ const useStyles = makeStyles(theme => ({
           </Toolbar>
         </AppBar>
       </div>
+
     );
   }
 

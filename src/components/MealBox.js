@@ -17,7 +17,7 @@ export function MealBox(props){
     
     var old = new Date(props.date) < new Date();
     return(
-        <a className={"link-clean"} href={`/show-meal?id=${props.id}`}>
+        <a className={"link-clean"} href={`/show-meal?meal=${props.id}`}>
         <Paper>
         <Paper elevation={0} style={{"background-image" : `url(${pic})`, "background-size" : "cover", "height" : 0, "padding-bottom" : "75%", "filter" : (old ? "grayscale(1)" : "none")}}>
             <Grid container justify="flex-start">

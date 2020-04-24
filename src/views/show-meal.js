@@ -4,12 +4,12 @@ import Grid from '../components/ShowMealGrid.js';
 import ShowMealGrid from '../components/ShowMealGrid.js';
 import $ from 'jquery';
 import {formatTime} from '../helperFunctions.js';
-import {findDOMNode} from 'react-dom';
 import UserMealRequests from '../components/UserMealRequests.js';
 import {getCookie} from '../helperFunctions.js';
 import Paper from '@material-ui/core/Paper'
 import board from "../res/chopping_board_chopped.png";
 import { withStyles } from '@material-ui/core';
+import {MapTemplateSingle} from './map'
 
 
 export const joinTypeEnum = {
@@ -124,6 +124,7 @@ class ShowMealTemplate extends Component {
                 $.ajax({ url: 'PHPF/getmeal.php',
             type: 'post',
             data: {"id" : param},
+            async: false,
             success: t.ajaxGetMeal,
             context : t
             });
@@ -229,7 +230,7 @@ class ShowMealTemplate extends Component {
                         <UserMealRequests data={requests} accept={true} host={this.state.hostId} mealId={this.state.mealId}></UserMealRequests>
                     </Paper>
                 </div>}
-                
+                <MapTemplateSingle precise={this.getJoinType() == joinTypeEnum.PARTICIPANT || this.getJoinType() == joinTypeEnum.HOST} mealId={this.state.mealId}/>
             </div>
         );
     }

@@ -2,6 +2,15 @@
 import React, {Component} from 'react'
 import Map, {GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
 
+/**
+ * enum used to understand the type of data to be shown in the boxes
+ */
+export const mealInfoEnum = {
+    ADDRESS : 0,
+    DATE : 1,
+    NONE : 2
+}
+
 const mapStyles = {
     width: '100%',
     height: '100%',
@@ -14,16 +23,18 @@ class MapWrapper extends Component{
             showingInfoWindow: false,
 		    activeMarker: {},
             selectedPlace: {},
+            mapWidth : props.mapWidth,
+            infoWindowVisib : props.infoWindowVisib
         }
+        mapStyles.width = props.mapWidth + "%";
+        console.log(props)
+        console.log(mapStyles.width)
         this.onMarkerClick = this.onMarkerClick.bind(this);
         this.onMapClicked = this.onMapClicked.bind(this);
         this.renderMarkers = this.renderMarkers.bind(this);
     }
 
     onMarkerClick(props, marker, e) {
-	    console.log(props);
-	    console.log(marker);
-	    console.log(e);
             this.setState({
 	      selectedPlace: props,
 	      activeMarker: marker,
@@ -41,11 +52,22 @@ class MapWrapper extends Component{
       
     renderMarkers(){
         var output = [];
-        console.log(this.props.meals);
         this.props.meals.forEach((v,k) => {
             v.forEach(element => {
-                output.push(<Marker name={element.usr + "," + element.nm + "," + element.dt + "," + element.tm + "," + element.id}
-                position={element.pos} onClick={this.onMarkerClick}/>)
+                console.log(element)
+                if(this.props.mealInfoType == mealInfoEnum.DATE){
+                    let pos = {lat: element.lat, lng: element.lon};
+                    console.log(pos)
+                    output.push(<Marker name={element.host + "," + element.title + "," + element.date + "," + element.time + "," + element.id}//todo dont use the variable names
+                    position={pos} onClick={this.onMarkerClick}/>)
+                }
+                else if(this.props.mealInfoType == mealInfoEnum.ADDRESS){
+                    let pos = {lat: element.lat, lng: element.lon};
+                    console.log(pos)
+
+                    output.push(<Marker name={element.title + "," + element.address + "," + element.city}//post code needed
+                    position={pos} onClick={this.onMarkerClick}/>)
+                }
             })
         
             
@@ -56,19 +78,28 @@ class MapWrapper extends Component{
     render(){
         console.log("CENTER: ");
         console.log(this.props.mapCenter)
-        let head1, p1, p2, p3;
+        let info = [];
         var x;
         if(typeof this.state.selectedPlace.name !== "undefined"){
-            var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-            x = this.state.selectedPlace.name.split(",");
-            var today  = new Date(x[2]);
-            var new1 = today.toLocaleDateString("en-US", options);
-            var li = "/show-meal?meal=" + x[4];
-            head1 = <h1><a href={li}>{x[1]}</a></h1>; //Meal Name Make this a link to view meal with ID as param meal
-            p1 = <p>Host: {x[0]}</p>;
-            p2 = <p>Date: {new1}</p>;
-            p3 = <p>Time: {x[3]}</p>;
-            
+            if(this.props.mealInfoType == mealInfoEnum.DATE){
+                var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+                x = this.state.selectedPlace.name.split(",");
+                var today  = new Date(x[2]);
+                var new1 = today.toLocaleDateString("en-US", options);
+                var li = "/show-meal?meal=" + x[4];
+                info.push(<h1><a href={li}>{x[1]}</a></h1>); //Meal Name Make this a link to view meal with ID as param meal
+                info.push(<p>Host: {x[0]}</p>);
+                info.push(<p>Date: {new1}</p>);
+                info.push(<p>Time: {x[3]}</p>);
+            }
+            else if(this.props.mealInfoType == mealInfoEnum.ADDRESS){
+                x = this.state.selectedPlace.name.split(",");
+                info.push(<h1>{x[0]}</h1>)
+                let dateInfoLabels = ["Title:", "Address:", "City:"]//, "PostCode :", "Contry:"]//coudl pass them as parameters
+                for(var i = 1; i < x.length; i++){
+                    info.push(<p>{dateInfoLabels[i]} {x[i]}</p>);
+                }
+            }
         }
         // console.log(this.props.meals)
         //     if(this.props.meals.length != 0){
@@ -86,16 +117,14 @@ class MapWrapper extends Component{
             initialCenter = {this.props.mapCenter}
 			>
                 {this.renderMarkers()}
+                {this.state.infoWindowVisib &&
 			<InfoWindow
 					marker={this.state.activeMarker}
 					visible={this.state.showingInfoWindow}>
 					<div style={{color:"black"}}>
-					{head1}
-					{p1}
-					{p2}
-					{p3}
+					{info}
 					</div>
-				</InfoWindow>
+				</InfoWindow>}
 			</Map>
         );
     }
