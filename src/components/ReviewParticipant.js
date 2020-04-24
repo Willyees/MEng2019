@@ -22,9 +22,13 @@ import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import SaveIcon from '@material-ui/icons/Save';
 import $ from 'jquery';
-import bear from '../res/bear1.png';
-import clsx from 'clsx';
-
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import FolderIcon from '@material-ui/icons/Folder';
 import board from "../res/repeatable_chop_board.png";
 
 const StyledRating = withStyles({
@@ -47,6 +51,10 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.text.secondary,
         
       },
+      demo: {
+        backgroundColor: theme.palette.background.paper,
+      },
+    
   }));
 
   // const getNewState = (state, fieldType, index, name, value) => {
@@ -180,10 +188,6 @@ const useStyles = makeStyles(theme => ({
 //   };
 
 
-
-
-
-
     
 //     // const blankReview = { participant: participant,title: '', rating: '', body: ''};
 //     // const [reviewState, setReviewState] = useState([
@@ -246,6 +250,16 @@ const useStyles = makeStyles(theme => ({
 
 
 
+function generate(element) {
+  return [0, 1, 2].map((value) =>
+    React.cloneElement(element, {
+      key: value,
+    }),
+  );
+}
+function ListItemLink(props, ) {
+  return <ListItem button component="a" {...props} />;
+}
 
 const getNewState = (state, fieldType, idx, name, value) => {
   if (["participant","title", "rating", "body"].includes(fieldType)) {
@@ -259,39 +273,89 @@ const getNewState = (state, fieldType, idx, name, value) => {
   return { ...state, [name]: value };
 };
 
+const getNewListState = (state, fieldType, idx, name, value) =>{
+  if(["sally", "gary", "greg"].includes(fieldType)){
+    const newList = [...state.peoplelist];
+    newList[idx][fieldType] = value;
+    return {...state, peoplelist: newList};
+  }
+  return {...state, [name]:value};
+};
+
 function Form() {
-  
+  const classes = useStyles();
+  const [dense, setDense] = React.useState(false);
+  const [secondary, setSecondary] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [state, setState] = React.useState({
-    reviews: [{ participant: "gary", title: "", rating: "", body:"" }],
+    value: ["", "", ""],
   });
+  const people = ["sally", "gary", "greg"];
+  const [reviewState, setReviewState] = React.useState({    
+    reviews: [{ participant: people[0], title: "", rating: "", body:"" }],
+  });
+
+  // const [listState, setListState] = React.useState({
+  //   liDisabled: this.props.component.disabled,
+  // });
+  
+
   const handleFormChange = e => {
     const newState = getNewState(
-      state,
+      reviewState,
       e.target.dataset.fieldType,
       e.target.dataset.id,
       e.target.name,
       e.target.value
     );
-    setState(newState);
+    setReviewState(newState);
   };
 
-  const handleSelectChange = (index, fieldType) => e => {
+  const handleRatingChange = (index, fieldType) => e => {
     const newState = getNewState(
-      state,
+      reviewState,
       fieldType,
       index,
       e.target.name,
       e.target.value
     );
-    setState(newState);
+    setReviewState(newState);
   };
 
-  const addReview = e => {
-    setState({ ...state, reviews: [...state.reviews, { participant: "", title: "", rating: "", body:"" }] });
+  // const handleListChange = (index, fieldType) => e=>{
+  //   setListState({
+  //     liDisabled: !this.props.component.disabled,
+  //   });
+  // }
+
+  const addReview = (participant, idx) => e => {
+    console.log("index: "+idx);
+    //maybe set if to check if person is already being reviewed and if so then scroll to that person
+    setReviewState({ ...reviewState, 
+    reviews: [...reviewState.reviews, { participant: participant, title: "", rating: "", body:"" }], 
+    });
+    
+    // 1. Make a shallow copy of the items
+    let values = [...state.value];
+    
+    // 2. Make a shallow copy of the item you want to mutate
+    let value = {...values[idx]};
+    // 3. Replace the property you're intested in
+    value = idx;
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    values[idx] = value;
+    // 5. Set the state to our new copy
+    console.log("values: "+ values  );
+    setState({value: values});
+    console.log("state.value: "+ state.value);
+    // setOpen(!open);
+    
+    
+    // handleListChange(idx, "list")
   };
 
   const handleSubmit = e => {
-    console.log("state", JSON.stringify(state));
+    console.log("state", JSON.stringify(reviewState));
     e.preventDefault();
   };
   // const participantId = `participant-${idx}`;
@@ -300,82 +364,117 @@ function Form() {
   //   const bodyId = `body-${idx}`;
   
   return (
-    <form onChange={handleFormChange} onSubmit={handleSubmit}>
-      
-      {state.reviews.map((review, idx) => {
-        return (
-            <div key={`review-${idx}`} style={{marginTop:'10%'}}>
-           <Paper style={{marginLeft:'25%',marginBottom:'2%',padding:'2.5%',width:'50%', height:'50%', "background-image" : `url(${board})`}}>
-             <Grid container>
-               <Grid item xs={12}>
-                 <label 
-                  // htmlFor={participantId}
-                  // name={participantId}                  
-                  // id={participantId}
-                  // inputProps={{ "data-id": idx, "data-field-type": "participant" }}
-                >{state.reviews[idx].participant} 
-                </label>                              
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  type="text"
-                  // name= {titleId}
-                  value={state.reviews[idx].title}
-                  // id={titleId}
-                  className="title"
-                  // data-idx={idx}
-                  inputProps={{ "data-id": idx, "data-field-type": "title" }}
-                  // error={formErrors.username}
-                  // helperText={formErrors.username}
-                  // style={{width:'80%', marginLeft:'10%', marginRight:'10%'}}
-                  variant="outlined"
-                  label= "Review title"                                                     
-                />                                      
-              </Grid>  
-
-              <Grid item xs={6}>                                  
-                <Typography style={{marginLeft:'-10%'}}component="legend">Participant Rating</Typography>                                                                                                                  
-                <StyledRating                                            
-                  // name={ratingId}                                                                           
-                  precision={1}                                
-                  value={state.reviews[idx].rating}
-                  onChange={handleSelectChange(idx, "rating")}
-                  // id={ratingId}
-                  data-idx={idx} 
-                  inputProps={{
-                    name: "customName"
-                  }}                                                
-                  // inputProps={{ "data-idx": idx, "data-field-type": "rating" }}                                  
-                  // onChange={(event, newValue) => {
-                  //     // setValue(newValue);
-                  //     this.rating = newValue;
-                  // }}
-                />
-              </Grid>  
-
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  // name={bodyId}              
-                  // id={bodyId}
-                  inputProps={{ "data-id": idx, "data-field-type": "body" }}
-                  value={state.reviews[idx].bodyId}
-                  variant="outlined"
-                  label= "Participant review" 
-                  fullWidth
-                  multiline
-                  rows={4}
-                  rowsMax={4}
-                  style={{marginTop:'2%'}}              
-                />
-              </Grid>
-            </Grid>
-          </Paper>
+    
+    <Grid container style={{width:'100%', height:'100%'}}>
+      <Grid item xs={6} style={{ marginTop:'5%'}}>          
+        <div className={classes.demo} style={{marginLeft:'25%', width:'50%', maxWidth:'50%'}}>
+          <List dense={dense} value={state.value}>
+            {people.map((listi, idx) => {              
+              // addReview(people[idx], idx)
+              // addReview(people[idx],listi)
+              return(   
+                <div key= {`listItem-${idx}`}>                           
+                  <ListItem button key={idx} onClick={addReview(people[idx], idx)} disabled={state.value[idx] == idx? true: false}
+                    inputProps={{
+                      name: "customName"
+                    }}                   
+                  > 
+                    <ListItemAvatar>
+                      <Avatar>
+                        <FolderIcon/>{/*getCookie("Username") */}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                    style={{color:"black"}}
+                      primary= {people[idx]}                    
+                      secondary={secondary ? 'Secondary text' : null}
+                    />
+                  </ListItem>
+                </div>
+              );
+            })}
+          </List>
         </div>
-        );
-      })}
-      <button onClick={addReview}>Add new Review</button>
-    </form>
+      </Grid>
+
+      <Grid item xs={6} style={{marginTop:'5%',width:'50%'}}>
+        <form onChange={handleFormChange} onSubmit={handleSubmit}>
+          {reviewState.reviews.map((review, idx) => {
+            return (
+                <div key={`review-${idx}`}>
+              <Paper style={{marginBottom:'2%',padding:'2.5%', marginLeft:'25%', width:'50%', height:'50%', "background-image" : `url(${board})`}}>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <label 
+                      // htmlFor={participantId}
+                      // name={participantId}                  
+                      // id={participantId}
+                      // inputProps={{ "data-id": idx, "data-field-type": "participant" }}
+                    >{reviewState.reviews[idx].participant} 
+                    </label>                              
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      type="text"
+                      // name= {titleId}
+                      value={reviewState.reviews[idx].title}
+                      // id={titleId}
+                      className="title"
+                      // data-idx={idx}
+                      inputProps={{ "data-id": idx, "data-field-type": "title" }}
+                      // error={formErrors.username}
+                      // helperText={formErrors.username}
+                      // style={{width:'80%', marginLeft:'10%', marginRight:'10%'}}
+                      variant="outlined"
+                      label= "Review title"                                                     
+                    />                                      
+                  </Grid>  
+
+                  <Grid item xs={6}>                                  
+                    <Typography style={{marginLeft:'-10%'}}component="legend">Participant Rating</Typography>                                                                                                                  
+                    <StyledRating                                            
+                      // name={ratingId}                                                                           
+                      precision={1}                                
+                      value={reviewState.reviews[idx].rating}
+                      onChange={handleRatingChange(idx, "rating")}
+                      // id={ratingId}
+                      data-idx={idx} 
+                      inputProps={{
+                        name: "customName"
+                      }}                                                
+                      // inputProps={{ "data-idx": idx, "data-field-type": "rating" }}                                  
+                      // onChange={(event, newValue) => {
+                      //     // setValue(newValue);
+                      //     this.rating = newValue;
+                      // }}
+                    />
+                  </Grid>  
+
+                  <Grid item xs={12}>
+                    <TextField
+                      type="text"
+                      // name={bodyId}              
+                      // id={bodyId}
+                      inputProps={{ "data-id": idx, "data-field-type": "body" }}
+                      value={reviewState.reviews[idx].bodyId}
+                      variant="outlined"
+                      label= "Participant review" 
+                      fullWidth
+                      multiline
+                      rows={4}
+                      rowsMax={4}
+                      style={{marginTop:'2%'}}              
+                    />
+                  </Grid>
+                </Grid>
+              </Paper>
+            </div>
+            );
+          })}               
+          {/* <button onClick={addReview}>Add new Review</button> */}
+        </form>
+      </Grid> 
+    </Grid>
   );
 }
 
