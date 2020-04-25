@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import SaveIcon from '@material-ui/icons/Save';
+import {getLatestMeals} from '../views/profile'
 import $ from 'jquery';
 
 //get the user profile pic
@@ -53,6 +54,7 @@ export default function ProfileGrid() {
   //this stuff only needed if we need to change the rating on this page
 //   const [ value, setValue] = React.useState(2);
 //   const [ hover, setHover] = React.useState(-1);
+    const [recentMeals, setRecentMeals] = React.useState(getLatestMeals())
    var url = new URL(window.location.href);
    var param = url.searchParams.get("usr");
    $.ajax({ url: 'PHPF/viewprofile.php',
@@ -60,7 +62,7 @@ export default function ProfileGrid() {
       async: false,
       data: {
 	      //Get from URL
-	      "username" : param,
+          "username" : param,
       },
 	  success: function(output) {
 	      dataPopulate = JSON.parse(output);
@@ -168,7 +170,7 @@ export default function ProfileGrid() {
                                 Recent Meals
                             </Typography>
 
-                            <GridList />
+                            <GridList recentMeals={recentMeals}/>
                         </Grid>
                         <Paper style={{marginTop: "3%",}}>
                             <Grid item xs={12}>

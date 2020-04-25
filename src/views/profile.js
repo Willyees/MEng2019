@@ -51,7 +51,7 @@ const formValid = formErrors => {
 /**
  * ajax call to server. not async to retreive the latest meal info of the current user
  */
-function getLatestMeals(){
+export function getLatestMeals(){
     var data = []
     console.log("getmleas")
     $.ajax({ url: 'PHPF/getmealsuser.php',

@@ -28,7 +28,7 @@ export default class MealList extends Component{
         var output = [];
         output.push(<MealListHeaderDate date={k} />);
         v.forEach(element => {
-            output.push(<MealListSingle title={element.nm} city={element.city} time={element.tm} id={element.id}/>);
+            output.push(<MealListSingle title={element.title} city={element.city} time={element.time} id={element.id}/>);
         })
         container.push(<Paper className="paper-board">{output}</Paper>)
     });

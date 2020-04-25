@@ -94,6 +94,7 @@ class MapWrapper extends Component{
             }
             else if(this.props.mealInfoType == mealInfoEnum.ADDRESS){
                 x = this.state.selectedPlace.name.split(",");
+                console.log(x)
                 info.push(<h1>{x[0]}</h1>)
                 let dateInfoLabels = ["Title:", "Address:", "City:"]//, "PostCode :", "Contry:"]//coudl pass them as parameters
                 for(var i = 1; i < x.length; i++){
