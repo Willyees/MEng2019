@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
   export default function ButtonAppBar() {
     const classes = useStyles();
     const [notifications, setNotifications ] = React.useState(getNotifications())
+    const [accepted, setAccepted] = React.useState(getAcceptedNotifications())
     console.log("notifications", notifications.length)
 
     return (
@@ -57,13 +58,36 @@ const useStyles = makeStyles(theme => ({
             </a> 
             </Typography>
             {isUserLoggedIn() &&
-            <NotificationBanner requests={notifications}/>}
+            <NotificationBanner requests={notifications} accepted={accepted}/>}
             {isUserLoggedIn() ? <MenuBanner /> : <Logged />}
           </Toolbar>
         </AppBar>
       </div>
 
     );
+  }
+
+  function getAcceptedNotifications(){
+      if(!isUserLoggedIn)
+      return [];
+    var notifications = [];
+    var username = getCookie("Username");
+    $.ajax({ url: 'PHPF/checkaccepted.php',
+        type: 'post',
+        data: {"username" : username},
+        async:false,
+        success: function(out){
+          console.log(out, "success");
+          let d1 = JSON.parse(out)
+          d1.forEach((entity)=> {
+            notifications.push(JSON.parse(entity));
+          })
+          console.log("notifications: ", notifications);
+        }
+        
+    })
+
+  return notifications;
   }
 
   function getNotifications(){
@@ -102,6 +126,7 @@ const useStyles = makeStyles(theme => ({
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    props.accepted.forEach((e) => {console.log(e)})
     console.log("requests", props.requests.length)
     const handleMenu = event => {
       setAnchorEl(event.currentTarget);
@@ -110,6 +135,20 @@ const useStyles = makeStyles(theme => ({
     const handleClose = event => {
       setAnchorEl(null);
     };
+
+    const HandleCloseAccepted = (event, username) => {
+      setAnchorEl(null);
+      var id = event.currentTarget.value
+      $.ajax({ url: 'PHPF/dismissnotification.php',
+		    type: 'post',
+        data: {"username" : username,
+              "id" : id},
+		    success: function(out){
+          console.log("removed accepted notification", id);
+        }  
+    })
+
+    }
 
     return(
       <div>
@@ -125,6 +164,9 @@ const useStyles = makeStyles(theme => ({
 
           <Divider/>
           <Typography>Your recent accepted requests:</Typography>
+          {props.accepted.map((elem)=> (
+            <MenuItem component={Link} href={`/show-meal?meal=${elem}`} value={elem} onClick={(e, value) => {HandleCloseAccepted(e, getCookie("Username"))}}>You were accepted to a meal! ({elem})</MenuItem>
+          ))}
         </Menu>
       </div>
     )

@@ -339,7 +339,7 @@ export function MapTemplateSingle(props){
 	//debug local
 	if(window.location.host == "localhost:3000"){
 		var s = '{"id":"145","host":"harrypotter","title":"British Roast","time":"16:17:01","date":"2021-01-21","description":"ROAST EM","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"","age_range":"[]","address":"27 Union St","lat":55.950926774582,"lon":-3.2200511488097}'
-		var data = JSON.parse(s);
+		data.push(JSON.parse(s));
 		console.log(data)
 	}
 	if(data.length == 0){

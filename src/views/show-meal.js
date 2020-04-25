@@ -190,6 +190,7 @@ class ShowMealTemplate extends Component {
     
     ajaxGetMeal(output){//this whole functionality could be acheived by using react states on the html elements. cleaner
         var outParsed = JSON.parse(output);
+        console.log(outParsed)
         //parse time
         if(outParsed.time != "")
             outParsed.time = formatTime(outParsed.time)

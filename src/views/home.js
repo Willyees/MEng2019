@@ -34,7 +34,7 @@ class HomeTemplate extends Component {
             </div>
                 <Grid container className="main-body" alignItems="center" justify="center">
                 <Grid item xs={6}>
-                    <Paper className="paper-board">
+                    <Paper className="paper-board" style={{"padding" : 10}}>
                         <Typography variant={'h5'} color={"textPrimary"}>
                         Meal Time is a place where people can organise their meals and share information. <p />
                         Our goal is to create a platform that would enable people to cook together and to socialize, may be learning new recipes!
@@ -45,11 +45,9 @@ class HomeTemplate extends Component {
                         <MapTemplateMulti mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={false}/>
                     </Grid>
 
-                    
-                    <Grid item xs={12}>
-                        
-                        <Typography variant={'h6'}>
-                        <br/>
+                    <br/>
+                    <Grid item>
+                        <Typography variant={'h6'} color="textPrimary" style={{"backgroundColor" : "lightgray"}}>
                         To be able to interact, you have to create a profile
                         </Typography>   
                     </Grid>

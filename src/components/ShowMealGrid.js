@@ -159,6 +159,9 @@ export default function ShowMealGrid(props) {
   };
   console.log("RERENDER!", props.participants.length, props.participantMax)
   //set not joinable in any cases if the number of max participants is more than maximum
+  if(isMealInThePast(props.date)){
+    setJoinText("EXPIRED")
+  }
   if(props.participants.length == props.participantMax){
     setJoinDisabled(true)
     setJoinText("FULL")
@@ -174,7 +177,8 @@ export default function ShowMealGrid(props) {
       <div className={classes.root}>
         <Grid container spacing={2} xs={12} style={{marginTop:'3%'}}>
           <Paper className={classes.paper}>
-            
+            {isMealInThePast(props.date) && 
+            <Typography color="textPrimary" align="left" style={{"text-decoration" : "underline"}} variant={"h5"}>Meal Ended</Typography>}
             {/* title grid */}
             <Grid id="title_grid" container style={{justifyContent:"left", marginBottom:'3%'}}>
               <Grid item xs={10}>
@@ -323,12 +327,20 @@ export default function ShowMealGrid(props) {
         <Grid container>
           <Paper className={classes.paper}>
             <Grid container item alignItems="center">
-              <Grid item>
-                <Typography variant="h2" component="h2" gutterBottom>
+                <Grid item xs ={2}>
+                  <Typography align="left"> Host: </Typography>
+                </Grid>
+                <Grid item xs={10}> 
+                  <UserMealRequests data={[{u : props.host, name : props.host}]} accept={false}/>
+                </Grid>
+
+              <Grid item style={{"margin-top" : "3%"}}>
+
+                <Typography variant="h2" component="h2" gutterBottom={true} >
                   Participants
                 </Typography>
               </Grid>
-              <Grid item xs>
+              <Grid item xs style={{"margin-top" : "3%"}}>
                 <Typography variant="h4" component="h2"gutterBottom >{props.participants.length}/{props.participantMax}</Typography>
               </Grid>
             </Grid>
