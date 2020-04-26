@@ -15,7 +15,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Hidden from '@material-ui/core/Hidden';
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Typography, MenuItem } from '@material-ui/core';
-import { getCookie, isUserLoggedIn} from '../helperFunctions';
+import { getCookie, isUserLoggedIn, formatTimeNoSecs} from '../helperFunctions';
 import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
@@ -40,6 +40,11 @@ const styles = ({
     padded : {
         padding : '1rem'
     },
+    widepadded : {
+        padding : '1rem',
+        "padding-right" : '3rem',
+        "padding-left" : '3rem',
+    },
     board_background : {
         "background-image" : `url(${board})`
     }
@@ -59,7 +64,7 @@ class CreateMealTemplate extends Component {
                 description: "",
                 
                 date : new Date().toLocaleDateString("en-US"),
-                time : new Date().toLocaleTimeString(),
+                time : formatTimeNoSecs(new Date().toLocaleTimeString()),
                 proposed_meal : "",
                 expected_contribution : 0.0,
                 guest_limit : 0,
@@ -271,7 +276,9 @@ class CreateMealTemplate extends Component {
         //add to this fucntion the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
         const {title, description, city} = this.state.values;
         var objmerged = {...this.state.values, ...this.state.optional}; //have to merge the optional and not optional object together
-        
+        //add secs to time
+        objmerged.time = objmerged.time + ":00";
+
         for(var k in objmerged){
             if(typeof(objmerged[k]) != "string")
                 objmerged[k] = JSON.stringify(objmerged[k]);
@@ -340,7 +347,7 @@ class CreateMealTemplate extends Component {
             <div>
             <p />
             </div>
-            <Grid container justify="center" spacing={2}>
+            <Grid container justify="center" spacing={2} style={{"width" : "100%"}}>
             <Grid item>
             <Paper className={`${classes.padded} ${classes.board_background}`}>
                 <Grid item>
@@ -362,7 +369,7 @@ class CreateMealTemplate extends Component {
             </Paper>
             </Grid>
             <Grid item>
-            <Paper className={`${classes.padded} ${classes.board_background}`}>
+            <Paper className={`${classes.widepadded} ${classes.board_background}`}>
             <form onSubmit={this.onSubmit}> 
                 <Grid item>
                     {/* id: <name_id>_cm; cm stands for create meal */}

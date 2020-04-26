@@ -14,7 +14,8 @@ export function isUserLoggedIn(){
 }
 
 export function redirectIfNotLoggedIn(){
-    $.ajax({ url: 'PHPF/checklogin.php',
+    //todo. set it back to the checklogin function in the server. have to do modify it like this because that function has been changed
+    /*$.ajax({ url: 'PHPF/checklogin.php',
         type: 'post',
         data: {
             "username" : getCookie("Username"),
@@ -25,7 +26,8 @@ export function redirectIfNotLoggedIn(){
 		document.location.href = "/log-in";
 	    }
 	}
-    });
+    });*/
+    return; 
 }
 
 export function getCookie(cookieName) {
@@ -53,6 +55,13 @@ export function formatTime(time){
     let hh = t_split[0] % 12;
     hh = hh ? hh : 12; //in case hh is 0, then set it back to 12
     return hh + ":" + t_split[1] + " " + ampm; 
+}
+
+export function formatTimeNoSecs(time){
+    var t_split = time.split(':');
+    var t_slice = t_split.slice(0,2)
+    return t_slice.join(":")
+    
 }
 
 export function getProfilePicURL(username){
