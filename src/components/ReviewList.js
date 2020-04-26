@@ -11,8 +11,10 @@ import Button from '@material-ui/core/Button';
 
 
 function redirectAddReview(e){
-  if(e.currentTarget.value != "")
-    window.location.href = `/review?username=${e.currentTarget.value}`
+  if(e.currentTarget.value != ""){
+    // window.location.href = `/review?username=${e.currentTarget.value}`;
+    window.location.href = `/review?meal=${e.currentTarget.value}`;
+  }
   else
     console.log("user being reviewed is empty. error in add review button");
 }
@@ -40,7 +42,7 @@ class ReviewList extends Component{//have to pass reviews from the parent
                 startIcon={< AddCircleOutlineIcon/>}
                 type="submit"
                 style={{contentFit:"contain", maxHeight:"50%", bottom:0}}
-                value={this.props.host}
+                value={this.props.mealId}
                 onClick={redirectAddReview}>
                 Add review
             </Button>

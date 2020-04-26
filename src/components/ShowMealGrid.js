@@ -350,7 +350,7 @@ export default function ShowMealGrid(props) {
         
         <Grid container xs={12}>
           <Paper className={classes.paper}>
-            <ReviewList reviews={getReviewsAjax(props.host)} reviewDisabled={reviewDisabled} host={props.host}/>
+            <ReviewList reviews={getReviewsAjax(props.host)} reviewDisabled={reviewDisabled} host={props.host} mealId={props.mealId}/>
           </Paper>
         </Grid>
       </div>

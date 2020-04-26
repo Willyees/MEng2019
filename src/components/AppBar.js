@@ -17,7 +17,8 @@ import ExploreIcon from '@material-ui/icons/Explore';
 import LogOutIcon from '@material-ui/icons/ExitToApp';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
-import Divider from '@material-ui/core/Divider'
+import Divider from '@material-ui/core/Divider';
+import clock from '../res/newspoonandknife_white_all.png';
 import $ from 'jquery';
 
 const useStyles = makeStyles(theme => ({
@@ -49,8 +50,10 @@ const useStyles = makeStyles(theme => ({
       <div className={classes.root}>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton edge="start" color="inherit" >
+            {/* <IconButton edge="start" color="inherit" >
             < EmojiFoodBeverageSharpIcon /> {/* I'd like it to not show as a button when hovered changes color background */}
+            <IconButton href="/">
+              <img src={clock} />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
             <a className={classes.linkbanner} href="/" >
