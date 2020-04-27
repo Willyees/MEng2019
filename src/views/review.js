@@ -55,12 +55,12 @@ const getParticipants = mealId => {
                 var d1 = JSON.parse(out);
                 d1.forEach(function(entry) {
                     var parsed = JSON.parse(entry);
-                    parsed.usr = parsed.u;//add additional usr field that will be shown graphically next to the name
                     data1.push(parsed)
                 });
             },
             error : () => {console.log("Error in getting the participants")}
             })
+    console.log(data1)
     return data1;    
 }
 
@@ -81,6 +81,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 let people = ["sally", "gary", "greg", "tam"];
+let people_full = []
 
 class ReviewTemplate extends Component {
     
@@ -92,7 +93,10 @@ class ReviewTemplate extends Component {
         var param = url.searchParams.get("meal");
 
         //get the participants from the db
-        people = getParticipants(param);
+        people_full = getParticipants(param);
+        people = people_full.map((e) => {return e.n;})
+        
+        console.log(people)
         if(people.length == 0){
             alert("nothing in particpant list! Setting list to debug mode");
             console.log("nothing in list");

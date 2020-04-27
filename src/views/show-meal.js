@@ -195,7 +195,7 @@ class ShowMealTemplate extends Component {
         if(outParsed.time != "")
             outParsed.time = formatTime(outParsed.time)
         //store in the state the variables needed to be passed to child or worked upon
-        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"]), participantMax : outParsed["guest_limit"]})
+        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"] + " " + outParsed["time"]), participantMax : outParsed["guest_limit"]})
         console.log(outParsed["guest_limit"]);
         for(var id in outParsed){
             if(outParsed[id] == ""){
@@ -223,8 +223,8 @@ class ShowMealTemplate extends Component {
             <div>     
                 <AppBar>
                 </AppBar>
-                <ShowMealGrid joinf={this.joinMeal} date={this.state.date} host={this.state.hostId} participants={this.participants} participantMax={this.state.participantMax} jointype={this.getJoinType()} mealId={this.state.mealId}>
-                </ShowMealGrid>
+        <ShowMealGrid joinf={this.joinMeal} date={this.state.date} host={this.state.hostId} participants={this.participants} participantMax={this.state.participantMax} jointype={this.getJoinType()} mealId={this.state.mealId}></ShowMealGrid>
+        
                 {this.isHost() && 
                 <div className={classes.root}>
                     <Paper className={classes.paper}>

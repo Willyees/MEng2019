@@ -101,6 +101,7 @@ function joinMeal(joinf, f) {
   //window.location.reload()
 }
 function isMealInThePast(meal_date){
+  console.log(meal_date)
   let now = new Date();
   return meal_date < now;
 }
