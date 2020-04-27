@@ -110,12 +110,28 @@ class ReviewTemplate extends Component {
                 {n: "greg", u: "greg@gmail.com"},
                 {n: "tam", u: "tam@gmail.com"},
             ];
+
             people_names = people.map((e) => {return e.n});
             people_users = people.map((e) => {return e.u});
+            
         }else{
+            // people_names = people.map((e) => {
+            //     if(e.u != getCookie("Username")){
+            //         return e.n;
+            //     }
+            // });
+            // people_users = people.map((e) => {
+            //     if(e.u != getCookie("Username")){
+            //         return e.u;
+            //     }
+            // });
             people_names = people.map((e) => {return e.n});
             people_users = people.map((e) => {return e.u});
+
+           
         }
+        
+        
 
         //console.log(people);
 
@@ -333,9 +349,9 @@ class ReviewTemplate extends Component {
                                         }}                   
                                         > 
                                         <ListItemAvatar>
-                                            <Avatar>
-                                            <FolderIcon/>{/*getCookie("Username") */}
-                                            </Avatar>
+                                            <Avatar alt={people_names[idx]} src={getProfilePicURL(people_users[idx])} />
+                                            {/* <FolderIcon/>getCookie("Username") */}
+                                            
                                         </ListItemAvatar>
                                         <ListItemText
                                             style={{color:"black"}}
