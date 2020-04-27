@@ -115,20 +115,16 @@ class ReviewTemplate extends Component {
             people_users = people.map((e) => {return e.u});
             
         }else{
-            // people_names = people.map((e) => {
-            //     if(e.u != getCookie("Username")){
-            //         return e.n;
-            //     }
-            // });
-            // people_users = people.map((e) => {
-            //     if(e.u != getCookie("Username")){
-            //         return e.u;
-            //     }
-            // });
-            people_names = people.map((e) => {return e.n});
-            people_users = people.map((e) => {return e.u});
-
-           
+            people_names = people.map((e) => {
+                if(e.u != getCookie("Username")){
+                    return e.n;
+                }
+            });
+            people_users = people.map((e) => {
+                if(e.u != getCookie("Username")){
+                    return e.u;
+                }
+            });           
         }
         
         
