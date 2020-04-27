@@ -80,8 +80,10 @@ const useStyles = makeStyles(theme => ({
     
 }));
 
-let people = ["sally", "gary", "greg", "tam"];
-let people_full = []
+// let people = ["sally", "gary", "greg", "tam"];
+let people = [{n: "sally", u: "sally@gmail.com"}];
+let people_names = people.map((e) => {return e.n});
+let people_users = people.map((e) => {return e.u});
 
 class ReviewTemplate extends Component {
     
@@ -93,14 +95,26 @@ class ReviewTemplate extends Component {
         var param = url.searchParams.get("meal");
 
         //get the participants from the db
-        people_full = getParticipants(param);
-        people = people_full.map((e) => {return e.n;})
+        people = getParticipants(param);
         
-        console.log(people)
+        // people_names = people_full.map((e) => {return e.n;});
+
+
+        //console.log(people);
         if(people.length == 0){
             alert("nothing in particpant list! Setting list to debug mode");
             console.log("nothing in list");
-            people = ["sally", "gary", "greg", "tam"];
+            people = [
+                {n: "sally", u: "sally@gmail.com"}, 
+                {n: "gary", u: "gary@gmail.com"},
+                {n: "greg", u: "greg@gmail.com"},
+                {n: "tam", u: "tam@gmail.com"},
+            ];
+            people_names = people.map((e) => {return e.n});
+            people_users = people.map((e) => {return e.u});
+        }else{
+            people_names = people.map((e) => {return e.n});
+            people_users = people.map((e) => {return e.u});
         }
 
         //console.log(people);
@@ -113,7 +127,7 @@ class ReviewTemplate extends Component {
                 value: [""],
             },
             reviewState:{
-                reviews: [{ participant: people[0], title: "", rating: "", body:"" }],
+                reviews: [{ participant: people_names[0], title: "", rating: "", body:"" , username: people_users[0]}],
                 formErrors: [{title: "please add a title", rating: "please add a rating", body: "please add a reveiw"}],
             },
 
@@ -201,7 +215,7 @@ class ReviewTemplate extends Component {
         )
     };
 
-    addReview = (participant, idx) => e => {
+    addReview = (idx) => e => {
         //this.handleFormChange(this.state.reviewState.reviews);
         console.log("formErrors: "+ this.state.reviewState.formErrors);
         // console.log("index: "+idx);
@@ -214,7 +228,7 @@ class ReviewTemplate extends Component {
             this.setState(
                 this.state.reviewState = ({
                     ...this.state.reviewState, 
-                    reviews: [...this.state.reviewState.reviews, { participant: participant, title: "", rating: "", body:"" }], 
+                    reviews: [...this.state.reviewState.reviews, { participant: people_names[idx], title: "", rating: "", body:"",  username: people_users[idx]}], 
                 })
             )
             
@@ -243,27 +257,34 @@ class ReviewTemplate extends Component {
             // console.log("state", JSON.stringify("formvalid: "+this.state.reviewState.reviews[1].participant));
             //Loop through fromServer array, see if anything has changed
             //  let toServer = {};
-            
+            console.log(" all usernames: "+ people_users);
             //Lets pass this to the server, then clear the toServer array. 	
             // Should only call if toServer is not empty, but easy to check that with PHP
+            console.log("length of reviews: "+this.state.reviewState.reviews.length);
             this.state.reviewState.reviews.forEach(element => {
-                console.log("state", JSON.stringify("formvalid: "+ element.participant));
+                //     console.log("state", JSON.stringify("formvalid: "+ element.participant));
                 const date = new Date(Date.now()).toLocaleString().split(',')[0];
-                
+                console.log("server stuff: "+ "\n"+
+                "username : "+ String(getCookie("Username")) + "\n"+
+                "reviewed: "+ String(element.username) + "\n"+
+                "title: " + String(element.title) + "\n"+
+                "date:" + String(date)+ "\n"+
+                "star_rating: "+ String(element.rating) + "\n"+
+                "body: "+ String(element.body));
                 $.ajax({ url: 'PHPF/rateparticipant.php',
                     type: 'post',
                     async: false,
                     data: {
-                        "username": getCookie("Username"),
-                        "reviewed": this.state.reviewState.reviews.participant,
-                        "title": this.state.reviewState.reviews.title,
+                        "username": String(getCookie("Username")),
+                        "reviewed": String(element.username),
+                        "title": String(element.title),
                         "date": String(date),
-                        "star_rating": this.state.reviewState.reviews.rating,
-                        "body": this.state.reviewState.reviews.body
+                        "star_rating": String(element.rating),
+                        "body": String(element.body)
                     },
                     success: function(output) {
                             alert(output);
-                        if(output == "DONE"){
+                        if(output == "1"){
                         alert("Records Updated");
                         }
                         else{
@@ -303,10 +324,10 @@ class ReviewTemplate extends Component {
                                 Participant List
                             </label>
                             <List value={this.state.listState.value}>
-                                {people.map((listi, idx) => {              
+                                {people_names.map((listi, idx) => {              
                                     return(   
                                     <div key= {`listItem-${idx}`}>                           
-                                        <ListItem button key={idx} onClick={this.addReview(people[idx], idx)} disabled={this.state.listState.value[idx] == idx? true: false}
+                                        <ListItem button key={idx} onClick={this.addReview(idx)} disabled={this.state.listState.value[idx] == idx? true: false}
                                         inputProps={{
                                             name: "customName"
                                         }}                   
@@ -318,7 +339,7 @@ class ReviewTemplate extends Component {
                                         </ListItemAvatar>
                                         <ListItemText
                                             style={{color:"black"}}
-                                            primary= {people[idx]}                                            
+                                            primary= {people_names[idx]}                                            
                                         />
                                         </ListItem>
                                     </div>
@@ -333,9 +354,9 @@ class ReviewTemplate extends Component {
                     
                         {this.state.reviewState.reviews.map((review, idx) => {
                             // const participantId = `participant-${idx}`;
-                            const titleId = `${people[0]}-title-${idx}`;
-                            const ratingId = `${people[0]}-rating-${idx}`;
-                            const bodyId = `${people[0]}-body-${idx}`;
+                            const titleId = `${people_names[0]}-title-${idx}`;
+                            const ratingId = `${people_names[0]}-rating-${idx}`;
+                            const bodyId = `${people_names[0]}-body-${idx}`;
                         return (
                             
                             <div key={`review-${idx}`}>                                                               
