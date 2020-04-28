@@ -315,7 +315,7 @@ class ProfileTemplate extends Component {
         }
 
         if (event.target.files[0]) {reader.readAsDataURL(file);}
-      };
+    };
 
     render() {
         const { formErrors } = this.state;
@@ -328,7 +328,7 @@ class ProfileTemplate extends Component {
 
 
         //problem with the image size, I want it to remain the same dimensions but it always grows with the page...
-        if (imagePreviewUrl) {
+         if (imagePreviewUrl) {
             $imagePreview = (
                 <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
                     <img src={profilePicURL} 

@@ -75,7 +75,7 @@ class SignUpTemplate extends Component {
             address_2: null,
             postcode: null,
             city: null,
-	    file:null,
+	        file:null,
             country: null,
             dob:  null, //date and time will need to use a graphical calendar. At the moment are visualised for debug purposes
             phone: null,
@@ -191,13 +191,15 @@ class SignUpTemplate extends Component {
 
     onSubmit = event => {
         event.preventDefault();
+        console.log(this.state);
         if(formValid(this.state.formErrors)){
             //add to this function the connection to the DB. can retreive all the inputs values from 'this.state'. care: they are stored all as strings at the moment (JS dynamic types)
-            const {fName, bio, city} = this.state;
+            // const {fName, bio, city} = this.state;
+            
             //^dunno if other elements can be added to the line above (db) so i've just left it for now^
             $.ajax({ url: 'PHPF/signup.php',
                 type: 'post',
-		 enctype: 'multipart/form-data',
+		        enctype: 'multipart/form-data',
                 data: {"data" : this.state},
                 success: function(output) {
 		            if(output == "DONE"){
@@ -236,7 +238,7 @@ class SignUpTemplate extends Component {
 
        if (event.target.files[0]) {reader.readAsDataURL(file);}
 
-      };
+    };
 
 
     render() {

@@ -22,7 +22,11 @@ import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 
-import board from "../res/chopping_board_chopped.png"
+import meal from "../res/burger.png";
+
+import myStyle from "../mystyle.module.css";
+
+import board from "../res/repeatable_chop_board.png"
 import bear from "../res/bear1.png";
 
 const postcodeRegex = RegExp(/^([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([AZa-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z])))) [0-9][A-Za-z]{2})$/);
@@ -70,7 +74,8 @@ class CreateMealTemplate extends Component {
                 guest_limit : 0,
                 address_1 : "",
                 city : "",
-                post_code : ""
+                post_code : "",
+                imagePreviewUrl: "",
             },
             optional : {
                 suggested_theme : "",
@@ -270,6 +275,23 @@ class CreateMealTemplate extends Component {
         //this.setState({...this.state, visibility : {...this.state.visibility, [event.target.value] : event.target.checked }});
     }
 
+    handleImageChange = event => {
+        event.preventDefault();
+    
+      let reader = new FileReader();
+      let file = event.target.files[0];
+      console.log("Image should be added"); 
+        reader.onloadend = () => {
+          this.setState({
+            imagePreviewUrl: reader.result
+	    //file: file,
+          });
+        }
+
+       if (event.target.files[0]) {reader.readAsDataURL(file);}
+
+    };
+
     onSubmit(event) {
         console.log("on submit");
         
@@ -315,13 +337,41 @@ class CreateMealTemplate extends Component {
         var v = {...this.state.values}; //create dummy object and then replace all the properties. After, replace the state object with the updated one
         v.title = "new Meal"; v.description = "this is an informal meal to get to know new people that would like to be eaten"; v.city = "Edinburgh";
         v.dietary = "none"; v.date = new Date().toDateString(); v.proposed_meal = "make your own favorite pizza"; v.expected_contribution = "4.5"; v.guest_limit = "4";
-        v.age_range= "none"; v.suggested_theme = "none";
+        v.imagePreviewUrl = meal;
+        v.age_range= "none"; 
+        v.suggested_theme = "none";
         this.setState({values : v});        
     }
 
     render() {
         const {classes} = this.props;
         const { formErrors } = this.state;
+
+        //meal picture stuff
+        let {imagePreviewUrl} = this.state.values.imagePreviewUrl;
+        let $imagePreview = null;
+        //problem with the image size, I want it to remain the same dimensions but it always grows with the page...
+        if (imagePreviewUrl) {
+            $imagePreview = (
+                <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
+                    <img src={imagePreviewUrl} id="uploadme"
+                        className= {myStyle.image} style={{ contentFit:'contain',height: '100%', width:'100%', maxHeight:'100%', maxWidth:'100%',
+                        border: "1px solid #ddd", borderRadius: "15px", 
+                        }}
+                   />
+                </div>
+            );
+
+        } 
+        else {
+        $imagePreview = (
+                <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
+                    <img src={meal} id="uploadme" height="100%" width="100%" className= {myStyle.image} style={{
+                        contentFit:'contain',border: "1px solid #ddd", borderRadius: "15px", 
+                        }} 
+                    />
+                </div>
+            )
 
         var un = getCookie("Username");
         console.log(un);
@@ -338,121 +388,195 @@ class CreateMealTemplate extends Component {
                 submitDisabled = true;
             }
         }
+
+        
+        }
         return(
-            <div className="main-body">
-                <Button variant="contained" color="secondary" onClick={this.debugFillFields}>
-                    Debug fill fields
-                </Button>
-                Create a Meal Event
-            <div>
-            <p />
-            </div>
-            <Grid container justify="center" spacing={2} style={{"width" : "100%"}}>
-            <Grid item>
-            <Paper className={`${classes.padded} ${classes.board_background}`}>
-                <Grid item>
-                    <Typography variant="h6">Profile Address stored</Typography>
-                    <br/>
-                </Grid>
-                <Grid item>
-                    <TextField name="address_1" id="address_1_cm" onChange={this.onChange} value={this.state.values.address_1} 
-                    type="text" label="Address 1" disabled={this.state.visibility.own_address_vis} />
-                </Grid>
-                <Grid item>
-                    <TextField name="city" id="city_cm" onChange={this.onChange} value={this.state.values.city}
-                    type="text" label="City" disabled={this.state.visibility.own_address_vis} />
-                </Grid>
-                <Grid item>
-                    <TextField name="post_code" id="post_code_cm" onChange={this.onChange} value={this.state.values.post_code}
-                type="text" label="Post Code" disabled={this.state.visibility.own_address_vis} />
-                </Grid>
-            </Paper>
-            </Grid>
-            <Grid item>
-            <Paper className={`${classes.widepadded} ${classes.board_background}`}>
-            <form onSubmit={this.onSubmit}> 
-                <Grid item>
-                    {/* id: <name_id>_cm; cm stands for create meal */}
-                    <TextField name="title" id="title_cm" error= {formErrors.title} helperText= {formErrors.title}
-                    onChange={this.onChange} value={this.state.values.title} type="text" 
-                    label="Title"/>
-                </Grid>
-                <p />
-                <Grid item>
-                    <TextField multiline error= {formErrors.description} helperText= {formErrors.description} name="description" id="description_cm" onChange={this.onChange} value={this.state.values.description} type="text"
-                    label="Description" variant="outlined"/>
-                </Grid>
-                <FormLabel>Location</FormLabel>
-                <FormGroup>
-                    <FormControlLabel control={<Switch value="own_address_vis" checked={this.state.visibility.own_address_vis} onClick={this.handleSwitchAddress}/>} label="At the stored address" />
-                </FormGroup>
-
-                <Grid item>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker error= {formErrors.date} helperText= {formErrors.date}
-                        name="date" id="date_cm" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date picker" format="dd/MM/yyyy"
-                        value={this.state.values.date} onChange={this.handleDate} />
-                    </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item>
-                    <TextField name="time" id="time_cm" onChange={this.onChange} value={this.state.values.time} type="time" label="Time"/>
-                </Grid>
-                <Grid item>
-                    <TextField error= {formErrors.proposed_meal} helperText= {formErrors.proposed_meal} name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.values.proposed_meal} type="text" label="Proposed meal" />
-                </Grid>
-                <Grid item>
-                    <TextField error= {formErrors.expected_contribution} helperText= {formErrors.expected_contribution} name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" 
-                    InputProps={{startAdornment: <InputAdornment position="start">£</InputAdornment>}}/>
-                </Grid>
-                <Grid container>
-                    <Grid item xs>
-                        <TextField error= {formErrors.guest_limit} helperText= {formErrors.guest_limit} name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.values.guest_limit} type="number" label="Guest Limit" min="1"/>
+            <div className={classes.root} style={{height:'100%', width:'100%', posistion:'absolute'}}>
+                <Grid container style={{width:"100%", height:"100%"}}>
+                    <Grid item xs={12}>
+                        <div className="main-body">
+                            <Button variant="contained" color="secondary" onClick={this.debugFillFields}>
+                                Debug fill fields
+                            </Button>
+                            Create a Meal Event
+                        </div>
                     </Grid>
-                </Grid>
-                <Grid item>
-                    {this.state.visibility.suggested_theme_vis &&
-                    <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChangeOptional} value={this.state.optional.suggested_theme} type="text" label="Suggested Theme" />
-                    }
-                </Grid>
-                <Grid item>
-                    {this.state.visibility.dietary_vis &&
-                    <Select name="dietary" id="dietary_cm" onChange={this.onChangeOptional} value={this.state.optional.dietary} displayEmpty>
-                        <MenuItem value="" disabled>Dietary Requirements</MenuItem>
-                        {dietary_requirements.map((v)=><MenuItem value={v}>{v}</MenuItem>)}
-                    </Select>
-                    } {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
-                </Grid>
-                <Grid item>
-                    {this.state.visibility.age_range_vis &&
-                    <div style={{"margin" : 10}}>
-                        <Typography className={classes.age_range} variant="caption" display="block" align="left" >Age range</Typography>
-                        <Slider onChangeCommitted={this.handleSlider} defaultValue={[0,99]} min={0} max={99} valueLabelDisplay="auto" aria-labelledby="range-slider" />
-                    </div>
-                    }
-                </Grid>
 
+                    <Grid item container xs={10} style={{marginLeft:"13%", marginRight:"5%"}}>
+                        <form onSubmit={this.onSubmit} style={{width:"66.6%"}}>
+                        <Paper style={{"background-image" : `url(${board})`, padding:'1%'}}>
+                            <Grid item container xs={12}>            
+                                <Grid item container xs={6} >
+                                    <Grid item xs={12}>
+                                        <div className={ myStyle.container }>
+                                            {/* style={{width:"100%", position: 'relative'}} */}
+                                            {$imagePreview}
+                                            {/* // opacity: 1,
+                                            // display: 'block',
+                                            // transition: '.5s ease',
+                                            // backfaceVisibility: 'hidden', */}
+                                            
+                                            <div className= {myStyle.middle}>
+                                                {/*style={{
+                                                transition: '.5s ease',
+                                                opacity: 0,
+                                                position: 'absolute',
+                                                top: '50%',
+                                                left: '50%',
+                                                transform: 'translate(-50%, -50%)',
+                                                MsTransform: 'translate(-50%, -50%)',
+                                                textAlign: 'center'}} */}
+                                            
+                                                <div className= {myStyle.text} >
+                                                    {/*style={{
+                                                    backgroundColor: '#4CAF50',
+                                                    color: 'white',
+                                                    fontSize: '16px',
+                                                    padding: '16px 32px',}} */}
+                                                
+                                                    
+                                                    <input className="fileInput" 
+                                                        type="file"
+                                                        id="up2"
+                                                        onChange={this.handleImageChange}  
+                                                    />
+                                                </div>
 
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit" disabled={submitDisabled}>
-                    Create
-                </Button>
-            </form>
-            </Paper>
-            </Grid>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                </Grid>
 
-            <Grid item >
-            <Paper className={`${classes.padded} ${classes.board_background}`}>
-                <FormControl>
-                    <FormLabel>Extra fields</FormLabel>
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.visibility.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
-                        <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.visibility.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>
-                        <FormControlLabel control={<Checkbox value="age_range_vis" checked={this.state.visibility.age_range_vis} onClick={this.handleVis}></Checkbox>} label="Age range"></FormControlLabel>
-                    </FormGroup>
-                </FormControl>
-            </Paper>
-            </Grid>
-            </Grid>
+                                <Grid item container xs={6}>
+                                    <Grid item xs={12} >
+                                        {/* id: <name_id>_cm; cm stands for create meal */}
+                                        <TextField name="title" id="title_cm" error= {formErrors.title} helperText= {formErrors.title}
+                                        onChange={this.onChange} value={this.state.values.title} type="text" 
+                                        label="Title" style={{marginRight:"2%"}}/>
+                                    </Grid>
+                                    <p />
+                                    <Grid item xs={12}>
+                                        <TextField multiline error= {formErrors.description} helperText= {formErrors.description} name="description" id="description_cm" onChange={this.onChange} value={this.state.values.description} type="text"
+                                        label="Description" variant="outlined" style={{marginRight:"2%"}}/>
+                                    </Grid>
+                                    <Grid item container xs={12}>
+                                        <Grid item xs={12}>
+                                            <FormLabel style={{marginRight:"2%"}}>Location</FormLabel>
+                                        </Grid>
+                                        <Grid item container xs={12}>
+                                            <FormGroup style={{marginRight:"2%", marginLeft:"25%"}}>
+                                                <Grid item container xs={12}>
+                                                    <FormControlLabel control={
+                                                        <Grid item xs={4}>
+                                                            <Switch value="own_address_vis" checked={this.state.visibility.own_address_vis} onClick={this.handleSwitchAddress}
+                                                            />
+                                                        </Grid>
+                                                    } label={
+                                                        <Grid item xs={8}>
+                                                            At the stored address
+                                                        </Grid>
+                                                        } />
+                                                </Grid>
+                                            </FormGroup>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                            <KeyboardDatePicker error= {formErrors.date} helperText= {formErrors.date}
+                                            name="date" id="date_cm" margin="normal" clearable autoOk={true} disableOpenOnEnter variant="inline" label="Date picker" format="dd/MM/yyyy"
+                                            value={this.state.values.date} onChange={this.handleDate} />
+                                        </MuiPickersUtilsProvider>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField name="time" id="time_cm" onChange={this.onChange} value={this.state.values.time} type="time" label="Time"/>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField error= {formErrors.proposed_meal} helperText= {formErrors.proposed_meal} name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.values.proposed_meal} type="text" label="Proposed meal" />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField error= {formErrors.expected_contribution} helperText= {formErrors.expected_contribution} name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" 
+                                        InputProps={{startAdornment: <InputAdornment position="start">£</InputAdornment>}}/>
+                                    </Grid>
+                                    <Grid item xs={12}>                                        
+                                        <TextField error= {formErrors.guest_limit} helperText= {formErrors.guest_limit} name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.values.guest_limit} type="number" label="Guest Limit" min="1"/>                                        
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {this.state.visibility.suggested_theme_vis &&
+                                        <TextField name="suggested_theme" id="suggested_theme_cm" onChange={this.onChangeOptional} value={this.state.optional.suggested_theme} type="text" label="Suggested Theme" />
+                                        }
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {this.state.visibility.dietary_vis &&
+                                        <Select name="dietary" id="dietary_cm" onChange={this.onChangeOptional} value={this.state.optional.dietary} displayEmpty>
+                                            <MenuItem value="" disabled>Dietary Requirements</MenuItem>
+                                            {dietary_requirements.map((v)=><MenuItem value={v}>{v}</MenuItem>)}
+                                        </Select>
+                                        } {/*at the moment is a text box. Once DB connection is set up, should retreive multiple choices from DB and use a <select />*/}
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {this.state.visibility.age_range_vis &&
+                                        <div style={{"margin" : 10}}>
+                                            <Typography className={classes.age_range} variant="caption" display="block" align="left" >Age range</Typography>
+                                            <Slider onChangeCommitted={this.handleSlider} defaultValue={[0,99]} min={0} max={99} valueLabelDisplay="auto" aria-labelledby="range-slider" />
+                                        </div>
+                                        }
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button variant="contained" color="primary" startIcon={<AddIcon />} type="submit" disabled={submitDisabled}>
+                                            Create
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Grid> 
+                        </Paper>
+                        </form>
+                                
+
+                        <Grid item container xs={3} style={{marginLeft:"2%"}}>
+                            <Grid item container xs={12}>                            
+                                <Paper className={`${classes.padded} ${classes.board_background}`}>
+                                    <Grid item>
+                                        <Typography variant="h6">Profile Address stored</Typography>
+                                        <br/>
+                                    </Grid>
+                                    <Grid item>
+                                        <TextField name="address_1" id="address_1_cm" onChange={this.onChange} value={this.state.values.address_1} 
+                                        type="text" label="Address 1" disabled={this.state.visibility.own_address_vis} />
+                                    </Grid>
+                                    <Grid item>
+                                        <TextField name="city" id="city_cm" onChange={this.onChange} value={this.state.values.city}
+                                        type="text" label="City" disabled={this.state.visibility.own_address_vis} />
+                                    </Grid>
+                                    <Grid item>
+                                        <TextField name="post_code" id="post_code_cm" onChange={this.onChange} value={this.state.values.post_code}
+                                    type="text" label="Post Code" disabled={this.state.visibility.own_address_vis} />
+                                    </Grid>
+                                </Paper> 
+                            </Grid>
+                            
+                            <Grid item container xs={12} style={{marginTop:"4%"}}>
+                                <Paper className={`${classes.padded} ${classes.board_background}`}>
+                                    <FormControl>
+                                        <FormLabel>Extra fields</FormLabel>
+                                        <FormGroup>
+                                            <FormControlLabel control={<Checkbox value="suggested_theme_vis" checked={this.state.visibility.suggested_theme_vis} onClick={this.handleVis}></Checkbox>} label="Suggested Theme"></FormControlLabel>
+                                            <FormControlLabel control={<Checkbox value="dietary_vis" checked={this.state.visibility.dietary_vis} onClick={this.handleVis}></Checkbox>} label="Dietary requirements"></FormControlLabel>
+                                            <FormControlLabel control={<Checkbox value="age_range_vis" checked={this.state.visibility.age_range_vis} onClick={this.handleVis}></Checkbox>} label="Age range"></FormControlLabel>
+                                        </FormGroup>
+                                    </FormControl>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                        {/* </Paper> */}
+                               
+                        
+                    </Grid>
+
+                </Grid>
             </div>
+            
         );
     }
 }
@@ -462,3 +586,5 @@ CreateMealTemplate.propTypes = {
     classes : PropTypes.object.isRequired,
 };
 export default withStyles(styles)(CreateMealTemplate);
+
+
