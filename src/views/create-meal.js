@@ -335,7 +335,7 @@ class CreateMealTemplate extends Component {
     debugFillFields() {
         console.log("debug full fields");
         var v = {...this.state.values}; //create dummy object and then replace all the properties. After, replace the state object with the updated one
-        v.title = "new Meal"; v.description = "this is an informal meal to get to know new people that would like to be eaten"; v.city = "Edinburgh";
+        v.title = "new Meal"; v.description = "this is an informal meal to get to know new people and have some fun"; v.city = "Edinburgh";
         v.dietary = "none"; v.date = new Date().toDateString(); v.proposed_meal = "make your own favorite pizza"; v.expected_contribution = "4.5"; v.guest_limit = "4";
         v.imagePreviewUrl = meal;
         v.age_range= "none"; 

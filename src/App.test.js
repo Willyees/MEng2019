@@ -5,7 +5,7 @@ import App from './App';
 import ShowMealTemplate from './views/show-meal';
 import {formatTime} from './helperFunctions'
 import SearchBar from './components/SearchBar';
-import MapTemplate from './views/map';
+import { MapTemplateMulti, MapTemplateSingle } from './views/map';
 import LogInTemplate from './views/log-in';
 import SignUpTemplate from './views/sign-up';
 import CreateMealTemplate from './views/create-meal';
@@ -93,10 +93,18 @@ describe('SearchBar', () => {
 })
 
 
-describe('map page', () => {
+describe('map page single marker - private info', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    renderT(<MapTemplate/>, div);
+    renderT(<MapTemplateSingle precise={true} mealId="166" />, div);
+    cleanup();
+  })
+})
+
+describe('map page multi marker - no info', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
+    renderT(<MapTemplateMulti mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={false}/>);
     cleanup();
   })
 })
