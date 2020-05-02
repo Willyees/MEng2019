@@ -45,6 +45,22 @@ const formValid = formErrors => {
     return valid;
 };
 
+const StyledRating = withStyles({
+    iconFilled: {
+      color: '#40E0D0',
+    },
+    iconHover: {
+      color: '#00CED1',
+    },
+  })(Rating);
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+      },
+    
+}));
+
 const getParticipants = mealId => {
     var data1 = [];
     $.ajax({url: 'PHPF/getparticipants.php',
@@ -64,21 +80,22 @@ const getParticipants = mealId => {
     return data1;    
 }
 
-const StyledRating = withStyles({
-    iconFilled: {
-      color: '#40E0D0',
+const getMeal = mealId => {
+    var data1 = [];
+    $.ajax({url: 'PHPF/getMeal.php',
+    type : 'post',
+    data : {"id" : mealId},
+    async : false,
+    success : function(out){
+        var d1 = JSON.parse(out);
+        console.log("ouput: "+ d1);
+        data1=d1;
     },
-    iconHover: {
-      color: '#00CED1',
-    },
-  })(Rating);
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-      },
-    
-}));
+    error : () => {console.log("Error in getting the meal")}  
+    })
+    console.log("output2: "+ data1);
+    return data1;
+}
 
 // let people = ["sally", "gary", "greg", "tam"];
 let people = [{n: "sally", u: "sally@gmail.com"}];
@@ -96,6 +113,8 @@ class ReviewTemplate extends Component {
 
         //get the participants from the db
         people = getParticipants(param);
+        var meal = getMeal(param);
+        console.log(meal);
         
         // people_names = people_full.map((e) => {return e.n;});
 

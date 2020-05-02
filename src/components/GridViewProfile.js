@@ -122,7 +122,7 @@ export default function ProfileGrid() {
                                 />
                                 {/* this changes the rating based on hover if we need that */}
                                 {/* {value !== null &&  */}
-                                <Box ml={1}>{labels[5]}
+                                <Box ml={1}>{labels[dataPopulate["rating"]]}
                                     {/* labels[hover !== -1 ? hover : value]} */}
                                 </Box>
                             </Grid>
