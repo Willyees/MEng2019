@@ -33,7 +33,7 @@ class HomeTemplate extends Component {
                 <AppBar/>
             </div>
                 <Grid container className="main-body" alignItems="center" justify="center">
-                <Grid item xs={6}>
+                <Grid item xl={6} xs={10}>
                     <Paper className="paper-board" style={{"padding" : 10}}>
                         <Typography variant={'h5'} color={"textPrimary"}>
                         Meal Time is a place where people can organise their meals and share information. <p />

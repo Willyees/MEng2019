@@ -30,7 +30,7 @@ class ReviewList extends Component{//have to pass reviews from the parent
             {/* review title grid */}
             <Grid id="review_title_grid" item container xs={10} style={{justifyContent:"left", marginBottom:'3%'}}>
               <Typography id="review_title" variant="h2" component="h2" gutterBottom>
-                Reviews
+                Reviews about the host
               </Typography>
             </Grid>
             {/* addItem button */}

@@ -123,6 +123,7 @@ class CreateMealTemplate extends Component {
         this.handleVis = this.handleVis.bind(this);
         this.handleSlider = this.handleSlider.bind(this);
         this.handleSwitchAddress = this.handleSwitchAddress.bind(this);
+        this.handleImageChange = this.handleImageChange.bind(this);
     }
 
     optional_inputs = ["dietary", "suggested_theme"];
@@ -277,15 +278,15 @@ class CreateMealTemplate extends Component {
 
     handleImageChange = event => {
         event.preventDefault();
-    
       let reader = new FileReader();
       let file = event.target.files[0];
       console.log("Image should be added"); 
         reader.onloadend = () => {
-          this.setState({
-            imagePreviewUrl: reader.result
-	    //file: file,
-          });
+        
+        //file: file,
+        this.setState({...this.state, values : { ...this.state.values, imagePreviewUrl: reader.result}});
+        
+
         }
 
        if (event.target.files[0]) {reader.readAsDataURL(file);}
@@ -346,9 +347,9 @@ class CreateMealTemplate extends Component {
     render() {
         const {classes} = this.props;
         const { formErrors } = this.state;
-
+        //console.log(this.state.values.imagePreviewUrl)
         //meal picture stuff
-        let {imagePreviewUrl} = this.state.values.imagePreviewUrl;
+        let {imagePreviewUrl} = this.state.values;
         let $imagePreview = null;
         //problem with the image size, I want it to remain the same dimensions but it always grows with the page...
         if (imagePreviewUrl) {
@@ -456,7 +457,7 @@ class CreateMealTemplate extends Component {
                                         label="Title" style={{marginRight:"2%"}}/>
                                     </Grid>
                                     <p />
-                                    <Grid item xs={12}>
+                                    <Grid item xs={12} style={{"margin-top" : "3%"}}>
                                         <TextField multiline error= {formErrors.description} helperText= {formErrors.description} name="description" id="description_cm" onChange={this.onChange} value={this.state.values.description} type="text"
                                         label="Description" variant="outlined" style={{marginRight:"2%"}}/>
                                     </Grid>

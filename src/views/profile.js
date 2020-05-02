@@ -103,6 +103,7 @@ const useStyles = makeStyles(theme => ({
 let fromServer;
 var copyInitial;
 let profilePicURL = getProfilePicURL(getCookie("Username"));
+console.log(profilePicURL)
 class ProfileTemplate extends Component {
     constructor(props){
         super(props);
@@ -323,7 +324,7 @@ class ProfileTemplate extends Component {
         
         let {imagePreviewUrl} = this.state;
         let $imagePreview = profilePicURL;
-
+        console.log($imagePreview)
         console.log("render");
 
 
@@ -331,7 +332,7 @@ class ProfileTemplate extends Component {
          if (imagePreviewUrl) {
             $imagePreview = (
                 <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
-                    <img src={profilePicURL} 
+                    <img src={imagePreviewUrl} 
                         className= {myStyle.image} id="profilePic" style={{ contentFit:'contain',height: '100%', width:'100%', maxHeight:'100%', maxWidth:'100%',
                         border: "1px solid #ddd", borderRadius: "15px", 
                         }}

@@ -126,7 +126,12 @@ const useStyles = makeStyles(theme => ({
           console.log("notifications: ", notifications);
         }
         
+        
     })
+    //debug 
+    if(window.location.host == "localhost:3000"){
+      notifications.push("154")
+    }
 
   return notifications;
   }
@@ -174,18 +179,26 @@ const useStyles = makeStyles(theme => ({
     };
   
     const handleClose = event => {
+      event.preventDefault()
       setAnchorEl(null);
+      console.log(event.currentTarget.getAttribute("value"))
+      console.log(event.target.value)
     };
 
     const HandleCloseAccepted = (event, username) => {
       setAnchorEl(null);
-      var id = event.currentTarget.value
+      var id = event.currentTarget.getAttribute("value")
+
+      console.log("target", event.target.value)
       $.ajax({ url: 'PHPF/dismissnotification.php',
 		    type: 'post',
         data: {"username" : username,
-              "id" : id},
+              "id" : String(id)},
 		    success: function(out){
           console.log("removed accepted notification", id);
+        },
+        error: function(){
+          console.log("probem in dismissing the notification", id, username)
         }  
     })
 
@@ -206,7 +219,7 @@ const useStyles = makeStyles(theme => ({
           <Divider/>
           <Typography>Your recent accepted requests:</Typography>
           {props.accepted.map((elem)=> (
-            <MenuItem component={Link} href={`/show-meal?meal=${elem}`} value={elem} onClick={(e, value) => {HandleCloseAccepted(e, getCookie("Username"))}}>You were accepted to a meal! ({elem})</MenuItem>
+            <MenuItem component={Link} href={`/show-meal?meal=${elem}`} value={elem} onClick={e => HandleCloseAccepted(e, getCookie("Username"))}>You were accepted to a meal! ({elem})</MenuItem>
           ))}
         </Menu>
       </div>
