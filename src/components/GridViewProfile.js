@@ -47,7 +47,6 @@ const useStyles = makeStyles(theme => ({
     "background-size" : `contain`,
   },
   reviews:{
-    marginLeft: "20%",
     marginTop: "2%",
     "background-image" : `url(${board})`,
     "background-size" : `contain`,
@@ -214,7 +213,7 @@ export default function ProfileGrid() {
                         <Paper style={{marginTop: "4%",}}>
                             <Grid item xs={12}>
                                 <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
-                                    Dietry Requirements
+                                    Dietary Requirements
                                 </Typography>
 
                                 {/* get the dietry requirements */}
@@ -242,11 +241,12 @@ export default function ProfileGrid() {
                 
             </Grid>
 
-            <Grid item container xs={12} >
+            <Grid container xs ={12} justify="center">
+                <Grid item xs={6}>
+                <Paper className={classes.reviews}>
                 
-                <Paper className={classes.reviews} >
                     <ReviewList reviews={getReviewsAjax(param)} reviewDisabled={true} title={"Reviews"} mealId={""} />
-                </Paper>
+                </Paper></Grid>
                 </Grid>
             
         </Grid>

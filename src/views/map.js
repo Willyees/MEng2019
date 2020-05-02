@@ -135,7 +135,6 @@ class MapTemplate extends Component {
 			mapCenter : {},
 			sliderBtnChosen : "map-view",
 		  }
-		 const endnode = props.endnode;
 		 this.handlerFiltered = this.handlerFiltered.bind(this);
 		 this.test = this.test.bind(this);
 		 this.handleToggleBtnChange = this.handleToggleBtnChange.bind(this);
@@ -169,11 +168,11 @@ class MapTemplate extends Component {
 		var filteredMeals = [];
 		for(var id of idMeals){
 			console.log(id);
-			for(var index in storeDetails){
-				console.log(storeDetails[index].id);
-				if(storeDetails[index].id == id){
+			for(var index in this.props.data){
+				console.log(this.props.data[index].id);
+				if(this.props.data[index].id == id){
 					console.log("entered");
-					filteredMeals.push(storeDetails[index]);
+					filteredMeals.push(this.props.data[index]);
 				}
 			}
 		}
@@ -182,7 +181,7 @@ class MapTemplate extends Component {
 		sortMealsByDate(filteredMeals);
 		//update the state to update the meallist
 		console.log(objSorted);
-		this.setState({filtered: true, dataMeals : objSorted, mapCenter : (objSorted.values().next().done ? this.state.mapCenter : objSorted.values().next().value[0].pos)}, () => console.log(this.state.mapCenter));
+		this.setState({filtered: true, dataMeals : objSorted, mapCenter : (objSorted.values().next().done ? this.state.mapCenter : {lat : objSorted.values().next().value[0].lat, lng : objSorted.values().next().value[0].lon})});
 	}
 
 	handleToggleBtnChange(e, v){

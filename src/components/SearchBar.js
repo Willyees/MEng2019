@@ -100,7 +100,7 @@ class SearchBar extends Component {
             //fetch wont work because missing CORS from php header. will hardcode data for quick debug purposes
             //fetch('http://3.94.4.155/PHPF/filter.php', {mode : 'no-cors'}).then((response) => {return response.json();}).then((a) =>{console.log(a);});
             console.log(obj);
-            var data = '["104", "101"]';
+            var data = '["130", "101"]';
             this.handleResponseAjax(data);
             var f = this;
             console.log(f);
