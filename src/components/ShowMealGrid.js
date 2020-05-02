@@ -64,7 +64,7 @@ function test(e, s){
   console.log(s)
 }
 
-function getReviewsAjax(host){
+export function getReviewsAjax(host){
   var reviews = []
   $.ajax({ url: 'PHPF/getreviews.php',
     type: 'post',
@@ -351,7 +351,7 @@ export default function ShowMealGrid(props) {
         
         <Grid container xs={12}>
           <Paper className={classes.paper}>
-            <ReviewList reviews={getReviewsAjax(props.host)} reviewDisabled={reviewDisabled} host={props.host} mealId={props.mealId}/>
+            <ReviewList reviews={getReviewsAjax(props.host)} reviewDisabled={reviewDisabled} host={props.host} title={"Reviews about the host"} mealId={props.mealId}/>
           </Paper>
         </Grid>
       </div>

@@ -12,6 +12,9 @@ import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import SaveIcon from '@material-ui/icons/Save';
 import {getLatestMeals} from '../views/profile'
+import board from '../res/chopping_board_chopped.png'
+import ReviewList from './ReviewList'
+import {getReviewsAjax} from './ShowMealGrid.js'
 import $ from 'jquery';
 
 //get the user profile pic
@@ -29,6 +32,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: "2%",
     // textAlign: 'center',
     color: theme.palette.text.secondary,
+    "background-image" : `url(${board})`,
+    "background-size" : `contain`,
   },
   recentMealsPaper:{
     padding: theme.spacing(6),
@@ -38,7 +43,15 @@ const useStyles = makeStyles(theme => ({
     // textAlign: 'center',
     color: theme.palette.text.secondary,
     width: "60%",
+    "background-image" : `url(${board})`,
+    "background-size" : `contain`,
   },
+  reviews:{
+    marginLeft: "20%",
+    marginTop: "2%",
+    "background-image" : `url(${board})`,
+    "background-size" : `contain`,
+  }
 }));
 
 const labels = {
@@ -68,6 +81,10 @@ export default function ProfileGrid() {
 	      dataPopulate = JSON.parse(output);
 	  }
    });
+   //debug
+   if(window.location.host == "localhost:3000"){
+       dataPopulate = {"username":"harrypotter","name":"Harry","surname":"Potter","city":"Glasgow","country":"United Kingdom","dob":29,"dietary":"Only eat fresh haddock","bio":"I fucking love bears mate, dylans the man all bears love\n\nHere we see a bear worshipping dylan, a bear sad dylan isnt there, and dylans favourite bear - a good ol pola probably pacing the arctic in search of dylan himself","allergens":"Frozen Haddock","rating":"3.6666666666667","rev_num":"3"}
+   }
 
 
   
@@ -80,7 +97,7 @@ export default function ProfileGrid() {
                 {/* profile paper */}
                 
                     <Paper className={classes.profilePaper}>
-                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#aeb1b5", marginTop: "-4%"}}>
+                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#888888 ", marginTop: "-4%"}}>
                             Personal Details
                         </Typography>
 
@@ -101,8 +118,8 @@ export default function ProfileGrid() {
                                     //delete this if we want users to be able to change the rating
                                     readOnly
                                     //this value should be set to the user's meal rating 
-                                    value={5}
-                                    precision={1}
+                                    value={dataPopulate["rating"]}
+                                    precision={0.5}
                                 />
                                 {/* this changes the rating based on hover if we need that */}
                                 {/* {value !== null &&  */}
@@ -161,12 +178,12 @@ export default function ProfileGrid() {
                 {/* recent meals paper */}
                 <Grid item container xs={12}>
                     <Paper className={classes.recentMealsPaper}>
-                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#aeb1b5", marginTop: "-4%"}}>
+                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#888888  ", marginTop: "-4%"}}>
                             About
                         </Typography>
 
                         <Grid item container xs={12}>
-                            <Typography style={{marginTop: "4%",justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                            <Typography style={{marginTop: "4%",justifyContent:"left", display: "flex", color: "#888888  "}}>
                                 Recent Meals
                             </Typography>
 
@@ -174,7 +191,7 @@ export default function ProfileGrid() {
                         </Grid>
                         <Paper style={{marginTop: "3%",}}>
                             <Grid item xs={12}>
-                                <Typography style={{justifyContent:"left", display: "flex", color: "#aeb1b5"}}>
+                                <Typography style={{justifyContent:"left", display: "flex", color: "#888888  "}}>
                                     Bio
                                 </Typography>
 
@@ -190,7 +207,7 @@ export default function ProfileGrid() {
                 {/* preferences paper */}
                 <Grid item container xs={12}>
                     <Paper className={classes.recentMealsPaper}>
-                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#aeb1b5", marginTop: "-4%"}}>
+                        <Typography variant= 'h5' style={{justifyContent:"left", display: "flex", color: "#888888  ", marginTop: "-4%"}}>
                             Preferences
                         </Typography>
 
@@ -225,6 +242,13 @@ export default function ProfileGrid() {
                 
             </Grid>
 
+            <Grid item container xs={12} >
+                
+                <Paper className={classes.reviews} >
+                    <ReviewList reviews={getReviewsAjax(param)} reviewDisabled={true} title={"Reviews"} mealId={""} />
+                </Paper>
+                </Grid>
+            
         </Grid>
     </div>
   );
