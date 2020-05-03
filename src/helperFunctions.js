@@ -78,6 +78,8 @@ export function formatTimeNoSecs(time){
 
 export const defaultMealURL = mealPic;
 export function getMealPicURL(meal){
+    console.log(meal)
+    console.log("/meal/" + md5(meal))
     return "/meal/" + md5(meal)
 }
 

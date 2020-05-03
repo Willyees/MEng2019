@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper'
 import {getCookie} from '../helperFunctions.js'
 import $ from 'jquery';
-import {redirectIfNotLoggedIn} from '../helperFunctions'
+import {redirectIfNotLoggedIn, getMealPicURL} from '../helperFunctions'
 
 
 function getMealsUser(user){
@@ -47,8 +47,14 @@ class ShowUserMealsTemplate extends Component {
             }, 
             context : this
         });
-    }
 
+    }
+    componentDidMount(){
+                //debug
+                if(window.location.host == "localhost:3000"){
+                    this.setState({data: [{id: "179", title: "french crepes", date: "2020-04-27", host: "napier"}] })
+                }
+    }
     render(){
         return(
         <div className="main-body">
@@ -83,6 +89,7 @@ export class ShowUserMeals extends Component {
                 this.newmeals.push(v);
         })
     }
+
     render(){
         this.orderMeals(this.props.meals);//reorder everytime is rerendered. Take into account ajax call is asyncronous
         
@@ -94,7 +101,7 @@ export class ShowUserMeals extends Component {
             <Grid container spacing={2} style={{margin : 5}}>
                 {this.oldmeals.map(element => 
                 <Grid  item xs={3} >
-                    <MealBox title={element.title} img={element.img} date={element.date} id={element.id}></MealBox>
+                    <MealBox title={element.title} img={getMealPicURL(element.id)} date={element.date} id={element.id}></MealBox>
                 </Grid>)}
             </Grid>
             <br/>
@@ -104,7 +111,7 @@ export class ShowUserMeals extends Component {
             <Grid container spacing={2} style={{margin : 5}}>
                 {this.newmeals.map(element => 
                 <Grid item xs={3} >
-                    <MealBox title={element.title} img={element.img} date={element.date} id={element.id}></MealBox>
+                    <MealBox title={element.title} img={getMealPicURL(element.id)} date={element.date} id={element.id}></MealBox>
                 </Grid>)}
             </Grid>
             <Paper style={{"background-color" : "lightblue"}}>
@@ -113,7 +120,7 @@ export class ShowUserMeals extends Component {
             <Grid container spacing = {2} style={{margin : 5}}>
                 {this.hostmeals.map(element => 
                     <Grid item xs={3} >
-                        <MealBox title={element.title} img={element.img} date={element.date} id={element.id}></MealBox>
+                        <MealBox title={element.title} img={getMealPicURL(element.id)} date={element.date} id={element.id}></MealBox>
                     </Grid>)}
             </Grid>
             {/*<Grid container spacing={2}>
