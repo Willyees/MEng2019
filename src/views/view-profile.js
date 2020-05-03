@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '../components/AppBar.js';
 import ViewProfileGrid from '../components/GridViewProfile.js';
-import {isUserLoggedIn, getCookie} from '../helperFunctions';
+import {isUserLoggedIn, getCookie, redirectIfNotLoggedIn} from '../helperFunctions';
 
 const styles = makeStyles(theme => ({
     root:{
@@ -19,6 +19,7 @@ const useStyles = makeStyles(styles);
 class ProfileViewTemplate extends Component {
     constructor(props){
         super(props);
+        redirectIfNotLoggedIn();
     }
 
     render() {

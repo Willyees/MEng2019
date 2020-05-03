@@ -5,7 +5,7 @@ import ShowMealGrid from '../components/ShowMealGrid.js';
 import $ from 'jquery';
 import {formatTime} from '../helperFunctions.js';
 import UserMealRequests from '../components/UserMealRequests.js';
-import {getCookie} from '../helperFunctions.js';
+import {getCookie, redirectIfNotLoggedIn} from '../helperFunctions.js';
 import Paper from '@material-ui/core/Paper'
 import board from "../res/chopping_board_chopped.png";
 import { withStyles } from '@material-ui/core';
@@ -58,6 +58,7 @@ let requests = [];
 class ShowMealTemplate extends Component {
     constructor(props){
         super(props);
+        redirectIfNotLoggedIn();
         const elementNames = ["id", "host", "title", "time", "date", "description", "guest_limit", "proposed_meal", "contribution", "city", "dietary", "theme", "age_range"];
         this.state = {date : new Date(),
                       mealId : -1,
@@ -130,7 +131,7 @@ class ShowMealTemplate extends Component {
             });
             //debug local host
             if(window.location.host == "localhost:3000"){
-                var output = '{"id":"101","host":"harrypotter","title":"NEW","time":"16:47:30","date":"2020-03-27","description":"this is an informal meal to get to know new people that would like to be eaten","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"LOTR and loads of other thins","age_range":""}';
+                var output = '{"id":"101","host":"harrypotter","title":"NEW","time":"16:47:30","date":"2020-03-27","description":"this is an informal meal to get to know new people that would like to be eaten","guest_limit":"4","proposed_meal":"make your own favorite pizza","contribution":"4.5","city":"Edinburgh","dietary":"","theme":"LOTR and loads of other thins","age_range":"[]"}';
             this.ajaxGetMeal(output);
             }
 
@@ -195,10 +196,10 @@ class ShowMealTemplate extends Component {
         if(outParsed.time != "")
             outParsed.time = formatTime(outParsed.time)
         //store in the state the variables needed to be passed to child or worked upon
-        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"] + " " + outParsed["time"]), participantMax : outParsed["guest_limit"]})
+        this.setState({mealId : outParsed["id"], hostId : outParsed["host"], date : new Date(outParsed["date"] + " " + outParsed["time"]), image : outParsed["pic_url"], participantMax : outParsed["guest_limit"]})
         console.log(outParsed["guest_limit"]);
         for(var id in outParsed){
-            if(outParsed[id] == ""){
+            if(outParsed[id] == "" || outParsed[id] == "[]"){
                 let c = document.getElementById(id + "_grid")
                 if(c != null){
                 c.style.display = "none";
@@ -223,7 +224,7 @@ class ShowMealTemplate extends Component {
             <div>     
                 <AppBar>
                 </AppBar>
-        <ShowMealGrid joinf={this.joinMeal} date={this.state.date} host={this.state.hostId} participants={this.participants} participantMax={this.state.participantMax} jointype={this.getJoinType()} mealId={this.state.mealId}></ShowMealGrid>
+        <ShowMealGrid joinf={this.joinMeal} date={this.state.date} host={this.state.hostId} participants={this.participants} participantMax={this.state.participantMax} jointype={this.getJoinType()} mealId={this.state.mealId} img={this.state.image}></ShowMealGrid>
         
                 {this.isHost() && 
                 <div className={classes.root}>

@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper'
 import {getCookie} from '../helperFunctions.js'
 import $ from 'jquery';
+import {redirectIfNotLoggedIn} from '../helperFunctions'
 
 
 function getMealsUser(user){
@@ -15,6 +16,7 @@ function getMealsUser(user){
 class ShowUserMealsTemplate extends Component {
     constructor(props){
         super(props);
+        redirectIfNotLoggedIn();
         this.state = {user : this.getCurrUser(), data : []}
         this.getMealsAjax();
     }

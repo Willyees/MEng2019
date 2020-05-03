@@ -12,7 +12,7 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker, DatePicker} from '@material
 import DateFnsUtils from '@date-io/date-fns'
 import 'date-fns'
 import UserMealRequests from '../components/UserMealRequests.js';
-import {getCookie} from '../helperFunctions'
+import {getCookie, getProfilePicURL} from '../helperFunctions'
 import {joinTypeEnum } from '../views/show-meal'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -198,7 +198,7 @@ export default function ShowMealGrid(props) {
             <Grid item container xs={12} maxHeight= "20%" maxWidth="30%" height="20%" width="30%">
               {/* meal picture */}
               <Grid item xs={6} maxHeight= "20%" maxWidth="30%" height="20%" width="30%" style={{justifyContent:"left", display: "flex"}} >
-                  <img src={mealPic} height="100%" width="100%" style={{border: "1px solid #ddd", borderRadius: "15px"}}/>
+                  <img src={"/meal/" + props.img} onError={(e) => {e.target.src = mealPic}} height="100%" width="100%" style={{border: "1px solid #ddd", borderRadius: "15px"}}/>
               </Grid>
               {/* date/time/city grid */}
               <Grid item container xs={6}>

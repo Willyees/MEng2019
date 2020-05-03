@@ -15,7 +15,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Hidden from '@material-ui/core/Hidden';
 import { FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Typography, MenuItem } from '@material-ui/core';
-import { getCookie, isUserLoggedIn, formatTimeNoSecs} from '../helperFunctions';
+import { getCookie, isUserLoggedIn, formatTimeNoSecs, redirectIfNotLoggedIn} from '../helperFunctions';
 import Slider from '@material-ui/core/Slider';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
@@ -62,6 +62,7 @@ class CreateMealTemplate extends Component {
     constructor(props){
         
         super(props);
+        redirectIfNotLoggedIn();
         this.state = {
             values : {
                 title : "",

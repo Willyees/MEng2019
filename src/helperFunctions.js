@@ -14,20 +14,26 @@ export function isUserLoggedIn(){
 }
 
 export function redirectIfNotLoggedIn(){
-    //todo. set it back to the checklogin function in the server. have to do modify it like this because that function has been changed
-    /*$.ajax({ url: 'PHPF/checklogin.php',
+    $.ajax({ url: 'PHPF/sessionvalidator.php',
         type: 'post',
+        async : false,
         data: {
             "username" : getCookie("Username"),
-            "session" : getCookie("Session")
         },
         success: function(output) {
-	    if(output != "LOGIN"){
-		document.location.href = "/log-in";
-	    }
-	}
-    });*/
-    return; 
+	        if(output == "0"){
+                document.location.href = "/log-in";
+                alert("not logged in, redirected to login")
+	        }
+        },
+        error: function(){
+            //debug
+            if(window.location.host != "localhost:3000"){
+                document.location.href = "/log-in";
+                alert("problem with checking the login, redirected to login")
+            }
+        }
+    });
 }
 
 export function getCookie(cookieName) {

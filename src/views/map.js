@@ -13,7 +13,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup'
 import MapIcon from '@material-ui/icons/Map';
 import ListIcon from '@material-ui/icons/List';
 import {mealInfoEnum} from '../components/MapWrapper'
-
+import {redirectIfNotLoggedIn} from '../helperFunctions'
 
 const stores = [];//[{lat1, lng1}, {..}]
 const storeDetails = [];//[{usr, nm, dt, tm, id, city}, {..}]
@@ -354,4 +354,15 @@ export function MapTemplateSingle(props){
 	else 
 		return <MapTemplate data={data} mapWidth={100} sliderVisib={false} filterVisib={false} boxesVisib={true} mealInfoType={mealInfoEnum.DATE} />
 
+}
+
+/**
+ * 
+ * view used to show the map template multi in the map endpoint 
+ */
+export function MapTemplateView(props){
+	redirectIfNotLoggedIn()
+	return(
+		< MapTemplateMulti mapWidth={100} sliderVisib={true} filterVisib={true} boxesVisib={true}/>
+	)
 }

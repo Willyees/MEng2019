@@ -3,7 +3,7 @@ import SignInTemplate from './views/sign-up.js';
 import LogInTemplate from './views/log-in.js';
 import CreateMealTemplate from './views/create-meal.js';
 import HomeTemplate from './views/home.js';
-import {MapTemplateMulti} from './views/map.js';
+import {MapTemplateView} from './views/map.js';
 import ProfileTemplate from './views/profile.js';
 import ShowMealTemplate from './views/show-meal.js';
 import MessagesTemplate from './views/messages.js';
@@ -15,6 +15,7 @@ import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import AppBar from './components/AppBar';
 import ShowUserMealsTemplate from './views/show-user-meals.js'
+import {redirectIfNotLoggedIn} from './helperFunctions'
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
               < LogInTemplate />
             </Route>
             <Route exact path="/map">
-              < MapTemplateMulti mapWidth={100} sliderVisib={true} filterVisib={true} boxesVisib={true}/>
+              <MapTemplateView/>
             </Route>
 
             <Route exact path="/create-meal">
