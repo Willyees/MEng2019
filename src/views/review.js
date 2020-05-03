@@ -76,25 +76,39 @@ const getParticipants = mealId => {
             },
             error : () => {console.log("Error in getting the participants")}
             })
-    console.log(data1)
+    console.log(data1);
     return data1;    
 }
 
 const getMeal = mealId => {
-    var data1 = [];
-    $.ajax({url: 'PHPF/getMeal.php',
-    type : 'post',
-    data : {"id" : mealId},
-    async : false,
-    success : function(out){
-        var d1 = JSON.parse(out);
-        console.log("ouput: "+ d1);
-        data1=d1;
-    },
-    error : () => {console.log("Error in getting the meal")}  
-    })
-    console.log("output2: "+ data1);
-    return data1;
+    var meal;
+    $.ajax({ url: 'PHPF/getmeal.php',
+        type: 'post',
+        data: {"id" : mealId},
+        async: false,
+        success: function(output){
+            meal = JSON.parse(output);
+        },
+    });
+    return meal;
+}
+
+const getHostInfo = host => {
+    var hostInfo;
+    $.ajax({ url: 'PHPF/getuserinfo.php',
+        type: 'post',
+        async: false,
+        data: {"username" : host},
+        error: function() {
+            //debug, harcoding for localhost and tests
+            console.log("not on server");            
+        },
+        success: function(output) {
+            hostInfo = JSON.parse(output);
+        }
+    });
+    console.log(hostInfo);
+    return hostInfo;
 }
 
 // let people = ["sally", "gary", "greg", "tam"];
@@ -113,9 +127,16 @@ class ReviewTemplate extends Component {
 
         //get the participants from the db
         people = getParticipants(param);
+
         var meal = getMeal(param);
-        console.log(meal);
-        
+        console.log(meal.host);
+
+        var hostInfo = getHostInfo(meal.host);
+        var hostName = hostInfo.name;
+        var hostUser = hostInfo.username;
+        console.log("n: "+hostName+ " u: "+hostUser); 
+
+
         // people_names = people_full.map((e) => {return e.n;});
 
 
@@ -143,7 +164,10 @@ class ReviewTemplate extends Component {
                 if(e.u != getCookie("Username")){
                     return e.u;
                 }
-            });           
+            });
+            people_names.push(hostName);
+            people_users.push(hostUser);
+            console.log(people_names);          
         }
         
         
@@ -170,7 +194,12 @@ class ReviewTemplate extends Component {
        
     
     }
-    
+
+    ajaxGetMeal(output){//this whole functionality could be acheived by using react states on the html elements. cleaner
+        var outParsed = JSON.parse(output);
+        console.log(outParsed);
+        console.log("host: "+ outParsed.host);
+    }
 
     getNewState = (state, fieldType, idx, name, value) => {
         if (["participant","title", "rating", "body"].includes(fieldType)) {
