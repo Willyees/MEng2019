@@ -13,11 +13,11 @@ import ReviewTemplate from './views/review.js';
 import AboutTemplate from './views/about.js';
 import logo from './logo.svg';
 import './App.css';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import AppBar from './components/AppBar.js';
+import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
+import AppBar from './components/AppBar';
 import BottomAppBar from './components/BottomAppBar.js';
 import ShowUserMealsTemplate from './views/show-user-meals.js'
-import {redirectIfNotLoggedIn} from './helperFunctions'
+import NotFound from './components/NotFound'
 
 function App() {
   return (
@@ -66,13 +66,17 @@ function App() {
             <Route exact path='/review'>
               <ReviewTemplate/>
             </Route>
-
-            <Route exact path="/">
-              < HomeTemplate />
-            </Route>
             <Route exact path="/about">
               <AboutTemplate/>
             </Route>
+            <Route exact path="/">
+              < HomeTemplate />
+            </Route>
+            <Route path="/404">
+              <NotFound/>
+            </Route>
+            <Redirect to="/404" />
+            
           </Switch>
         </header>
 

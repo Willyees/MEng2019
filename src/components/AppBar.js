@@ -179,10 +179,7 @@ const useStyles = makeStyles(theme => ({
     };
   
     const handleClose = event => {
-      event.preventDefault()
       setAnchorEl(null);
-      console.log(event.currentTarget.getAttribute("value"))
-      console.log(event.target.value)
     };
 
     const HandleCloseAccepted = (event, username) => {
