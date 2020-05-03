@@ -76,7 +76,7 @@ export function getLatestMeals(){
     //debug localhost
     if(window.location.host == "localhost:3000"){
         console.log("in")
-        data = [{id: 122, img: '../res/spaghetti.jfif', title: 'meal1', host: 'Alessio',},{id: 128, img: '../res/burger.jfif',title: 'meal2',host: 'Dylan',},{id: 130, img: '../res/group_meal.webp',title: 'meal3',host: 'Oscar',},];
+        data = [{id: 179, img: '../res/spaghetti.jfif', title: 'meal1', host: 'Alessio',},{id: 128, img: '../res/burger.jfif',title: 'meal2',host: 'Dylan',},{id: 130, img: '../res/group_meal.webp',title: 'meal3',host: 'Oscar',},];
     }
     console.log(data);
     return data;

@@ -6,6 +6,7 @@ import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import InfoIcon from '@material-ui/icons/Info';
+import {getMealPicURL, defaultMealURL, getProfilePicURL} from '../helperFunctions'
 
 import image1 from '../res/burger.jfif';
 import image2 from '../res/spaghetti.jfif';
@@ -119,7 +120,7 @@ export default function SingleLineGridList(props) {
       <GridList className={classes.gridList} cols={2.5}>
         {props.recentMeals.map(tile => (
           <GridListTile key={tile.id} cols={2} >
-            <img src={image2} alt={tile.title} />
+            <img src={getMealPicURL(tile.id)} onError={(e) => {e.target.src = defaultMealURL}} alt={tile.title} />
             <GridListTileBar
               title={tile.title}
               subtitle={<span>by: {tile.host}</span>}

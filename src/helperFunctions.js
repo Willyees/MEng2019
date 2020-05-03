@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 import { FormHelperText } from '@material-ui/core';
 import $ from 'jquery';
+import mealPic from "./res/group_meal.webp"
+
+
 var md5 = require('md5');
+
+
+
 export function isUserLoggedIn(){
     var un = getCookie("Username");
     if(typeof(un) === "undefined" || un === null || un.length < 3 
@@ -68,6 +74,11 @@ export function formatTimeNoSecs(time){
     var t_slice = t_split.slice(0,2)
     return t_slice.join(":")
     
+}
+
+export const defaultMealURL = mealPic;
+export function getMealPicURL(meal){
+    return "/meal/" + md5(meal)
 }
 
 export function getProfilePicURL(username){
