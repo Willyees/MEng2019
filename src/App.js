@@ -10,10 +10,12 @@ import MessagesTemplate from './views/messages.js';
 import ViewProfileTemplate from './views/view-profile.js';
 import SettingsTemplate from './views/settings.js';
 import ReviewTemplate from './views/review.js';
+import AboutTemplate from './views/about.js';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import AppBar from './components/AppBar';
+import AppBar from './components/AppBar.js';
+import BottomAppBar from './components/BottomAppBar.js';
 import ShowUserMealsTemplate from './views/show-user-meals.js'
 import {redirectIfNotLoggedIn} from './helperFunctions'
 
@@ -22,7 +24,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <header className="App-header">
-          <AppBar />
+          <AppBar isTopAppBar={true}/>
           <Switch>
 
             <Route exact path='/meals-user'>
@@ -68,8 +70,15 @@ function App() {
             <Route exact path="/">
               < HomeTemplate />
             </Route>
+            <Route exact path="/about">
+              <AboutTemplate/>
+            </Route>
           </Switch>
         </header>
+
+        <footer>
+          <BottomAppBar/>        
+        </footer>
       </div>
     </BrowserRouter>
   );
