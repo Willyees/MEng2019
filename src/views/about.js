@@ -42,7 +42,6 @@ const useStyles = makeStyles(theme => ({
 class AboutTemplate extends Component {
     constructor(props){
         super(props);
-    redirectIfNotLoggedIn();
     }
 
     render() {
