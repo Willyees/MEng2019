@@ -26,8 +26,10 @@ import { makeStyles, rgbToHex } from '@material-ui/core/styles';
 
 import board from "../res/chopping_board_chopped.png";
 import christmasDinner from "../res/christmasDinner.png";
-import team from "../res/team.png";
-import dylanPic from "../res/dylan.png"
+import team from "../res/team3.png";
+import dylanPic from "../res/dylan.png";
+import alessioPic from "../res/alessio.png";
+import oscarPic from "../res/oscar.png";
 
 
 
@@ -56,6 +58,9 @@ class AboutTemplate extends Component {
                             <Grid item xs={12} >
                                 <img src={christmasDinner}/>
                             </Grid>
+                            <Typography >
+                                hello
+                            </Typography>
                             
                         </Paper>
                     </Grid>
@@ -63,17 +68,17 @@ class AboutTemplate extends Component {
                         <Paper style={{width:"inherit", height:"inherit"}}>
                             <Typography variant="h3">
                                 Meet the team
-                            </Typography>
+                            </Typography>                            
 
                             <Grid container item xs={12}>
 
-                                <Grid item xs={6} >
-                                    <img src={team} style={{width:"90%", height:"95%", marginLeft:"5%", marginRight:"5%", marginBottom:"5%"}}/>
+                                <Grid item xs={6}>
+                                    <img src={team} style={{width:"97.5%", height:"95%", marginBottom:"5%"}}/>
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <Grid item xs={12} style={{width:"100%", height:"25%"}}>                                    
-                                        <Avatar style={{width:"25%", height:"75%", marginLeft:"37.5%"}} />
+                                    <Grid item xs={12} style={{height:"33.3%"}}>                                    
+                                        <Avatar src={alessioPic} style={{marginLeft:"36.5%", width:"27.5%", height:"60%"}}/>
                                         <Typography variant="h5">
                                             Alessio Williams Gava
                                         </Typography>
@@ -82,8 +87,8 @@ class AboutTemplate extends Component {
                                         </Typography>
                                     </Grid>
 
-                                    <Grid item xs={12} style={{width:"100%", height:"25%", marginTop:"5%"}}>
-                                        <Avatar src={dylanPic} style={{width:"25%", height:"75%", marginLeft:"37.5%"}} />
+                                    <Grid item xs={12} style={{height:"33.3%"}}>
+                                        <Avatar src={dylanPic}  style={{marginLeft:"36.5%", width:"27.5%", height:"60%"}}/>
                                         <Typography variant="h5">
                                             Dylan Tyrie-Dron
                                         </Typography>
@@ -92,8 +97,8 @@ class AboutTemplate extends Component {
                                         </Typography>
                                     </Grid>
 
-                                    <Grid item xs={12} style={{width:"100%", height:"25%", marginTop:"5%"}}>
-                                        <Avatar style={{width:"25%", height:"75%", marginLeft:"37.5%"}} />
+                                    <Grid item xs={12} style={{height:"33.3%"}}>
+                                        <Avatar src={oscarPic} style={{marginLeft:"36.5%", width:"27.5%", height:"60%"}}/>
                                         <Typography variant="h5">
                                             Oscar Meanwell
                                         </Typography>
