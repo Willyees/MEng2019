@@ -56,10 +56,10 @@ class AboutTemplate extends Component {
                                 About
                             </Typography>
                             <Grid item xs={12} >
-                                <img src={christmasDinner}/>
+                                <img src={christmasDinner} style={{width:"97.5%", height:"95%", marginBottom:"5%"}}/>
                             </Grid>
-                            <Typography >
-                                hello
+                            <Typography variant="h6" style={{marginLeft:"1.5%",width:"97.5%", marginBottom:"1.5%"}}>
+                            MealTime connects users in a geographically close proximity by allowing a user to host a meal, other users can then request to join the meal. The users can then share a meal together, connect with new or connect on a new level with friends.
                             </Typography>
                             
                         </Paper>
