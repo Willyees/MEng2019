@@ -109,8 +109,8 @@ const useStyles = makeStyles(theme => ({
   }
 
   function getAcceptedNotifications(){
-      if(!isUserLoggedIn)
-      return [];
+      if(!isUserLoggedIn())
+        return [];
     var notifications = [];
     var username = getCookie("Username");
     $.ajax({ url: 'PHPF/checkaccepted.php',
@@ -137,7 +137,7 @@ const useStyles = makeStyles(theme => ({
   }
 
   function getNotifications(){
-    if(!isUserLoggedIn)
+    if(!isUserLoggedIn())
       return [];
     var notifications = [];
     var username = getCookie("Username");
@@ -155,7 +155,10 @@ const useStyles = makeStyles(theme => ({
         }
         
     })
-
+    //debug 
+    if(window.location.host == "localhost:3000"){
+      notifications.push({num: 3, meal_id : "164"})
+    }
     return notifications;
   }
 
@@ -207,9 +210,9 @@ const useStyles = makeStyles(theme => ({
           {props.requests.length > 0 ? <NotificationsActiveIcon/> : <NotificationsIcon/>}
         </IconButton>
         <Menu id="notification-banner" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
-          <Typography>{props.requests.length} Requests to join your meals:</Typography>
+          <Typography>Requests to join your meals:</Typography>
           {props.requests.map((elem)=> (
-            <MenuItem component={Link} href={`/show-meal?meal=${elem.meal_id}`} onClick={handleClose}>{elem.num} requests</MenuItem>
+            <MenuItem component={Link} href={`/show-meal?meal=${elem.meal_id}`} onClick={handleClose}>{elem.num} {elem.num == 1 ? "person wants" : "people want"} to join ({elem.meal_id})</MenuItem>
           ))}
           
 

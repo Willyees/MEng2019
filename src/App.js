@@ -22,8 +22,8 @@ import NotFound from './components/NotFound'
 function App() {
   return (
     <BrowserRouter>
-      <div className="App">
-        <header className="App-header">
+      <div className="App App-header">
+        <header >
           <AppBar isTopAppBar={true}/>
           <Switch>
 
