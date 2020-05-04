@@ -78,14 +78,12 @@ const useStyles = makeStyles(theme => ({
     return (
 
       <div className={classes.root}>
-        <AppBar style={{bottom:0, position:"relative", top: 'auto'}}>
-          <Toolbar>
-            <Typography variant="h6" className={classes.title}>
-                <a className={classes.linkbanner} href="/about">
-                    About
-                </a> 
-            </Typography>
-          </Toolbar>
+        <AppBar style={{bottom:0, position:"relative", top: '2%'}}>
+          <Typography variant="h6" className={classes.title}>
+              <a className={classes.linkbanner} href="/about">
+                  About
+              </a> 
+          </Typography>          
         </AppBar>
       </div>
 
