@@ -26,7 +26,7 @@ import { makeStyles, rgbToHex } from '@material-ui/core/styles';
 
 import board from "../res/chopping_board_chopped.png";
 import christmasDinner from "../res/christmasDinner.png";
-import team from "../res/team3.png";
+import team from "../res/team.png";
 import dylanPic from "../res/dylan.png";
 import alessioPic from "../res/alessio.png";
 import oscarPic from "../res/oscar.png";
