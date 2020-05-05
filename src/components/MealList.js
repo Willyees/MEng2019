@@ -42,7 +42,7 @@ export default class MealList extends Component{
     
 }
 
-function MealListSingle(props){
+export function MealListSingle(props){
     const classes = useStyles(); 
     //props: title, city, date, time
     return(

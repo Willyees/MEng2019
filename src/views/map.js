@@ -267,7 +267,7 @@ export function MapTemplateMulti(props){
 	});
 	//debug local
 	if(window.location.host == "localhost:3000"){
-		var s = '[{"host":"harrypotter","title":"ButterBeer","date":"2020-05-23","lat":-0.0013890540182005,"lon":-0.0021765845481588,"time":"18:14:40","id":"110","city":"TimbuckTu"},{"host":"marveel2@hotmail.com","title":"PIZZA NIGHT!","date":"2020-05-06","lat":55.950926774582,"lon":-3.2200511488097,"time":"16:51:05","id":"130","city":"Edinburgh"}]';
+		var s = '[{"host":"harrypotter","title":"ButterBeer","date":"2020-05-23","lat":-0.0013890540182005,"lon":-0.0021765845481588,"time":"18:14:40","id":"110","city":"TimbuckTu"},{"host":"marveel2@hotmail.com","title":"PIZZA NIGHT!","date":"2020-05-23","lat":55.950926774582,"lon":-3.2200511488097,"time":"16:51:05","id":"130","city":"Edinburgh"}]';
 		var data = JSON.parse(s)
 	}
 	console.log(data);

@@ -96,6 +96,11 @@ class SearchBar extends Component {
         this.props.handlerFiltered(data);
     }
     ajaxCallFilter(obj){
+        for(var k in obj){
+            if(typeof(obj[k]) != "string")
+            obj[k] = JSON.stringify(obj[k]);
+        }
+        console.log(obj)
         if(window.location.host == "localhost:3000"){
             //fetch wont work because missing CORS from php header. will hardcode data for quick debug purposes
             //fetch('http://3.94.4.155/PHPF/filter.php', {mode : 'no-cors'}).then((response) => {return response.json();}).then((a) =>{console.log(a);});
@@ -252,11 +257,11 @@ class SearchBar extends Component {
             <Paper className={classes.paper}>
             <MuiPickersUtilsProvider className={classes.innerElem} utils={DateFnsUtils}>
                 <KeyboardDatePicker className={classes.innerElem} name="date" margin="normal" clearable={true} autoOk={true} variant="dialog" format="dd/MM/yyyy"
-                value={this.state.values.date} onError={this.handleErrorDate} onChange={this.handleDate} emptyLabel="Pick Date"/>
+                value={this.state.values.date} onError={this.handleErrorDate} onChange={this.handleDate} emptyLabel="Pick Date" id="search-bar-date"/>
             </MuiPickersUtilsProvider>
             </Paper>
             <Paper className={classes.paper}>
-            <Select className={classes.innerElem} displayEmpty value={this.state.values.time} name="time" 
+            <Select className={classes.innerElem} id="search-bar-timeframe" displayEmpty value={this.state.values.time} name="time" 
             onChange={this.handleOnChange} renderValue={
                 selected => {if(selected == ""){
                     return "Time frame";
@@ -273,7 +278,7 @@ class SearchBar extends Component {
             </Select>
             </Paper>
             <Paper className={classes.paper}>
-                <Select className={classes.innerElem} displayEmpty value={this.state.values.dietary} name="dietary" onChange={this.handleOnChange}>
+                <Select className={classes.innerElem} id="search-bar-dietarytype" displayEmpty value={this.state.values.dietary} name="dietary" onChange={this.handleOnChange}>
                     <MenuItem value="" disabled>Dietary Type</MenuItem>                    
                     {this.dietary.map((v, k) => <MenuItem value={v} key={k}>{v}</MenuItem>)}
                     <MenuItem value="none">None</MenuItem>
@@ -282,7 +287,7 @@ class SearchBar extends Component {
 
             <Paper style={{width : 150, "padding-left":5, "padding-right":5}}>
                 <Typography variant="caption" display="block" align="left" >Age range</Typography>
-                <Slider  onChangeCommitted={this.handleSlider} defaultValue={[0,99]} min={0} max={99} valueLabelDisplay="auto" aria-labelledby="range-slider" />
+                <Slider  onChangeCommitted={this.handleSlider} id="search-bar-agerange" defaultValue={[0,99]} min={0} max={99} valueLabelDisplay="auto" aria-labelledby="range-slider" />
             </Paper>
             {/*<Button id="filter-button" className={classes.submitButton} variant="contained" color="primary">FILTER</Button> need filter button? */}
         </div>}

@@ -6,8 +6,6 @@ import mealPic from "./res/group_meal.webp"
 
 var md5 = require('md5');
 
-
-
 export function isUserLoggedIn(){
     var un = getCookie("Username");
     if(typeof(un) === "undefined" || un === null || un.length < 3 
@@ -87,7 +85,3 @@ export function getProfilePicURL(username){
     return "/prof/" + md5(username)
 }
 
-//to do!
-export function isHost(username){
-    return true;
-}
