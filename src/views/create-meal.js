@@ -76,9 +76,9 @@ class CreateMealTemplate extends Component {
                 address_1 : "",
                 city : "",
                 post_code : "",
-                imagePreviewUrl: "",
             },
             optional : {
+                imagePreviewUrl: "",
                 suggested_theme : "",
                 dietary : "",
                 age_range : [],
@@ -285,7 +285,7 @@ class CreateMealTemplate extends Component {
         reader.onloadend = () => {
         
         //file: file,
-        this.setState({...this.state, values : { ...this.state.values, imagePreviewUrl: reader.result}});
+        this.setState({...this.state, optional : { ...this.state.optional, imagePreviewUrl: reader.result}});
         
 
         }
@@ -350,7 +350,7 @@ class CreateMealTemplate extends Component {
         const { formErrors } = this.state;
         //console.log(this.state.values.imagePreviewUrl)
         //meal picture stuff
-        let {imagePreviewUrl} = this.state.values;
+        let {imagePreviewUrl} = this.state.optional;
         let $imagePreview = null;
         //problem with the image size, I want it to remain the same dimensions but it always grows with the page...
         if (imagePreviewUrl) {
@@ -366,22 +366,23 @@ class CreateMealTemplate extends Component {
 
         } 
         else {
-        $imagePreview = (
-                <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
-                    <img src={meal} id="uploadme" height="100%" width="100%" className= {myStyle.image} style={{
-                        contentFit:'contain',border: "1px solid #ddd", borderRadius: "15px", 
-                        }} 
-                    />
-                </div>
-            )
+            $imagePreview = (
+                    <div style={{maxHeight:'100%', maxWidth: '100%', height:'100%', width:'100%'}}>
+                        <img src={meal} id="uploadme" height="100%" width="100%" className= {myStyle.image} style={{
+                            contentFit:'contain',border: "1px solid #ddd", borderRadius: "15px", 
+                            }} 
+                        />
+                    </div>
+                )
 
-        var un = getCookie("Username");
-        console.log(un);
-        if(!isUserLoggedIn()) {
-            window.location.href = "/";
-            return null;
-        }
+            var un = getCookie("Username");
+            console.log(un);
+            if(!isUserLoggedIn()) {
+                window.location.href = "/";
+                return null;
+            }
         //console.log(this.optional);
+        }
         var submitDisabled = false;
         var values = Object.values(this.state.values);
         console.log(values);
@@ -390,17 +391,14 @@ class CreateMealTemplate extends Component {
                 submitDisabled = true;
             }
         }
-
-        
-        }
         return(
             <div className={classes.root} style={{height:'100%', width:'100%', posistion:'absolute'}}>
                 <Grid container style={{width:"100%", height:"100%"}}>
                     <Grid item xs={12}>
                         <div className="main-body">
-                            <Button variant="contained" color="secondary" onClick={this.debugFillFields}>
+                            {/*<Button variant="contained" color="secondary" onClick={this.debugFillFields}>
                                 Debug fill fields
-                            </Button>
+                            </Button>*/}
                             Create a Meal Event
                         </div>
                     </Grid>

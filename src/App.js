@@ -80,10 +80,10 @@ function App() {
           </Switch>
         </header>
 
-        <footer>
+    </div>
+    <footer>
           <BottomAppBar/>        
-        </footer>
-      </div>
+    </footer>
     </BrowserRouter>
   );
 }

@@ -206,7 +206,7 @@ class MapTemplate extends Component {
 render() {
 	console.log("render")
     return (
-	<Grid class="main-body" container>
+	<Grid class="main-body" container style={{"padding-bottom" : "2%"}}>
 		
 		{this.props.filterVisib &&
 		<Grid container item xs={12} justify="center">
@@ -239,8 +239,7 @@ render() {
 			
 				<MealList meals={this.state.dataMeals}/>	 
 			}
-		<button onClick={this.test}>testbtn</button>
-		</Grid>
+	</Grid>
 	);
   }
 }

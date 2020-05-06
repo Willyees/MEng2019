@@ -115,7 +115,7 @@ class SearchBar extends Component {
             type: 'post',
             data: {"data" : obj},
             success: function(output) {
-                alert(output);
+                //alert(output);
                 f.props.handlerFiltered(output);
             }
             });

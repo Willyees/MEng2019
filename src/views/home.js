@@ -47,7 +47,7 @@ class HomeTemplate extends Component {
 
                     <br/>
                     <Grid item>
-                        <Typography variant={'h6'} color="textPrimary" style={{"backgroundColor" : "lightgray"}}>
+                        <Typography variant={'h6'} color="textPrimary" style={{"backgroundColor" : "lightgray", "margin-top" : "2%"}}>
                         To be able to interact, you have to create a profile
                         </Typography>   
                     </Grid>
