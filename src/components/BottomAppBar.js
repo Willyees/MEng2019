@@ -59,6 +59,7 @@ const useStyles = makeStyles(theme => ({
         flexgrow: 1,
         width: '100%', 
         appBarSpacer : theme.mixins.toolbar,
+        
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -78,7 +79,7 @@ const useStyles = makeStyles(theme => ({
     return (
 
       <div className={classes.root}>
-        <AppBar style={{bottom:0, position:"relative", top: '2%'}}>
+        <AppBar style={{bottom:0, position:"relative", top: '2%', zIndex : -1}}>
           <Typography variant="h6" className={classes.title} align="center">
               <a className={classes.linkbanner} href="/about">
                   About

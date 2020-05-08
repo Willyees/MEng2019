@@ -204,7 +204,7 @@ class SignUpTemplate extends Component {
                 success: function(output) {
 		            if(output == "DONE"){
                             window.location.href = "/" 
-                            alert(output, "Successfully registered");
+                            alert(output, "Successfully registered, now log-in!");
                     }
                     else if(output == 1){
                         alert("Username Already Exists");

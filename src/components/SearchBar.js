@@ -249,7 +249,7 @@ class SearchBar extends Component {
             <Button id="search-button" className={classes.submitButton} variant="contained" color="primary" onClick={this.handleSearch}>
                 SEARCH
             </Button>
-            <Typography className={classes.filtersA} variant="subtitle1"><a className={classes.filtersA} href="#" onClick={this.handleClickFilter}>More filters</a></Typography>
+            <Button onClick={this.handleClickFilter} className={classes.submitButton} variant="contained" color="default" >More Filters</Button>
         </div>
         {this.state.filter_vis &&
         <div className={classes.root}>

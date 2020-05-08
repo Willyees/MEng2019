@@ -33,6 +33,7 @@
 
 .main-body{ /*to be used in divs or containers after the nav bar*/
   padding-top: 64px;
+  margin-top : 1%;
 }
 .paper-board {
   margin-left: "12%";

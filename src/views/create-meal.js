@@ -72,7 +72,7 @@ class CreateMealTemplate extends Component {
                 time : formatTimeNoSecs(new Date().toLocaleTimeString()),
                 proposed_meal : "",
                 expected_contribution : 0.0,
-                guest_limit : 0,
+                guest_limit : 1,
                 address_1 : "",
                 city : "",
                 post_code : "",
@@ -117,6 +117,7 @@ class CreateMealTemplate extends Component {
         console.log(this.state.values);
         console.log(this.address_1_own);
         this.onChange = this.onChange.bind(this);
+        this.onChangeHandleNumber = this.onChangeHandleNumber.bind(this);
         this.onChangeOptional = this.onChangeOptional.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.handleDate = this.handleDate.bind(this);
@@ -169,6 +170,16 @@ class CreateMealTemplate extends Component {
         this.setState({formErrors, dob : date_}, () => console.log(this.state));
     }
 
+    onChangeHandleNumber(event){
+        console.log(event.target.value);
+        if(event.target.name == 'guest_limit' && event.target.value > 0){
+            this.onChange(event)
+        }
+        else if(event.target.name == 'expected_contribution' && event.target.value >= 0.0){
+            this.onChange(event)
+        }
+
+    }
     onChange(event){//every time an element is modified from the user this function is called. So it is possible to perform checks for each keystroke if needed
         event.preventDefault();
         const {name, value} = event.target;
@@ -385,12 +396,23 @@ class CreateMealTemplate extends Component {
         }
         var submitDisabled = false;
         var values = Object.values(this.state.values);
+        var errors = Object.values(this.state.formErrors)
         console.log(values);
         for(var v of values){
             if(v.length == 0){
                 submitDisabled = true;
+                break;
             }
         }
+        if(!submitDisabled){
+            for(var v of errors){
+                if(v.length != 0){
+                    submitDisabled = true;
+                    break;
+                }
+            }
+        }
+
         return(
             <div className={classes.root} style={{height:'100%', width:'100%', posistion:'absolute'}}>
                 <Grid container style={{width:"100%", height:"100%"}}>
@@ -496,11 +518,11 @@ class CreateMealTemplate extends Component {
                                         <TextField error= {formErrors.proposed_meal} helperText= {formErrors.proposed_meal} name="proposed_meal" id="proposed_meal_cm" onChange={this.onChange} value={this.state.values.proposed_meal} type="text" label="Proposed meal" />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField error= {formErrors.expected_contribution} helperText= {formErrors.expected_contribution} name="expected_contribution" id="expected_contribution_cm" onChange={this.onChange} value={this.state.values.expected_contribution} type="number" label="Expected contribution" 
+                                        <TextField error= {formErrors.expected_contribution} helperText= {formErrors.expected_contribution} name="expected_contribution" id="expected_contribution_cm" onChange={this.onChangeHandleNumber} value={this.state.values.expected_contribution} type="number" label="Expected contribution" 
                                         InputProps={{startAdornment: <InputAdornment position="start">£</InputAdornment>}}/>
                                     </Grid>
                                     <Grid item xs={12}>                                        
-                                        <TextField error= {formErrors.guest_limit} helperText= {formErrors.guest_limit} name="guest_limit" id="gues_limit_cm" onChange={this.onChange} value={this.state.values.guest_limit} type="number" label="Guest Limit" min="1"/>                                        
+                                        <TextField error= {formErrors.guest_limit} helperText= {formErrors.guest_limit} name="guest_limit" id="gues_limit_cm" onChange={this.onChangeHandleNumber} value={this.state.values.guest_limit} type="number" label="Guest Limit" />                                        
                                     </Grid>
                                     <Grid item xs={12}>
                                         {this.state.visibility.suggested_theme_vis &&

@@ -286,7 +286,7 @@ class ProfileTemplate extends Component {
                         "update" : toServer
                     },
                     success: function(output) {
-                            alert(output);
+                            //alert(output);
                         if(output == "DONE"){
                         alert("Records Updated");
                         }

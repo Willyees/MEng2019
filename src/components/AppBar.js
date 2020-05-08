@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
               <img src={clock} />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-            <a className={classes.linkbanner} href="/" >
+            <a className={classes.linkbanner} href="/map" >
                 MealTime
             </a> 
             </Typography>
