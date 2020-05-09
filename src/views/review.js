@@ -156,19 +156,29 @@ class ReviewTemplate extends Component {
             console.log("host name: "+hostName+ " host user name: "+hostUser); 
 
             people_names = people.map((e) => {
-                if(e.u != getCookie("Username")){
+                //if(e.u != getCookie("Username")){
                     console.log("added user: "+ e.u + " to people_names");
-                    return e.n;
-                }
+                        return e.n;
+                //}
             });
             people_users = people.map((e) => {
-                if(e.u != getCookie("Username")){
+                //if(e.u != getCookie("Username")){
                     return e.u;
-                }
+                //}
             });
+
             people_names.push(hostName);
             people_users.push(hostUser);
-            console.log(people_names);          
+            console.log(people_names); 
+            console.log("removing current user if in list");
+            for(var i=0;i<people_users.length;++i){
+                if(people_users[i] === getCookie("Username")){
+                    people_users.splice(i,1);
+                    people_names.splice(i,1);
+                    console.log("removed user "+getCookie("Username"));
+                }
+            }
+            console.log(people_names);
         }
         
         
