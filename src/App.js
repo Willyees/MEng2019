@@ -11,6 +11,7 @@ import ViewProfileTemplate from './views/view-profile.js';
 import SettingsTemplate from './views/settings.js';
 import ReviewTemplate from './views/review.js';
 import AboutTemplate from './views/about.js';
+import SiteMapTemplate from './views/site-map.js';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
@@ -21,6 +22,7 @@ import NotFound from './components/NotFound'
 
 function App() {
   return (
+    <div>
     <BrowserRouter>
       <div className="App App-header">
         <header >
@@ -69,6 +71,9 @@ function App() {
             <Route exact path="/about">
               <AboutTemplate/>
             </Route>
+            <Route exact path="/site-map">
+              <SiteMapTemplate/>
+            </Route>
             <Route exact path="/">
               < HomeTemplate />
             </Route>
@@ -79,12 +84,19 @@ function App() {
             
           </Switch>
         </header>
-
+        
     </div>
-    <footer>
-          <BottomAppBar/>        
-    </footer>
     </BrowserRouter>
+
+    <BrowserRouter>
+      <div className={"App App-footer"}>
+        <footer>
+          <BottomAppBar/>        
+        </footer>
+      </div>
+    </BrowserRouter>
+    </div>
+    
   );
 }
 

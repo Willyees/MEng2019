@@ -128,14 +128,6 @@ class ReviewTemplate extends Component {
         //get the participants from the db
         people = getParticipants(param);
 
-        var meal = getMeal(param);
-        console.log(meal.host);
-
-        var hostInfo = getHostInfo(meal.host);
-        var hostName = hostInfo.name;
-        var hostUser = hostInfo.username;
-        console.log("n: "+hostName+ " u: "+hostUser); 
-
 
         // people_names = people_full.map((e) => {return e.n;});
 
@@ -155,8 +147,17 @@ class ReviewTemplate extends Component {
             people_users = people.map((e) => {return e.u});
             
         }else{
+            var meal = getMeal(param);
+            console.log(meal.host);
+    
+            var hostInfo = getHostInfo(meal.host);
+            var hostName = hostInfo.name;
+            var hostUser = hostInfo.username;
+            console.log("host name: "+hostName+ " host user name: "+hostUser); 
+
             people_names = people.map((e) => {
                 if(e.u != getCookie("Username")){
+                    console.log("added user: "+ e.u + " to people_names");
                     return e.n;
                 }
             });
@@ -498,7 +499,7 @@ class ReviewTemplate extends Component {
                     </Grid>
 
                     {/* footer */}       
-                    <div class='fixed' style={{width:'100%', position:'fixed', bottom:0,
+                    <div class='fixed' style={{width:'100%', position:'fixed', bottom:"5%",
                         left: 0,
                         backgroundColor: 'rgb(76, 175, 80, 0.6)',
                         color: 'white',

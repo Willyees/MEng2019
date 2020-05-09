@@ -510,7 +510,7 @@ class ProfileTemplate extends Component {
                 </Grid>
                 {/* footer */}
                 
-                <div class='fixed' style={{width:'100%', position:'fixed', bottom:0,
+                <div class='fixed' style={{width:'100%', position:'fixed', bottom:"5%",
                 left: 0,
                 backgroundColor: 'rgb(76, 175, 80, 0.6)',
                 color: 'white',
