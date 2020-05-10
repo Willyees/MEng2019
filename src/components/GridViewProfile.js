@@ -16,9 +16,10 @@ import board from '../res/chopping_board_chopped.png'
 import ReviewList from './ReviewList'
 import {getReviewsAjax} from './ShowMealGrid.js'
 import $ from 'jquery';
+import {getProfilePicURL} from '../helperFunctions';
 
 //get the user profile pic
-import profile from "../res/bear1.png";
+//import profile from "../res/bear1.png";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -103,13 +104,13 @@ export default function ProfileGrid() {
                         <Grid item container xs={12} style={{marginTop: "4%", justifyContent: "center"}}>
                             {/* get the users first name then last name */}
                             <Typography variant="h5" component="h5" gutterBottom style={{fontWeight:"bolder"}}>
-	  			{dataPopulate["name"] + " " + dataPopulate["surname"]}
+	  			                {dataPopulate["name"] + " " + dataPopulate["surname"]}
                             </Typography>
                         </Grid>
 
                         <Grid item container xs={12} >
                             <Grid item xs={12} style={{justifyContent:"left", display: "flex"}} >
-                                <img src={profile} height="400px" width="100%" style={{border: "1px solid #ddd", borderRadius: "15px"}}/>
+                                <img src={getProfilePicURL(dataPopulate["username"])} height="400px" width="100%" style={{border: "1px solid #ddd", borderRadius: "15px"}}/>
                             </Grid>
 
                             <Grid item xs={12}>
