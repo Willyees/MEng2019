@@ -11,6 +11,9 @@
 # production
 /build
 
+#key google api
+/src/google_api_key.js
+
 # misc
 .DS_Store
 .env.local

@@ -1,8 +1,20 @@
 
 import React, {Component} from 'react'
 import Map, {GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
-//import google_api_key from '../google_api_key'
+var google_api_key = 'your_key_goes_here'
+/**
+ * Create file in ../google_api_key.js following this pattern
+ * 
+ * export const _google_api_key = 'your_key_goes_here';
+ */
 
+try{
+    const f = require('../google_api_key')
+    google_api_key = f._google_api_key;
+}
+catch(err){
+    console.log("google_api_key file do not exists")
+}
 /**
  * enum used to understand the type of data to be shown in the boxes
  */
@@ -132,5 +144,5 @@ class MapWrapper extends Component{
     }
 }
 export default GoogleApiWrapper({
-    apiKey: 'your_key_goes_here'
+    apiKey: google_api_key
   })(MapWrapper);
