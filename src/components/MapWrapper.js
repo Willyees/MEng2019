@@ -1,6 +1,7 @@
 
 import React, {Component} from 'react'
 import Map, {GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
+//import google_api_key from '../google_api_key'
 
 /**
  * enum used to understand the type of data to be shown in the boxes
@@ -131,5 +132,5 @@ class MapWrapper extends Component{
     }
 }
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyBY6v3bJwMKv6Ov4t1pVjGX0byoaX1K2gI'
+    apiKey: 'your_key_goes_here'
   })(MapWrapper);
