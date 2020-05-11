@@ -37,7 +37,7 @@ class HomeTemplate extends Component {
                     <Paper className="paper-board" style={{"padding" : 10}}>
                         <Typography variant={'h5'} color={"textPrimary"}>
                         Meal Time is a place where people can organise their meals and share information. <p />
-                        Our goal is to create a platform that would enable people to cook together and to socialize, may be learning new recipes!
+                        Our goal is to create a platform that would enable people to cook together and to socialise, maybe learning new recipes!
                         </Typography>
                     </Paper>
                     </Grid>

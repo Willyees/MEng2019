@@ -313,6 +313,7 @@ class CreateMealTemplate extends Component {
         var objmerged = {...this.state.values, ...this.state.optional}; //have to merge the optional and not optional object together
         //add secs to time
         objmerged.time = objmerged.time + ":00";
+        objmerged.post_code =  objmerged.post_code.replace(' ', '');
 
         for(var k in objmerged){
             if(typeof(objmerged[k]) != "string")

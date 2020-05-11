@@ -103,7 +103,7 @@ class ShowMealTemplate extends Component {
             url: 'PHPF/joinmeal.php',
             type: 'post',
             data : {"meal_id" : this.state.mealId, "user_id" : username},
-            success: function(){console.log("Sent request to join this meal from user")},
+            success: function(){console.log("Sent request to join this meal from user"); alert("Sent request to join this meal to the host. You will get notified once accepted")},
             error : function() {console.log("Error in sending the join request to DB")}
         });
     }

@@ -97,7 +97,7 @@ class SearchBar extends Component {
     }
     ajaxCallFilter(obj){
         for(var k in obj){
-            if(typeof(obj[k]) != "string")
+            if(typeof(obj[k]) != "string" && k != "time")
             obj[k] = JSON.stringify(obj[k]);
         }
         console.log(obj)

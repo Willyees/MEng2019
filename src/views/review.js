@@ -354,7 +354,7 @@ class ReviewTemplate extends Component {
                         "body": String(element.body)
                     },
                     success: function(output) {
-                            alert(output);
+                            //alert(output);
                         if(output == "1"){
                         alert("Records Updated");
                         }
